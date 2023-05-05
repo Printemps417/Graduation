@@ -1,11 +1,13 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, Switch } from 'react-router-dom'
 import Data from './Data'
 import Introduction from './Introduction'
 import Sample from './Sample_data'
 import Visualization from './Visualization'
 import React from 'react'
+import Database from './Database'
+import Adddb from './Adddb'
 const { Header, Content, Footer, Sider } = Layout
 const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data'].map((key) => ({
   key,
@@ -45,7 +47,11 @@ const App = () => {
         <Routes>
           {/* 一级路由组件渲染位置 */}
           <Route path="/" element={<Data />}></Route>
-          <Route path="/Data" element={<Data />}></Route>
+          <Route path="/Data" element={<Data />}>
+            <Route path="/Data/" element={<Adddb />}></Route>
+            <Route path="/Data/adddb" element={<Adddb />}></Route>
+            <Route path="/Data/database" element={<Database />}></Route>
+          </Route>
           <Route path="/Introduction" element={<Introduction />}></Route>
           <Route path="/Visualization" element={<Visualization />}></Route>
           <Route path="/Sample data" element={<Sample />}></Route>
