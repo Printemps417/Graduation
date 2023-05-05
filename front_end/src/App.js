@@ -48,7 +48,7 @@ const App = () => {
           {/* 一级路由组件渲染位置 */}
           <Route path="/" element={<Data />}></Route>
           <Route path="/Data" element={<Data />}>
-            <Route path="/Data/" element={<Adddb />}></Route>
+            <Route path="/Data/" element={<Database />}></Route>
             <Route path="/Data/adddb" element={<Adddb />}></Route>
             <Route path="/Data/database" element={<Database />}></Route>
           </Route>

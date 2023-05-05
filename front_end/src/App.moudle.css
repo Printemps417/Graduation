@@ -10,3 +10,9 @@
   float: right;
   margin: 16px 0 16px 24px;
 }
+.space-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

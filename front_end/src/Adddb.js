@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom"
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
 import { useContext } from 'react'
 import useItems from 'antd/es/menu/hooks/useItems'
+import styles from './Adddb.module.css'
 import { DatabaseContext } from './Data'
 
 const Adddb = () => {
@@ -29,21 +30,23 @@ const Adddb = () => {
     return (
         <>
             <h1>This is Adddb</h1>
-            <Space direction="vertical">
-                <Space wrap>
-                    <Button
-                        type="primary"
-                        icon={<PoweroffOutlined />}
-                        loading={loadings[1]}
-                        onClick={() => {
-                            enterLoading(1)
+            <div className={styles.container}>
+                <Space direction="vertical">
+                    <Space wrap>
+                        <Button
+                            type="primary"
+                            icon={<PoweroffOutlined />}
+                            loading={loadings[1]}
+                            onClick={() => {
+                                enterLoading(1)
 
-                        }}
-                    >
-                        提交数据
-                    </Button>
+                            }}
+                        >
+                            提交数据
+                        </Button>
+                    </Space>
                 </Space>
-            </Space>
+            </div>
         </>
     )
 }
