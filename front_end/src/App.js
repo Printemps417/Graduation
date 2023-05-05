@@ -51,6 +51,13 @@ const App = () => {
           <Route path="/Sample data" element={<Sample />}></Route>
         </Routes>
       </BrowserRouter>
+      <Footer
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        Graduation Design ©2023 Created by Lee
+      </Footer>
     </Layout>
   )
 }

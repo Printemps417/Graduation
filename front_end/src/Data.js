@@ -69,13 +69,6 @@ const Data = () => {
                     </Content>
                 </Layout>
             </Content>
-            <Footer
-                style={{
-                    textAlign: 'center',
-                }}
-            >
-                Graduation Design ©2023 Created by 李昊彬
-            </Footer>
         </Layout>
     )
 }
