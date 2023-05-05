@@ -57,7 +57,7 @@ public class FileUploadController {
 
     public void inputFile(String path,String dbname) throws IOException{
         try {
-            String[] args1 = new String[] { "python", "E:\\code\\myspringboot\\myspringboot\\src\\main\\resources\\static\\SqlInput.py", dbname, path };
+            String[] args1 = new String[] { "python", "E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static\\SqlInput.py", dbname, path };
             Process proc = Runtime.getRuntime().exec(args1);// 执行py文件
             proc.getOutputStream().flush();
             BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
