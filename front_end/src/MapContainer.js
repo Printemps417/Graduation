@@ -38,7 +38,7 @@ class MapComponent extends Component {
                 [114.555528, 37.727903],
                 [112.106257, 36.962733],
                 [109.830097, 31.859027],
-                [116.449181, 39.98614],
+                [116.449181, 39.986142],
             ]
             for (let item of positionArr) {
                 let marker = new AMap.Marker({
@@ -47,12 +47,12 @@ class MapComponent extends Component {
                 this.map.add(marker)
             }
         }).catch(e => {
-            console.log('异常！')
+            console.log('地图加载异常！')
             console.log(e)
         })
     }
     render () {
-        // 1.创建地图容器`
+        // 1.创建地图容器
         return (
             <div className="home_div">
                 <div className="map-title">

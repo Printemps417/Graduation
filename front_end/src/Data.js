@@ -5,10 +5,10 @@ import { Button, Space } from 'antd'
 import React from 'react'
 import { useState } from 'react'
 import Adddb from './Adddb'
-
+import { useContext } from 'react'
+import { DatabaseContext } from './App'
 const { Header, Content, Footer, Sider } = Layout
-export const DatabaseContext = React.createContext()
-// 用于传输数据
+
 const Left_menu = ({ key, items2 }) => {
     // 定义渲染格式
     if (key == items2.length) {
@@ -24,7 +24,7 @@ const Data = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken()
-    const [useritem, setUseritem] = useState([UserOutlined])
+    const { useritem, setUseritem } = useContext(DatabaseContext)
     const items2 = [...useritem, LaptopOutlined].map((icon, index) => {
         const key = String(index + 1)
         return {
@@ -53,60 +53,57 @@ const Data = () => {
         }
     })
     return (
-        <DatabaseContext.Provider value={{ useritem, setUseritem }}>
-            {/* Provider要包裹上层组件 */}
-            <Layout>
-                <Breadcrumb
-                    style={{
-                        margin: '16px 0',
-                        marginLeft: '4%'
-                    }}
-                >
-                    <Breadcrumb.Item>Data</Breadcrumb.Item>
-                    <Breadcrumb.Item>User</Breadcrumb.Item>
-                </Breadcrumb>
+        <Layout>
+            <Breadcrumb
+                style={{
+                    margin: '16px 0',
+                    marginLeft: '4%'
+                }}
+            >
+                <Breadcrumb.Item>Data</Breadcrumb.Item>
+                <Breadcrumb.Item>User</Breadcrumb.Item>
+            </Breadcrumb>
 
 
-                <Content
+            <Content
+                style={{
+                    padding: '0 50px',
+                }}
+            >
+                <Layout
                     style={{
-                        padding: '0 50px',
+                        padding: '24px 0',
+                        background: colorBgContainer,
                     }}
                 >
-                    <Layout
+                    <Sider
                         style={{
-                            padding: '24px 0',
                             background: colorBgContainer,
                         }}
+                        width={200}
                     >
-                        <Sider
+                        <Menu
+                            mode="inline"
+                            defaultSelectedKeys={['1']}
+                            defaultOpenKeys={['sub1']}
                             style={{
-                                background: colorBgContainer,
+                                height: '100%',
                             }}
-                            width={200}
-                        >
-                            <Menu
-                                mode="inline"
-                                defaultSelectedKeys={['1']}
-                                defaultOpenKeys={['sub1']}
-                                style={{
-                                    height: '100%',
-                                }}
-                                items={items2}
-                            />
-                        </Sider>
-                        <Content
-                            style={{
-                                padding: '0 24px',
-                                minHeight: 280,
-                            }}
-                        >
-                            Content
-                            <Outlet></Outlet>
-                        </Content>
-                    </Layout>
-                </Content>
-            </Layout>
-        </DatabaseContext.Provider>
+                            items={items2}
+                        />
+                    </Sider>
+                    <Content
+                        style={{
+                            padding: '0 24px',
+                            minHeight: 280,
+                        }}
+                    >
+                        Content
+                        <Outlet></Outlet>
+                    </Content>
+                </Layout>
+            </Content>
+        </Layout>
 
     )
 }

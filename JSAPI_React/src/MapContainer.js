@@ -15,6 +15,7 @@ class MapComponent extends Component {
     componentDidMount () {
         AMapLoader.load({
             key: '2109b1cf6320763f85398e3a305f34c1', //需要设置您申请的key
+            securityJsCode: "6253b21ba2418ff654d06778cc04ab38",
             version: "2.0",
             plugins: ['AMap.ToolBar', 'AMap.Driving'],
             AMapUI: {
@@ -37,7 +38,7 @@ class MapComponent extends Component {
                 [114.555528, 37.727903],
                 [112.106257, 36.962733],
                 [109.830097, 31.859027],
-                [116.449181, 39.98614],
+                [116.449181, 39.986142],
             ]
             for (let item of positionArr) {
                 let marker = new AMap.Marker({
@@ -46,6 +47,7 @@ class MapComponent extends Component {
                 this.map.add(marker)
             }
         }).catch(e => {
+            console.log('地图加载异常！')
             console.log(e)
         })
     }

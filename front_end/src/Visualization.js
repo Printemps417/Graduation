@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import MapComponent from './MapContainer'
+import './Visualization.css'
 
 const Visualization = () => {
     return (
-        <div>
+        <div className='Map'>
             <MapComponent></MapComponent>
         </div>
     )

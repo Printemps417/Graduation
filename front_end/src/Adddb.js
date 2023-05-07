@@ -6,7 +6,7 @@ import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/
 import { useContext } from 'react'
 import useItems from 'antd/es/menu/hooks/useItems'
 import styles from './Adddb.module.css'
-import { DatabaseContext } from './Data'
+import { DatabaseContext } from './App'
 
 const Adddb = () => {
     const [loadings, setLoadings] = useState([])
