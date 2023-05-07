@@ -12,7 +12,6 @@ const { Header, Content, Footer, Sider } = Layout
 const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data'].map((key) => ({
   key,
   label:
-
     <Link
       style={{
         margin: 0
@@ -22,7 +21,13 @@ const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data'].map((key
       }}
       to={`/${key}`}
     >
-      {key}
+      <p style={{
+        margin: 0,
+        color: "#fff",
+        // fontWeight: "bold"
+      }}>
+        {key}
+      </p>
     </Link>
 }))
 

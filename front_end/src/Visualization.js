@@ -1,6 +1,12 @@
+import React, { Component } from 'react'
+import MapComponent from './MapContainer'
+
 const Visualization = () => {
     return (
-        <h1>This is Visualization</h1>
+        <div>
+            <MapComponent></MapComponent>
+        </div>
     )
 }
+
 export default Visualization

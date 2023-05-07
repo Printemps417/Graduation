@@ -11,7 +11,7 @@ import { DatabaseContext } from './Data'
 const Adddb = () => {
     const [loadings, setLoadings] = useState([])
     const { useritem, setUseritem } = useContext(DatabaseContext)
-    console.log(useritem, setUseritem)
+    // console.log(useritem, setUseritem)
     const enterLoading = (index) => {
         setLoadings((prevLoadings) => {
             const newLoadings = [...prevLoadings]
@@ -23,6 +23,7 @@ const Adddb = () => {
                 const newLoadings = [...prevLoadings]
                 newLoadings[index] = false
                 setUseritem([...useritem, UserOutlined])
+                // 更改数据库列表
                 return newLoadings
             })
         }, 500)
