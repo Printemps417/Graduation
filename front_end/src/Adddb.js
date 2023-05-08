@@ -22,7 +22,9 @@ const Adddb = () => {
             setLoadings((prevLoadings) => {
                 const newLoadings = [...prevLoadings]
                 newLoadings[index] = false
-                setUseritem([...useritem, UserOutlined])
+                setTimeout(() => {
+                    setUseritem([...useritem, UserOutlined])
+                }, 100)
                 // 更改数据库列表
                 return newLoadings
             })

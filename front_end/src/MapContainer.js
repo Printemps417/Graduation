@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import './MapContainer.css'
-
+import { Helmet } from 'react-helmet'
+import axios from 'axios'
 class MapComponent extends Component {
     constructor() {
         super()
@@ -29,9 +30,9 @@ class MapComponent extends Component {
         }).then((AMap) => {
             this.map = new AMap.Map("mapcontainer", {
                 viewMode: "3D",
-                zoom: 5,
+                zoom: 11,
                 zooms: [2, 22],
-                center: [105.602725, 37.076636],
+                center: [116.397428, 39.90923]  //初始化地图中心点
             })
             let positionArr = [
                 [113.357224, 34.977186],
@@ -46,6 +47,61 @@ class MapComponent extends Component {
                 })
                 this.map.add(marker)
             }
+            // const traffic = new AMap.TileLayer.Traffic({
+            //     'autoRefresh': true,     //是否自动刷新，默认为false
+            //     'interval': 180,         //刷新间隔，默认180s
+            // })
+
+            // this.map.add(traffic) //通过add方法添加图层
+
+            // let toolbar = new AMap.ToolBar({
+            //     visible: true,
+            //     position: {
+            //         top: '60px',
+            //         right: '40px'
+            //     }
+            // })
+
+            AMap.plugin(["AMap.ToolBar", "AMap.Scale", "AMap.ControlBar", "AMap.HawkEye"], () => { // 异步加载插件
+                let toolbar = new AMap.ToolBar({
+                    visible: true,
+                    position: {
+                        top: '60px',
+                        right: '40px'
+                    }
+                }) // 缩放工具条实例化
+                let scale = new AMap.Scale()
+                let controlBar = new AMap.ControlBar()
+                let overView = new AMap.HawkEye()
+
+                this.map.addControl(toolbar)
+                this.map.addControl(overView)
+                this.map.addControl(controlBar)
+                this.map.addControl(scale)
+            })
+            // toolbar.hide()
+
+            // axios.get('https://gw.alipayobjects.com/os/bmw-prod/d6da7ac1-8b4f-4a55-93ea-e81aa08f0cf3.json')
+            //     .then(response => {
+            //         // 将数据保存到变量中
+            //         const jsonData = response.data
+            //         console.log(jsonData)
+            //         // 使用数据源创建 PolygonLayer 组件
+            //         const chinaPolygonLayer = new PolygonLayer({
+            //             source: jsonData,
+            //             color: 'name',
+            //             style: {
+            //                 color: [
+            //                     'rgb(239,243,255)',
+            //                     'rgb(189,215,231)',
+            //                     'rgb(107,174,214)',
+            //                     'rgb(49,130,189)',
+            //                     'rgb(8,81,156)'
+            //                 ]
+            //             }
+            //         })
+            //         this.map.addLayer(chinaPolygonLayer)
+            //     })
         }).catch(e => {
             console.log('地图加载异常！')
             console.log(e)
@@ -55,9 +111,12 @@ class MapComponent extends Component {
         // 1.创建地图容器
         return (
             <div className="home_div">
-                <div className="map-title">
-                    <h3>JSAPI React地图组件示例</h3>
-                </div>
+                {/* <div className="map-title">
+                    <h3>Map</h3>
+                </div> */}
+                <Helmet>
+                    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+                </Helmet>
                 <div id="mapcontainer" className="map" style={{ height: '100%' }} />
             </div>
         )

@@ -98,7 +98,6 @@ const Data = () => {
                             minHeight: 280,
                         }}
                     >
-                        Content
                         <Outlet></Outlet>
                     </Content>
                 </Layout>
