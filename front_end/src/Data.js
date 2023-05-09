@@ -24,7 +24,8 @@ const Data = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken()
-    const { useritem, setUseritem } = useContext(DatabaseContext)
+    const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
+
     const items2 = [...useritem, LaptopOutlined].map((icon, index) => {
         const key = String(index + 1)
         return {
@@ -32,7 +33,7 @@ const Data = () => {
             icon: React.createElement(icon),
             label:
                 <Link
-                    to={key > useritem.length ? `/Data/adddb` : `/Data/database?database=${key}`}
+                    to={key > useritem.length ? `/Data/adddb` : `/Data/database?database=${dbname[index]}`}
                     onClick={() => {
                         if (key > useritem.length) {
                             console.log('添加数据库被点击')
@@ -42,7 +43,7 @@ const Data = () => {
                             console.log('数据库被点击')
                         }
                     }}
-                >{key <= useritem.length ? `Database${key}` : '点击添加数据库'}</Link>
+                >{key <= useritem.length ? `${dbname[index]}` : '点击添加数据库'}</Link>
             // children: new Array(4).fill(null).map((_, j) => {
             //     const subKey = index * 4 + j + 1
             //     return {

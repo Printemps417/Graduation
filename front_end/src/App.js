@@ -39,9 +39,10 @@ const App = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken()
-  const [useritem, setUseritem] = useState([UserOutlined])
+  const [useritem, setUseritem] = useState([])
+  const [dbname, setDbname] = useState([])
   return (
-    <DatabaseContext.Provider value={{ useritem, setUseritem }}>
+    <DatabaseContext.Provider value={{ useritem, setUseritem, dbname, setDbname }}>
       {/* Provider要包裹上层组件 */}
       <Layout>
         <BrowserRouter>

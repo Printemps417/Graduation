@@ -20,19 +20,67 @@ class MapComponent extends Component {
             zooms: [2, 22],
             center: [116.397428, 39.90923]  //初始化地图中心点
         })
-        let positionArr = [
-            [113.357224, 34.977186],
-            [114.555528, 37.727903],
-            [112.106257, 36.962733],
-            [109.830097, 31.859027],
-            [116.449181, 39.986142],
-        ]
-        for (let item of positionArr) {
-            let marker = new window.AMap.Marker({
-                position: [item[0], item[1]],
-            })
-            this.map.add(marker)
-        }
+        // this.map.on('complete', () => {
+        //     // 创建 AMap.LabelsLayer 图层
+        //     var layer = new window.AMap.LabelsLayer({
+        //         zooms: [3, 20],
+        //         zIndex: 1000,
+        //         collision: false
+        //     })
+
+        //     // 将图层添加到地图
+        //     this.map.add(layer)
+
+        //     var markers = []
+        //     var positions = window.Positions.slice(0, 3E4)
+
+        //     var icon = {
+        //         type: 'image',
+        //         image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+        //         size: [6, 9],
+        //         anchor: 'bottom-center',
+        //     }
+
+        //     for (var i = 0; i < positions.length; i++) {
+        //         var curPosition = positions[i]
+        //         var curData = {
+        //             position: curPosition,
+        //             icon
+        //         }
+
+        //         var labelMarker = new window.AMap.LabelMarker(curData)
+
+        //         markers.push(labelMarker)
+
+        //         // 给marker绑定事件
+        //         labelMarker.on('mouseover', (e) => {
+        //             var position = e.data.data && e.data.data.position
+
+        //             if (position) {
+        //                 normalMarker.setContent(
+        //                     '<div class="amap-info-window">'
+        //                     + position +
+        //                     '<div class="amap-info-sharp"></div>' +
+        //                     '</div>')
+        //                 normalMarker.setPosition(position)
+        //                 this.map.add(normalMarker)
+        //             }
+        //         })
+
+        //         labelMarker.on('mouseout', () => {
+        //             this.map.remove(normalMarker)
+        //         })
+        //     }
+
+        //     // 一次性将海量点添加到图层
+        //     layer.add(markers)
+
+        //     // 普通点
+        //     var normalMarker = new window.AMap.Marker({
+        //         anchor: 'bottom-center',
+        //         offset: [0, -15],
+        //     })
+        // })
 
         window.AMap.plugin(["AMap.ToolBar", "AMap.Scale", "AMap.ControlBar", "AMap.HawkEye"], () => { // 异步加载插件
             let toolbar = new window.AMap.ToolBar({

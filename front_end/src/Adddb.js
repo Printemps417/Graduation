@@ -10,9 +10,10 @@ import { DatabaseContext } from './App'
 import { InboxOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import { message, Upload } from 'antd'
+
 const Adddb = () => {
     const [loadings, setLoadings] = useState([])
-    const { useritem, setUseritem } = useContext(DatabaseContext)
+    const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
     // console.log(useritem, setUseritem)
     const enterLoading = (index) => {
         setLoadings((prevLoadings) => {
@@ -55,6 +56,9 @@ const Adddb = () => {
                 console.log(response)
                 message.success(`${info.file.name} file uploaded successfully.`)
                 info.onSuccess(response.data, info.file) // 将状态设置为 "success"
+                setTimeout(() => {
+                    setDbname([...dbname, `${info.file.name}`])
+                }, 100)
             }).catch((error) => {
                 console.log(error)
                 message.error(`${info.file.name} file upload failed.`)
