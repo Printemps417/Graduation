@@ -3,7 +3,6 @@ import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import MapComponent from './MapContainer'
-import Heatmap from './Heatmap'
 import './Visualization.css'
 import { useContext } from 'react'
 import { DatabaseContext } from './App'
@@ -74,7 +73,6 @@ const Visualization = () => {
                         </Sider>
                         {/* <div style={{ minHeight: "500px", justifyContent: "center", position: "relative" }} id="map"></div> */}
                         <MapComponent></MapComponent>
-                        {/* <Heatmap /> */}
                         {/* 高德地图 */}
                     </Layout>
                 </Content>

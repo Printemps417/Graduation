@@ -23,9 +23,8 @@ public class FileUploadController {
     public String dbname=null;
     @ApiOperation("此接口用于上传用户文件")
     @RequestMapping(value = "/upload/**",method = RequestMethod.POST)
-    public String upload(String nickname,MultipartFile userFile, HttpServletRequest request) throws IOException{
+    public String upload(MultipartFile userFile, HttpServletRequest request) throws IOException{
 //        通过request获得上下文对象（服务器），通过上下文获得路径（动态获取）
-        System.out.println(nickname);
         System.out.println(userFile.getOriginalFilename());
 //        取文件的原始名称
         System.out.println(userFile.getContentType());
@@ -35,8 +34,15 @@ public class FileUploadController {
         System.out.println(path);
 //        打印动态路径
         saveFile(userFile,path);//将数据存储到服务器
-        inputFile(this.file_path,this.dbname);
+//        inputFile(this.file_path,this.dbname);
         return "UPLOAD SUCCESSFULLY!";
+    }
+
+    @ApiOperation("此接口用于向数据库导入用户文件")
+    @RequestMapping(value = "/input/**",method = RequestMethod.POST)
+    public String input(HttpServletRequest request) throws IOException{
+        inputFile(this.file_path,this.dbname);
+        return "INPUT SUCCESSFULLY!";
     }
 
     public void saveFile(MultipartFile userFile, String path) throws IOException{

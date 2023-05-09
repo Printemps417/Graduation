@@ -54,17 +54,6 @@ const Data = () => {
     })
     return (
         <Layout>
-            <Breadcrumb
-                style={{
-                    margin: '16px 0',
-                    marginLeft: '4%'
-                }}
-            >
-                <Breadcrumb.Item>Data</Breadcrumb.Item>
-                <Breadcrumb.Item>User</Breadcrumb.Item>
-            </Breadcrumb>
-
-
             <Content
                 style={{
                     padding: '0 50px',

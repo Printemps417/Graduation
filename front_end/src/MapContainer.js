@@ -14,98 +14,66 @@ class MapComponent extends Component {
     }
     // 2.dom渲染成功后进行map对象的创建
     componentDidMount () {
-        AMapLoader.load({
-            key: '2109b1cf6320763f85398e3a305f34c1', //需要设置您申请的key
-            securityJsCode: "6253b21ba2418ff654d06778cc04ab38",
-            version: "2.0",
-            plugins: ['AMap.ToolBar', 'AMap.Driving'],
-            AMapUI: {
-                version: "1.1",
-                plugins: [],
-
-            },
-            Loca: {
-                version: "2.0.0"
-            },
-        }).then((AMap) => {
-            this.map = new AMap.Map("mapcontainer", {
-                viewMode: "3D",
-                zoom: 11,
-                zooms: [2, 22],
-                center: [116.397428, 39.90923]  //初始化地图中心点
-            })
-            let positionArr = [
-                [113.357224, 34.977186],
-                [114.555528, 37.727903],
-                [112.106257, 36.962733],
-                [109.830097, 31.859027],
-                [116.449181, 39.986142],
-            ]
-            for (let item of positionArr) {
-                let marker = new AMap.Marker({
-                    position: [item[0], item[1]],
-                })
-                this.map.add(marker)
-            }
-            // const traffic = new AMap.TileLayer.Traffic({
-            //     'autoRefresh': true,     //是否自动刷新，默认为false
-            //     'interval': 180,         //刷新间隔，默认180s
-            // })
-
-            // this.map.add(traffic) //通过add方法添加图层
-
-            // let toolbar = new AMap.ToolBar({
-            //     visible: true,
-            //     position: {
-            //         top: '60px',
-            //         right: '40px'
-            //     }
-            // })
-
-            AMap.plugin(["AMap.ToolBar", "AMap.Scale", "AMap.ControlBar", "AMap.HawkEye"], () => { // 异步加载插件
-                let toolbar = new AMap.ToolBar({
-                    visible: true,
-                    position: {
-                        top: '60px',
-                        right: '40px'
-                    }
-                }) // 缩放工具条实例化
-                let scale = new AMap.Scale()
-                let controlBar = new AMap.ControlBar()
-                let overView = new AMap.HawkEye()
-
-                this.map.addControl(toolbar)
-                this.map.addControl(overView)
-                this.map.addControl(controlBar)
-                this.map.addControl(scale)
-            })
-            // toolbar.hide()
-
-            // axios.get('https://gw.alipayobjects.com/os/bmw-prod/d6da7ac1-8b4f-4a55-93ea-e81aa08f0cf3.json')
-            //     .then(response => {
-            //         // 将数据保存到变量中
-            //         const jsonData = response.data
-            //         console.log(jsonData)
-            //         // 使用数据源创建 PolygonLayer 组件
-            //         const chinaPolygonLayer = new PolygonLayer({
-            //             source: jsonData,
-            //             color: 'name',
-            //             style: {
-            //                 color: [
-            //                     'rgb(239,243,255)',
-            //                     'rgb(189,215,231)',
-            //                     'rgb(107,174,214)',
-            //                     'rgb(49,130,189)',
-            //                     'rgb(8,81,156)'
-            //                 ]
-            //             }
-            //         })
-            //         this.map.addLayer(chinaPolygonLayer)
-            //     })
-        }).catch(e => {
-            console.log('地图加载异常！')
-            console.log(e)
+        this.map = new window.AMap.Map("mapcontainer", {
+            viewMode: "3D",
+            zoom: 11,
+            zooms: [2, 22],
+            center: [116.397428, 39.90923]  //初始化地图中心点
         })
+        let positionArr = [
+            [113.357224, 34.977186],
+            [114.555528, 37.727903],
+            [112.106257, 36.962733],
+            [109.830097, 31.859027],
+            [116.449181, 39.986142],
+        ]
+        for (let item of positionArr) {
+            let marker = new window.AMap.Marker({
+                position: [item[0], item[1]],
+            })
+            this.map.add(marker)
+        }
+
+        window.AMap.plugin(["AMap.ToolBar", "AMap.Scale", "AMap.ControlBar", "AMap.HawkEye"], () => { // 异步加载插件
+            let toolbar = new window.AMap.ToolBar({
+                visible: true,
+                position: {
+                    top: '60px',
+                    right: '40px'
+                }
+            }) // 缩放工具条实例化
+            let scale = new window.AMap.Scale()
+            let controlBar = new window.AMap.ControlBar()
+            let overView = new window.AMap.HawkEye()
+
+            this.map.addControl(toolbar)
+            this.map.addControl(overView)
+            this.map.addControl(controlBar)
+            this.map.addControl(scale)
+        })
+        // toolbar.hide()
+
+        // axios.get('https://gw.alipayobjects.com/os/bmw-prod/d6da7ac1-8b4f-4a55-93ea-e81aa08f0cf3.json')
+        //     .then(response => {
+        //         // 将数据保存到变量中
+        //         const jsonData = response.data
+        //         console.log(jsonData)
+        //         // 使用数据源创建 PolygonLayer 组件
+        //         const chinaPolygonLayer = new PolygonLayer({
+        //             source: jsonData,
+        //             color: 'name',
+        //             style: {
+        //                 color: [
+        //                     'rgb(239,243,255)',
+        //                     'rgb(189,215,231)',
+        //                     'rgb(107,174,214)',
+        //                     'rgb(49,130,189)',
+        //                     'rgb(8,81,156)'
+        //                 ]
+        //             }
+        //         })
+        //         this.map.addLayer(chinaPolygonLayer)
+        //     })
     }
     render () {
         // 1.创建地图容器
