@@ -2,24 +2,13 @@ import React, { Component } from 'react'
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
-import MapComponent from './MapContainer'
 import './Visualization.css'
 import { useContext } from 'react'
 import { DatabaseContext } from './App'
-import { Scene } from '@antv/l7'
-import { GaodeMap } from '@antv/l7-maps'
+import AntMap from './AntMap'
 
 const { Header, Content, Footer, Sider } = Layout
 const Visualization = () => {
-    // const scene = new Scene({
-    //     id: 'map',
-    //     map: new GaodeMap({
-    //         pitch: 35.210526315789465,
-    //         style: 'dark',
-    //         center: [104.288144, 31.239692],
-    //         zoom: 4.4
-    //     })
-    // })
     const {
         token: { colorBgContainer },
     } = theme.useToken()
@@ -30,12 +19,12 @@ const Visualization = () => {
             key: `${key}`,
             icon: React.createElement(icon),
             label:
-                <p>Database{key}</p>,
+                <p>图层{key}</p>,
             children: new Array(4).fill(null).map((_, j) => {
                 const subKey = index * 4 + j + 1
                 return {
                     key: subKey,
-                    label: `option${subKey}`,
+                    label: `option-${subKey}`,
                 }
             }),
         }
@@ -71,8 +60,7 @@ const Visualization = () => {
                                 items={items2}
                             />
                         </Sider>
-                        {/* <div style={{ minHeight: "500px", justifyContent: "center", position: "relative" }} id="map"></div> */}
-                        <MapComponent></MapComponent>
+                        <AntMap></AntMap>
                         {/* 高德地图 */}
                     </Layout>
                 </Content>

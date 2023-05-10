@@ -9,17 +9,6 @@ import { useContext } from 'react'
 import { DatabaseContext } from './App'
 const { Header, Content, Footer, Sider } = Layout
 
-const Left_menu = ({ key, items2 }) => {
-    // 定义渲染格式
-    if (key == items2.length) {
-        return (
-            <Button type="primary">新建数据库</Button>
-        )
-    }
-    else {
-        return `Database${key}`
-    }
-}
 const Data = () => {
     const {
         token: { colorBgContainer },
