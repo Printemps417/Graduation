@@ -6,6 +6,7 @@ import { Collapse } from 'antd'
 import { useEffect, useState } from 'react'
 import { Space, Table, Tag } from 'antd'
 import axios from 'axios'
+import './Database.css'
 
 const { Panel } = Collapse
 const { Column, ColumnGroup } = Table
@@ -28,7 +29,7 @@ const Database = () => {
                 setTablename(data.slice(0, 50))
                 console.log(tablename[0])
                 setCurtable(tablename[0])
-                // 为了页面响应速度，只展示前100项内容
+                // 为了页面响应速度，只展示前50项内容
             } catch (error) {
                 console.error(error)
                 const tablename = ["Error! Please check your network connection!"]
@@ -46,9 +47,10 @@ const Database = () => {
                 console.log(`http://localhost:8088/gettabledata?databasename=${database}&tablename=${curtable}`)
                 const data = response.data
                 setTabledata([])
+                // 防乱码
                 setTabledata(data.slice(0, 500))
                 curtable = data[0]
-                // 为了页面响应速度，只展示前100项内容
+                // 为了页面响应速度，只展示前500项内容
             } catch (error) {
                 console.error(error)
                 const tablename = ["Error! Please check your network connection!"]
