@@ -14,30 +14,51 @@ const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
 // 用于模块间传输数据
-const menu = ['数据集导入与处理', 'GPS数据可视化', '平台使用文档', '样例数据下载', 'StackOverflow', 'Aboutme']
-const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data', 'Disscussion', 'Aboutme'].map((key, index) => ({
-  key,
-  label:
-    <Link
-      style={{
-        margin: 0
-      }}
-      onClick={() => {
-        console.log(`${key}被点击了`)
-      }}
-      to={`/${key}`}
-    >
-      <p style={{
-        margin: 0,
-        marginRight: "50px",
-        color: "#fff",
-        // width: "100px",
-        // fontWeight: "bold"
-      }}>
-        {menu[index]}
-      </p>
-    </Link>
-}))
+const menu = ['image', '数据集导入与处理', 'GPS数据可视化', '平台使用文档', '样例数据下载', 'StackOverflow', 'Aboutme']
+const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data', 'Disscussion', 'Aboutme'].map((key, index) => (
+  index == 0 ?
+    {
+      key,
+      label: <img
+        src="/logo192.png"
+        style={{
+          margin: 0,
+          marginTop: "15px",
+          padding: 0,
+          border: 0,
+          outline: 0,
+          justifySelf: "center",
+          alignSelf: 'center',
+          marginRight: "20px",
+          marginLeft: "20px",
+          width: "20px",
+          // objectFit: "contain"
+        }}
+      />
+    } :
+    {
+      key,
+      label:
+        <Link
+          style={{
+            margin: 0
+          }}
+          onClick={() => {
+            console.log(`${key}被点击了`)
+          }}
+          to={`/${key}`}
+        >
+          <p style={{
+            margin: 0,
+            marginRight: "50px",
+            color: "#fff",
+            // width: "100px",
+            // fontWeight: "bold"
+          }}>
+            {menu[index]}
+          </p>
+        </Link>
+    }))
 
 const App = () => {
   const {
@@ -72,6 +93,9 @@ const App = () => {
             <div className="logo" />
             <Menu theme="dark"
               mode="horizontal"
+              // style={{
+              //   height: "30px"
+              // }}
               defaultSelectedKeys={['2']}
               items={items1}
               onClick={() => {
