@@ -104,16 +104,39 @@ public class FileUploadController {
 //    Spring功能，将实例化的对象注入userMapper
 //增删改查
     @ApiOperation("此接口用于查询全部数据")
-    @GetMapping("/webdata")
+    @GetMapping("/gettabledata")
     public List query(String databasename,String tablename){
         this.dbname=databasename;
 //        更新查询数据库名
-        System.out.println("用户查询数据库为"+databasename);
+        System.out.println("用户查询数据表为"+tablename);
         List<WebData> list= userMapper.getall(databasename,tablename);
         System.out.println(list);
         return list;
     }
     //    查询用户信息
+
+    @ApiOperation("此接口用于查询库中全部表")
+    @GetMapping("/gettablename")
+    public List queryname(String databasename){
+        this.dbname=databasename;
+//        更新查询数据库名
+        System.out.println("用户查询数据库为"+databasename);
+        List<String> list= userMapper.gettablename(databasename);
+        System.out.println(list);
+        return list;
+    }
+//    查询库内表名
+
+    @ApiOperation("此接口用于查询库中全部表")
+    @GetMapping("/getdbname")
+    public List querydbname(){
+        System.out.println("用户查询数据库");
+        List<String> list= userMapper.getdbname();
+        System.out.println(list);
+        return list;
+    }
+//    查询数据库名列表
+
     @ApiOperation("此接口添加数据")
     @PostMapping("/webdata")
     public String AddData(String dbname,WebData web){

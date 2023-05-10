@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import './MapContainer.css'
 import { Helmet } from 'react-helmet'
+// import { Scene, PointLayer } from '@antv/l7'
+// import { GaodeMap } from '@antv/l7-maps' // 默认引入高德 2.x 版本 2.11.0 版本开始默认升级为v2
 import axios from 'axios'
 class MapComponent extends Component {
     constructor() {
@@ -122,6 +124,12 @@ class MapComponent extends Component {
         //         })
         //         this.map.addLayer(chinaPolygonLayer)
         //     })
+        // const scene = new Scene({
+        //     id: 'smap',
+        //     map: new GaodeMap({
+        //         mapInstance: this.map,
+        //     }),
+        // })
     }
     render () {
         // 1.创建地图容器
@@ -134,6 +142,7 @@ class MapComponent extends Component {
                     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
                 </Helmet>
                 <div id="mapcontainer" className="map" style={{ height: '100%' }} />
+                {/* <div id="smap" className="map" style={{ height: '100%' }} /> */}
             </div>
         )
     }

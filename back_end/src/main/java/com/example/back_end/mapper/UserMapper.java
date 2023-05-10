@@ -14,6 +14,12 @@ public interface UserMapper {
     public List<WebData> getall(String dbname,String tablename);
 //    查询用户信息
 
+    @Select("SELECT table_name FROM information_schema.tables WHERE table_schema = '${dbname}';")
+    public List<String> gettablename(String dbname);
+
+    @Select("SHOW DATABASES LIKE \"%timedata%\";")
+    public List<String> getdbname();
+
     @Insert("insert into ${dbname} values(#{id},#{name},#{url},#{alexa},#{sal},#{country})")
     public int add(WebData web);
 //    返回值代表插入几条记录

@@ -83,7 +83,10 @@ const Adddb = () => {
         <>
             <Space direction="vertical">
                 <Space wrap>
-                    <div style={{ textAlign: 'center' }}>
+                    <div style={{
+                        textAlign: 'center',
+                        innerWidth: '100%'
+                    }}>
                         <Dragger {...props}>
                             <p className="ant-upload-drag-icon">
                                 <InboxOutlined />

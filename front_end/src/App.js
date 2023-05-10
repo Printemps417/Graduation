@@ -8,11 +8,13 @@ import Visualization from './Visualization'
 import React from 'react'
 import Database from './Database'
 import Adddb from './Adddb'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
-// 用于传输数据
+// 用于模块间传输数据
+
 const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data'].map((key) => ({
   key,
   label:
@@ -41,6 +43,24 @@ const App = () => {
   } = theme.useToken()
   const [useritem, setUseritem] = useState([])
   const [dbname, setDbname] = useState([])
+  // useState必须在顶层使用
+  useEffect(() => {
+    async function fetchData () {
+      try {
+        const response = await axios.get('http://localhost:8088/getdbname')
+        const dbNames = response.data
+        const icons = Array.from({ length: dbNames.length }).fill(UserOutlined)
+        setUseritem(icons)
+        setDbname(dbNames)
+      } catch (error) {
+        console.error(error)
+        setUseritem([UserOutlined])
+        setDbname(["error request"])
+      }
+    }
+    fetchData()
+  }, [])
+  // []代表useeffect在首次渲染时才会执行
   return (
     <DatabaseContext.Provider value={{ useritem, setUseritem, dbname, setDbname }}>
       {/* Provider要包裹上层组件 */}
@@ -61,7 +81,7 @@ const App = () => {
             {/* 一级路由组件渲染位置 */}
             <Route path="/" element={<Data />}></Route>
             <Route path="/Data" element={<Data />}>
-              <Route path="/Data/" element={<Database />}></Route>
+              <Route path="/Data/" element={<Adddb />}></Route>
               <Route path="/Data/adddb" element={<Adddb />}></Route>
               <Route path="/Data/database" element={<Database />}></Route>
             </Route>
