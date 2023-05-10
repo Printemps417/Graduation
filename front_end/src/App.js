@@ -14,8 +14,8 @@ const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
 // 用于模块间传输数据
-
-const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data'].map((key) => ({
+const menu = ['数据集导入与处理', 'GPS数据可视化', '平台使用文档', '样例数据下载', 'StackOverflow', 'Aboutme']
+const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data', 'Disscussion', 'Aboutme'].map((key, index) => ({
   key,
   label:
     <Link
@@ -29,10 +29,12 @@ const items1 = ['Data', 'Visualization', 'Introduction', 'Sample Data'].map((key
     >
       <p style={{
         margin: 0,
+        marginRight: "50px",
         color: "#fff",
+        // width: "100px",
         // fontWeight: "bold"
       }}>
-        {key}
+        {menu[index]}
       </p>
     </Link>
 }))

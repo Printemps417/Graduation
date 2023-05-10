@@ -57,7 +57,7 @@ const Adddb = () => {
                 message.success(`${info.file.name} file uploaded successfully.`)
                 info.onSuccess(response.data, info.file) // 将状态设置为 "success"
                 setTimeout(() => {
-                    setDbname([...dbname, `${info.file.name}`])
+                    setDbname([...dbname, `${info.file.name.slice(0, -4)}`])
                 }, 100)
             }).catch((error) => {
                 console.log(error)

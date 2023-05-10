@@ -103,7 +103,7 @@ public class FileUploadController {
     private UserMapper userMapper;
 //    Spring功能，将实例化的对象注入userMapper
 //增删改查
-    @ApiOperation("此接口用于查询全部数据")
+    @ApiOperation("此接口用于查询某一数据表内容")
     @GetMapping("/gettabledata")
     public List query(String databasename,String tablename){
         this.dbname=databasename;
@@ -115,7 +115,7 @@ public class FileUploadController {
     }
     //    查询用户信息
 
-    @ApiOperation("此接口用于查询库中全部表")
+    @ApiOperation("此接口用于查询库中全部表名称")
     @GetMapping("/gettablename")
     public List queryname(String databasename){
         this.dbname=databasename;
@@ -127,7 +127,7 @@ public class FileUploadController {
     }
 //    查询库内表名
 
-    @ApiOperation("此接口用于查询库中全部表")
+    @ApiOperation("此接口用于查询数据库列表")
     @GetMapping("/getdbname")
     public List querydbname(){
         System.out.println("用户查询数据库");
