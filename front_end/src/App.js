@@ -10,6 +10,7 @@ import Database from './Database'
 import Adddb from './Adddb'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import LoginForm from './LoginForm'
 const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
@@ -24,9 +25,6 @@ const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data',
         style={{
           margin: 0,
           marginTop: "15px",
-          padding: 0,
-          border: 0,
-          outline: 0,
           justifySelf: "center",
           alignSelf: 'center',
           marginRight: "20px",
@@ -50,8 +48,9 @@ const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data',
         >
           <p style={{
             margin: 0,
-            marginRight: "50px",
-            color: "#fff",
+            marginRight: "20px",
+            marginLeft: "20px",
+            color: "ffe",
             // width: "100px",
             // fontWeight: "bold"
           }}>
@@ -107,7 +106,7 @@ const App = () => {
           </Header>
           <Routes>
             {/* 一级路由组件渲染位置 */}
-            <Route path="/" element={<Data />}></Route>
+            <Route path="/" element={<LoginForm />}></Route>
             <Route path="/Data" element={<Data />}>
               <Route path="/Data/" element={<Adddb />}></Route>
               <Route path="/Data/adddb" element={<Adddb />}></Route>
