@@ -93,9 +93,11 @@ const App = () => {
             <div className="logo" />
             <Menu theme="dark"
               mode="horizontal"
-              // style={{
-              //   height: "30px"
-              // }}
+              style={{
+                margin: 0,
+                // height: "30px"
+                backgroundColor: "deepgray"
+              }}
               defaultSelectedKeys={['2']}
               items={items1}
               onClick={() => {

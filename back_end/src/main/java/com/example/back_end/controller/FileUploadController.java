@@ -3,6 +3,7 @@ package com.example.back_end.controller;
 import com.example.back_end.entity.WebData;
 import com.example.back_end.mapper.UserMapper;
 import io.swagger.annotations.ApiOperation;
+import org.python.antlr.ast.Str;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-
+import java.io.Console;
 
 @RestController
 @CrossOrigin
@@ -21,6 +22,7 @@ public class FileUploadController {
 //    @PostMapping("/upload")
     public String file_path=null;
     public String dbname=null;
+    public String terminalout="后端Terminal信息：   正在启动数据库导入程序……";
     @ApiOperation("此接口用于上传用户文件")
     @RequestMapping(value = "/upload/**",method = RequestMethod.POST)
     public String upload(MultipartFile userFile, HttpServletRequest request) throws IOException{
@@ -74,6 +76,7 @@ public class FileUploadController {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         System.out.println(line);
+                        this.terminalout=this.terminalout+"   ||   "+line;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -113,7 +116,7 @@ public class FileUploadController {
         System.out.println(list);
         return list;
     }
-    //    查询用户信息
+    //    根据数据库名和数据表名查询数据
 
     @ApiOperation("此接口用于查询库中全部表名称")
     @GetMapping("/gettablename")
@@ -136,6 +139,46 @@ public class FileUploadController {
         return list;
     }
 //    查询数据库名列表
+public static String readTerminal() {
+    try {
+        // 创建进程构造器并设置命令
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("cmd", "/c", "type con");
+
+        // 启动进程并获取进程输出流
+        Process process = processBuilder.start();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+        // 读取进程输出并存储到字符串中
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append(System.lineSeparator());
+        }
+
+        // 等待进程执行完毕
+        int exitCode = process.waitFor();
+        if (exitCode != 0) {
+            throw new RuntimeException("命令执行失败");
+        }
+
+        // 返回进程输出字符串
+        return stringBuilder.toString();
+    } catch (IOException | InterruptedException e) {
+        throw new RuntimeException(e);
+    }
+}
+//    读取控制台信息
+
+    @ApiOperation("此接口用于查询终端信息")
+    @GetMapping("/getTerminal")
+    public String queryTerminal(){
+//        System.out.println("接收到终端查询请求");
+//        String res=readTerminal();
+        System.out.println("Terminal Updating……");
+        return this.terminalout;
+    }
 
     @ApiOperation("此接口添加数据")
     @PostMapping("/webdata")

@@ -3,7 +3,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
 # Press the green button in the gutter to run the script.
-print("Successgully use Python!")
+print("Successfully use Python!")
 dbname = sys.argv[1]
 file_path = sys.argv[2]
 engine = create_engine("mysql+pymysql://root:123456@localhost:3306/test?charset=utf8")
