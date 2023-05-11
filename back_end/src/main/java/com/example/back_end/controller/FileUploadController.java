@@ -22,7 +22,7 @@ public class FileUploadController {
 //    @PostMapping("/upload")
     public String file_path=null;
     public String dbname=null;
-    public String terminalout="后端Terminal信息：   正在启动数据库导入程序……";
+    public String terminalout="后端Terminal信息： \n  ……";
     @ApiOperation("此接口用于上传用户文件")
     @RequestMapping(value = "/upload/**",method = RequestMethod.POST)
     public String upload(MultipartFile userFile, HttpServletRequest request) throws IOException{
@@ -68,6 +68,7 @@ public class FileUploadController {
             String[] args1 = new String[] { "python", "E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static\\SqlInput.py", dbname, path };
             Process proc = Runtime.getRuntime().exec(args1);// 执行py文件
             proc.getOutputStream().flush();
+            this.terminalout="后端Terminal信息：正在启动数据库导入程序……";
             BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 //            reader监听python输出缓冲区数据
 //            创建一个新的线程来读取Python脚本的输出
@@ -76,7 +77,7 @@ public class FileUploadController {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         System.out.println(line);
-                        this.terminalout=this.terminalout+"   ||   "+line;
+                        this.terminalout=this.terminalout+"   |...Done...|   "+line;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -9,7 +9,7 @@ import styles from './Adddb.module.css'
 import { DatabaseContext } from './App'
 import { InboxOutlined } from '@ant-design/icons'
 import axios from 'axios'
-import { message, Upload, Alert, Modal } from 'antd'
+import { message, Upload, Alert, Modal, Tag } from 'antd'
 
 const Adddb = () => {
     const [loadings, setLoadings] = useState([])
