@@ -47,7 +47,7 @@ const Database = () => {
                 console.log(`http://localhost:8088/gettabledata?databasename=${database}&tablename=${curtable}`)
                 const data = response.data
                 setTabledata([])
-                // 防乱码
+                // 重置防乱码
                 setTabledata(data.slice(0, 500))
                 curtable = data[0]
                 // 为了页面响应速度，只展示前500项内容
@@ -66,7 +66,18 @@ const Database = () => {
     // console.log('进入database')
     return (
         <>
-            <h1>DATABASE:{database}</h1>
+            <Tag
+                color="blue"
+                style={{
+                    marginBottom: '20px',
+                    height: '45px',
+                    fontSize: '25px',
+                }}><p
+                    style={{
+                        marginTop: '10px',
+                    }}>
+                    DATABASE:{database}
+                </p></Tag>
             <Collapse accordion>
                 {tablename.map((name, index) => (
                     <Panel
@@ -75,7 +86,13 @@ const Database = () => {
                         onClick={() => {
                             setCurtable(name)
                             console.log(name)
-                        }}>
+                        }}
+                        style={{
+                            // backgroundColor: '#fff', // 设置背景色为白色，这个属性会将CSS的覆盖！
+                            transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
+                        }}
+                        className="hoverable-panel" // 添加自定义 class 名称
+                    >
                         <Table dataSource={tabledata}>
                             <Column title="车辆编号" dataIndex="id" key="id" />
                             <Column title="时间" dataIndex="time" key="time" />

@@ -23,6 +23,7 @@ const Data = () => {
             label:
                 <Link
                     to={key > useritem.length ? `/Data/adddb` : `/Data/database?database=${dbname[index]}`}
+                    // 点击时会将数据库的名称通过url传递给子组件
                     onClick={() => {
                         if (key > useritem.length) {
                             console.log('添加数据库被点击')
