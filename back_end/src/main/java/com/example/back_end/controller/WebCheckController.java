@@ -28,7 +28,7 @@ public class WebCheckController {
     @GetMapping("/userdata")
     public String query_by_username(String username){
         ObjectMapper mapper = new ObjectMapper();
-        String FilePath=this.StaticPath+"\\admin.json";
+        String FilePath=this.StaticPath+"\\"+username+".json";
         User user;
         try {
             user = mapper.readValue(new File(FilePath), User.class);
@@ -62,7 +62,7 @@ public class WebCheckController {
     public String update_userinfo(String account,
                                   String password){
         ObjectMapper mapper = new ObjectMapper();
-        String FilePath=this.StaticPath+"\\admin.json";
+        String FilePath=this.StaticPath+"\\"+account+".json";
         User user;
         try {
             user = mapper.readValue(new File(FilePath), User.class);
@@ -95,10 +95,11 @@ public class WebCheckController {
 
     @ApiOperation("此接口用于查询用户信息")
     @GetMapping("/update_userdata")
-    public String update_userdata(List<String> action,
+    public String update_userdata(String account,
+                                  List<String> action,
                                   JSONObject datas){
         ObjectMapper mapper = new ObjectMapper();
-        String FilePath=this.StaticPath+"\\admin.json";
+        String FilePath=this.StaticPath+"\\"+account+".json";
         User user;
         try {
             user = mapper.readValue(new File(FilePath), User.class);
