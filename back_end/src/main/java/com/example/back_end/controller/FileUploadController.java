@@ -65,7 +65,11 @@ public class FileUploadController {
 
     public void inputFile(String path,String dbname) throws IOException{
         try {
-            String[] args1 = new String[] { "python", "E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static\\SqlInput.py", dbname, path };
+            String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static";
+//            资源路径
+            String FilePath=StaticPath+"\\SqlInput.py";
+            String[] args1 = new String[] { "python", FilePath, dbname, path };
+//            String[] args1 = new String[] { "python", "E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static\\SqlInput.py", dbname, path };
             Process proc = Runtime.getRuntime().exec(args1);// 执行py文件
             proc.getOutputStream().flush();
             this.terminalout="后端Terminal信息：正在启动数据库导入程序……";
