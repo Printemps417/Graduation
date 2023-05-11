@@ -94,8 +94,10 @@ public class FileUploadController {
             int exitCode = proc.waitFor();
             if (exitCode == 0) {
                 System.out.println("Python脚本执行成功");
+                this.terminalout="后端Terminal信息：  数据库导入程序结束，数据导入成功！";
             } else {
                 System.out.println("Python脚本执行失败");
+                this.terminalout="后端Terminal信息：  程序运行失败，请检查数据格式规范";
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -176,7 +178,7 @@ public static String readTerminal() {
     public String queryTerminal(){
 //        System.out.println("接收到终端查询请求");
 //        String res=readTerminal();
-        System.out.println("Terminal Updating……");
+//        System.out.println("Terminal Updating……");
         return this.terminalout;
     }
 

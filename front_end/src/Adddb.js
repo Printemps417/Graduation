@@ -17,6 +17,9 @@ const Adddb = () => {
     const [endproc, setEndproc] = useState("This is the terminal stdout in the back_end")
     const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
     // console.log(useritem, setUseritem)
+    axios.get('http://localhost:8088/getTerminal').then((response) => {
+        setEndproc(response.data)
+    })
     const enterLoading = (index) => {
         setLoadings((prevLoadings) => {
             const newLoadings = [...prevLoadings]
