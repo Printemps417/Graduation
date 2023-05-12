@@ -187,34 +187,6 @@ public static String readTerminal() {
         return this.terminalout;
     }
 
-    @ApiOperation("此接口添加数据")
-    @PostMapping("/webdata")
-    public String AddData(String dbname,WebData web){
-        System.out.println(web);
-        int i=userMapper.add(web);
-        if(i>0) return "添加成功！";
-        else return "插入失败！";
-    }
-//    添加用户信息
-
-    @ApiOperation("此接口用于根据ID更新数据")
-    @PutMapping("/webdata")
-    public String Updatainfo(String dbname,WebData web){
-        System.out.println("更新车辆编号为："+web.getId());
-        int i=userMapper.updatedata(web);
-        if(i>0) return "更新成功！";
-        else return "更新失败！";
-    }
-    //    更新用户信息，传入类
-
-    @ApiOperation("此接口用于根据ID删除数据")
-    @DeleteMapping("/webdata")
-    public String DelData(String dbname,int id){
-        System.out.println("删除网站id为："+id);
-        int i=userMapper.deletedata(id);
-        if(i>0) return "删除成功！";
-        else return "删除失败！";
-    }
 //    删除用户信息
 
     @ApiOperation("此接口用于根据ID查询数据")

@@ -1,6 +1,0 @@
-{
-  "account": "admin",
-  "password": "123456",
-  "actions":["string1", "string2", "string3"],
-  "datas": {}
-}

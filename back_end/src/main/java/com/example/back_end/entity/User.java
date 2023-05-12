@@ -8,19 +8,34 @@ import org.json.JSONObject;
 public class User {
     private String account;
     private String password;
+
+    private List<String> database;
     private List<String> action;
-    private JSONObject datas;
+    private List<String> datas;
+    private List<String> layers;
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public User(@JsonProperty("account") String account,
                 @JsonProperty("password") String password,
+                @JsonProperty("database") List<String> database,
                 @JsonProperty("actions") List<String> action,
-                @JsonProperty("datas") JSONObject datas) {
+                @JsonProperty("datas") List<String> datas,
+                @JsonProperty("layers") List<String> layers) {
         this.account = account;
         this.password = password;
+        this.database=database;
         this.action = action;
         this.datas = datas;
+        this.layers=layers;
     }
 //    构造函数，用做将json文件赋值给user
+
+    public void setDatabase(List<String> database) {
+        this.database = database;
+    }
+
+    public List<String> getDatabase() {
+        return database;
+    }
 
     public void setAccount(String account) {
         this.account = account;
@@ -46,11 +61,19 @@ public class User {
         return action;
     }
 
-    public JSONObject getDatas() {
+    public void setLayers(List<String> layers) {
+        this.layers = layers;
+    }
+
+    public List<String> getLayers() {
+        return layers;
+    }
+
+    public List<String> getDatas() {
         return datas;
     }
 
-    public void setDatas(JSONObject datas) {
+    public void setDatas(List<String> datas) {
         this.datas = datas;
     }
 
@@ -59,8 +82,10 @@ public class User {
         return "User{" +
                 "account='" + account + '\'' +
                 ", password='" + password + '\'' +
+                ", database=" + database +
                 ", action=" + action +
                 ", datas=" + datas +
+                ", layers=" + layers +
                 '}';
     }
 }

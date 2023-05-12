@@ -6,6 +6,7 @@ import { Collapse } from 'antd'
 import { useEffect, useState } from 'react'
 import { Space, Table, Tag } from 'antd'
 import axios from 'axios'
+import { setToken, getToken, removeToken } from '../tools'
 import '../styles/Database.css'
 
 const { Panel } = Collapse
@@ -76,7 +77,7 @@ const Database = () => {
                     style={{
                         marginTop: '10px',
                     }}>
-                    DATABASE:{database}
+                    {getToken() == 'admin' ? "管理员视图——" : ""}DATABASE:{database}
                 </p></Tag>
             <Collapse accordion>
                 {tablename.map((name, index) => (

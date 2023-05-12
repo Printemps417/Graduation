@@ -10,7 +10,9 @@ const LoginForm = () => {
     const [error, setError] = useState(false)
     const [redirect, setRedirect] = useState(false)
     const token = getToken() || 'none'
-    console.log(token)
+
+    // 函数组件的函数体部分，每当函数组件进行渲染时都会执行
+    // 在用户已经登录或已经保存了登录信息的情况下，自动重定向到 /Data 页面，从而避免用户重复登录
     if (redirect || token != 'none') {
         if (redirect == false) {
             alert('您已登录！页面即将跳转')
@@ -25,7 +27,8 @@ const LoginForm = () => {
             const response = await axios.get(`http://localhost:8088/userdata?username=${username}`, {})
             console.log(response)
             const data = await response.data
-            console.log(data)
+            console.log('用户token：' + token)
+            console.log('用户数据：' + data)
             if (data.password === password) {
                 // 登录成功时设置token cookie，有效期为1天
                 setToken(username)

@@ -1,14 +1,16 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
-import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import { Routes, Route, Link, Outlet, Navigate } from 'react-router-dom'
 import { Button, Space } from 'antd'
 import React from 'react'
 import { useState } from 'react'
 import Adddb from './Adddb'
 import { useContext } from 'react'
 import { DatabaseContext } from '../App'
-const { Header, Content, Footer, Sider } = Layout
+import { setToken, getToken, removeToken } from '../tools'
+import { PoweroffOutlined } from '@ant-design/icons'
 
+const { Header, Content, Footer, Sider } = Layout
 const Data = () => {
     const {
         token: { colorBgContainer },
@@ -82,6 +84,12 @@ const Data = () => {
                     </Content>
                 </Layout>
             </Content>
+            <div style={{ position: 'fixed', left: '6%', bottom: '5%' }}>
+                <Button
+                    type="primary"
+                    icon={<PoweroffOutlined />}
+                    onClick={() => { window.location.reload() }}>刷新数据库</Button>
+            </div>
         </Layout>
 
     )

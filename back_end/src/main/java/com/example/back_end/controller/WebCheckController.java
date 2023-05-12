@@ -1,20 +1,14 @@
 package com.example.back_end.controller;
 
 import com.example.back_end.entity.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import org.json.JSONObject;
-import org.json.JSONArray;
-import org.json.JSONException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -23,7 +17,7 @@ import java.io.IOException;
 @CrossOrigin
 //精准配置跨域
 public class WebCheckController {
-    private String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static";
+    private String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\UserData";
     @ApiOperation("此接口用于查询用户信息")
     @GetMapping("/userdata")
     public String query_by_username(String username){
@@ -49,16 +43,31 @@ public class WebCheckController {
 
         // 将JSON字符串写回文件
         try {
-            FileUtils.writeStringToFile(new File("user.json"), json, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
         return json;
     }
+    @ApiOperation("此接口用于查询用户数据库")
+    @GetMapping("/userdata_db")
+    public List<String> db_by_username(String username){
+        ObjectMapper mapper = new ObjectMapper();
+        String FilePath=this.StaticPath+"\\"+username+".json";
+        User user;
+        try {
+            user = mapper.readValue(new File(FilePath), User.class);
+            System.out.println(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return user.getDatabase();
+    }
 
     @ApiOperation("此接口用于更改密码")
-    @GetMapping("/update_userinfo")
+    @PostMapping("/update_userinfo")
     public String update_userinfo(String account,
                                   String password){
         ObjectMapper mapper = new ObjectMapper();
@@ -85,7 +94,7 @@ public class WebCheckController {
 
         // 将JSON字符串写回文件
         try {
-            FileUtils.writeStringToFile(new File("user.json"), json, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return "更新密码失败！";
@@ -93,11 +102,12 @@ public class WebCheckController {
         return "更新密码成功！";
     }
 
-    @ApiOperation("此接口用于查询用户信息")
-    @GetMapping("/update_userdata")
+    @ApiOperation("此接口用于添加用户信息")
+    @PostMapping("/update_userdata")
     public String update_userdata(String account,
-                                  List<String> action,
-                                  JSONObject datas){
+                                  String action,
+                                  String data,
+                                  String layer){
         ObjectMapper mapper = new ObjectMapper();
         String FilePath=this.StaticPath+"\\"+account+".json";
         User user;
@@ -108,8 +118,22 @@ public class WebCheckController {
             e.printStackTrace();
             return "更新数据失败！";
         }
-        user.setAction(action);
-        user.setDatas(datas);
+//        Gson gson = new Gson();
+//        String datastr = gson.toJson(datas); // jsonObject 为要转换的 JSON 对象
+        List<String> oldactions=user.getAction();
+        List<String> olddatas=user.getDatas();
+        List<String> oldlayers=user.getLayers();
+        if(oldlayers.contains(layer)){
+            return "添加失败！该图层名已存在";
+//            必须保证图层名互异，用于管理
+        }
+        oldactions.add(action);
+        olddatas.add(data);
+        oldlayers.add(layer);
+        System.out.println(oldactions);
+        user.setAction(oldactions);
+        user.setDatas(olddatas);
+        user.setLayers(oldlayers);
         // 将User对象序列化为JSON字符串
         String json;
         try {
@@ -121,11 +145,135 @@ public class WebCheckController {
 
         // 将JSON字符串写回文件
         try {
-            FileUtils.writeStringToFile(new File("user.json"), json, StandardCharsets.UTF_8);
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return "更新数据失败！";
         }
         return "更新数据成功！";
+    }
+    @ApiOperation("此接口用于根据图层名删除数据")
+    @DeleteMapping("/delete_userdata")
+    public String delete_userdata(String account,
+                                  String layer){
+        ObjectMapper mapper = new ObjectMapper();
+        String FilePath=this.StaticPath+"\\"+account+".json";
+        User user;
+        try {
+            user = mapper.readValue(new File(FilePath), User.class);
+            System.out.println(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "更新删除失败！";
+        }
+//        Gson gson = new Gson();
+//        String datastr = gson.toJson(datas); // jsonObject 为要转换的 JSON 对象
+        List<String> oldactions=user.getAction();
+        List<String> olddatas=user.getDatas();
+        List<String> oldlayers=user.getLayers();
+
+        int index = user.getLayers().indexOf(layer);
+        if(index >= 0) {
+            oldactions.remove(index);
+            olddatas.remove(index);
+            oldlayers.remove(index);
+        }
+        user.setAction(oldactions);
+        user.setDatas(olddatas);
+        user.setLayers(oldlayers);
+        // 将User对象序列化为JSON字符串
+        String json;
+        try {
+            json = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "删除数据失败！";
+        }
+
+        // 将JSON字符串写回文件
+        try {
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "删除数据失败！";
+        }
+        return "删除数据成功！";
+    }
+    @ApiOperation("此接口用于添加用户数据库")
+    @PostMapping("/add_database")
+    public String add_database(String account,
+                                  String db){
+        ObjectMapper mapper = new ObjectMapper();
+        String FilePath=this.StaticPath+"\\"+account+".json";
+        User user;
+        try {
+            user = mapper.readValue(new File(FilePath), User.class);
+            System.out.println(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "添加数据库失败！";
+        }
+//        Gson gson = new Gson();
+//        String datastr = gson.toJson(datas); // jsonObject 为要转换的 JSON 对象
+        List<String> olddb=user.getDatabase();
+        olddb.add(db);
+        System.out.println(olddb);
+        user.setAction(olddb);
+        // 将User对象序列化为JSON字符串
+        String json;
+        try {
+            json = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "添加数据库失败！";
+        }
+
+        // 将JSON字符串写回文件
+        try {
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "添加数据库失败！";
+        }
+        return "添加数据库成功！";
+    }
+    @ApiOperation("此接口用于删除用户数据库")
+    @DeleteMapping ("/del_database")
+    public String del_database(String account,
+                               String db){
+        ObjectMapper mapper = new ObjectMapper();
+        String FilePath=this.StaticPath+"\\"+account+".json";
+        User user;
+        try {
+            user = mapper.readValue(new File(FilePath), User.class);
+            System.out.println(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "删除数据库失败！";
+        }
+//        Gson gson = new Gson();
+//        String datastr = gson.toJson(datas); // jsonObject 为要转换的 JSON 对象
+        List<String> olddb=user.getDatabase();
+        int index=olddb.indexOf(db);
+        System.out.println(olddb);
+        olddb.remove(index);
+        user.setAction(olddb);
+        // 将User对象序列化为JSON字符串
+        String json;
+        try {
+            json = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "删除数据库失败！";
+        }
+
+        // 将JSON字符串写回文件
+        try {
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "删除数据库失败！";
+        }
+        return "删除数据库成功！";
     }
 }

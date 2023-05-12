@@ -1,6 +1,6 @@
 // 封装token存取操作
 
-const key = 'pc-key'
+const key = 'account'
 
 const setToken = (token) => {
     return window.localStorage.setItem(key, token)
