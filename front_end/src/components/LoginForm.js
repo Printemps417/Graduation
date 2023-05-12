@@ -14,11 +14,12 @@ const LoginForm = () => {
         // e.preventDefault()方法通常用于防止浏览器默认行为（比如提交表单或者打开链接）
         // 处理提交事件
         try {
-            const response = await axios.get(`http://localhost:8088/userdata?username=${username}`)
+            const response = await axios.get(`http://localhost:8088/userdata?username=${username}`, {})
             console.log(response)
             const data = await response.data
             console.log(data)
             if (data.password === password) {
+                // 登录成功时设置token cookie，有效期为1天
                 setRedirect(true)
                 alert('登录成功！')
                 // 登入成功时获得通行证

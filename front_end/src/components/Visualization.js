@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
-import './Visualization.css'
+import '../styles/Visualization.css'
 import { useContext } from 'react'
-import { DatabaseContext } from './App'
+import { DatabaseContext } from '../App'
 import AntMap from './AntMap'
 
 const { Header, Content, Footer, Sider } = Layout

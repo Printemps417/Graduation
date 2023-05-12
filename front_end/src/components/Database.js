@@ -1,12 +1,12 @@
 import { Breadcrumb } from "antd"
 import { useSearchParams } from "react-router-dom"
 import { useContext } from 'react'
-import { DatabaseContext } from './App'
+import { DatabaseContext } from '../App'
 import { Collapse } from 'antd'
 import { useEffect, useState } from 'react'
 import { Space, Table, Tag } from 'antd'
 import axios from 'axios'
-import './Database.css'
+import '../styles/Database.css'
 
 const { Panel } = Collapse
 const { Column, ColumnGroup } = Table

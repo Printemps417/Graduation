@@ -6,7 +6,7 @@ import React from 'react'
 import { useState } from 'react'
 import Adddb from './Adddb'
 import { useContext } from 'react'
-import { DatabaseContext } from './App'
+import { DatabaseContext } from '../App'
 const { Header, Content, Footer, Sider } = Layout
 
 const Data = () => {

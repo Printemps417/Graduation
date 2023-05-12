@@ -1,10 +1,9 @@
 import { Mapbox } from '@antv/l7-maps'
 import { Map } from '@antv/l7-maps'
 import { Scene, PointLayer, Zoom, Scale, MouseLocation, MapTheme } from '@antv/l7'
-import './AntMap.css'
+import '../styles/AntMap.css'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-
 
 const AntMap = () => {
     // render内定义的变量生命周期为当前渲染周期，重新渲染时会重新初始化

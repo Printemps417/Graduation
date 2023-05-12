@@ -1,16 +1,16 @@
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import { BrowserRouter, Routes, Route, Link, Switch } from 'react-router-dom'
-import Data from './Data'
-import Introduction from './Introduction'
-import Sample from './Sample_data'
-import Visualization from './Visualization'
+import Data from './components/Data'
+import Introduction from './components/Introduction'
+import Sample from './components/Sample_data'
+import Visualization from './components/Visualization'
 import React from 'react'
-import Database from './Database'
-import Adddb from './Adddb'
+import Database from './components/Database'
+import Adddb from './components/Adddb'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import LoginForm from './LoginForm'
+import LoginForm from './components/LoginForm'
 const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
