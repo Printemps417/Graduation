@@ -4,9 +4,10 @@ import { useContext } from 'react'
 import { DatabaseContext } from '../App'
 import { Collapse } from 'antd'
 import { useEffect, useState } from 'react'
-import { Space, Table, Tag } from 'antd'
+import { Space, Table, Tag, Button, message } from 'antd'
 import axios from 'axios'
 import { setToken, getToken, removeToken } from '../tools'
+import { PoweroffOutlined } from '@ant-design/icons'
 import '../styles/Database.css'
 
 const { Panel } = Collapse
@@ -15,10 +16,13 @@ const Database = () => {
     const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
     let [params] = useSearchParams()
     let database = params.get('database')
+    // useSearch从路由跳转的url地址中传参
+
     let [curtable, setCurtable] = useState("taxi10005")
     const [tablename, setTablename] = useState([])
     const [tabledata, setTabledata] = useState([])
-    // useSearch从路由跳转的url地址中传参
+    const [loadings, setLoadings] = useState([])
+    const username = getToken()
 
     // 发送get请求，抓取数据表项列表
     useEffect(() => {
@@ -67,18 +71,55 @@ const Database = () => {
     // console.log('进入database')
     return (
         <>
-            <Tag
-                color="blue"
-                style={{
-                    marginBottom: '20px',
-                    height: '45px',
-                    fontSize: '25px',
-                }}><p
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Tag
+                    color="blue"
                     style={{
-                        marginTop: '10px',
-                    }}>
-                    {getToken() == 'admin' ? "管理员视图——" : ""}DATABASE:{database}
-                </p></Tag>
+                        marginBottom: '20px',
+                        height: '45px',
+                        fontSize: '25px',
+                    }}><p
+                        style={{
+                            marginTop: '10px',
+                        }}>
+                        {getToken() == 'admin' ? "管理员视图——" : ""}DATABASE:{database}
+                    </p></Tag>
+                <Button
+                    type="primary"
+                    icon={<PoweroffOutlined />}
+                    style={{ backgroundColor: "red", marginLeft: '55%' }}
+                    loading={loadings[1]}
+                    onClick={() => {
+                        setLoadings((prevLoadings) => {
+                            const newLoadings = [...prevLoadings]
+                            newLoadings[1] = true
+                            return newLoadings
+                        })
+                        axios.delete(`http://localhost:8088/del_database?account=${username}&db=${database}`).then((response) => {
+                            // 异步操作，可在期间进行其他操作
+                            console.log(response)
+                            message.success(`数据库删除成功`)
+                            setLoadings((prevLoadings) => {
+                                const newLoadings = [...prevLoadings]
+                                newLoadings[1] = false
+                                // 更改数据库列表
+                                return newLoadings
+                            })
+                        }).catch((error) => {
+                            console.log(error)
+                            message.error(`file input failed.`)
+                            setLoadings((prevLoadings) => {
+                                const newLoadings = [...prevLoadings]
+                                newLoadings[1] = false
+                                return newLoadings
+                            })
+                        })
+                    }}
+                >
+                    删除数据库
+                </Button>
+                {/* 根据用户名和数据库名删除数据库 */}
+            </div>
             <Collapse accordion>
                 {tablename.map((name, index) => (
                     <Panel

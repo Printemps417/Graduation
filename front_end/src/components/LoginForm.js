@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
-import { Button, Checkbox, Form, Input, notification, Space } from 'antd'
+import { Button, Checkbox, Form, Input, notification, Space, message } from 'antd'
 import { setToken, getToken, removeToken } from '../tools'
 
 const LoginForm = () => {
@@ -15,7 +15,8 @@ const LoginForm = () => {
     // 在用户已经登录或已经保存了登录信息的情况下，自动重定向到 /Data 页面，从而避免用户重复登录
     if (redirect || token != 'none') {
         if (redirect == false) {
-            alert('您已登录！页面即将跳转')
+            // alert('您已登录！页面即将跳转')
+            message.success('您已登录！页面即将跳转')
         }
         return <Navigate to="/Data" replace={true} />
     }
@@ -33,12 +34,14 @@ const LoginForm = () => {
                 // 登录成功时设置token cookie，有效期为1天
                 setToken(username)
                 setRedirect(true)
-                alert('登录成功！')
+                // alert('登录成功！')
+                message.success('登录成功！')
                 // 登入成功时获得通行证
             } else {
                 setError(true)
                 setPassword('')
-                alert('登录失败！请检查账号密码或网络连接')
+                // alert('登录失败！请检查账号密码或网络连接')
+                message.error('登录失败！请检查账号密码或网络连接')
             }
         } catch (e) {
             console.log(e)

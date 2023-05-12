@@ -21,24 +21,6 @@ const Adddb = () => {
     axios.get('http://localhost:8088/getTerminal').then((response) => {
         setEndproc(response.data)
     })
-    const enterLoading = (index) => {
-        setLoadings((prevLoadings) => {
-            const newLoadings = [...prevLoadings]
-            newLoadings[index] = true
-            return newLoadings
-        })
-        setTimeout(() => {
-            setLoadings((prevLoadings) => {
-                const newLoadings = [...prevLoadings]
-                newLoadings[index] = false
-                setTimeout(() => {
-                    setUseritem([...useritem, UserOutlined])
-                }, 100)
-                // 更改数据库列表
-                return newLoadings
-            })
-        }, 500)
-    }
     const { Dragger } = Upload
     const props = {
         name: 'file',

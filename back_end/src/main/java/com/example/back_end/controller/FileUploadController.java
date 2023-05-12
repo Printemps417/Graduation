@@ -120,7 +120,7 @@ public class FileUploadController {
 //        更新查询数据库名
         System.out.println("用户查询数据表为"+tablename);
         List<WebData> list= userMapper.getall(databasename,tablename);
-        System.out.println(list);
+//        System.out.println(list);
         return list;
     }
     //    根据数据库名和数据表名查询数据
@@ -132,7 +132,7 @@ public class FileUploadController {
 //        更新查询数据库名
         System.out.println("用户查询数据库为"+databasename);
         List<String> list= userMapper.gettablename(databasename);
-        System.out.println(list);
+//        System.out.println(list);
         return list;
     }
 //    查询库内表名
@@ -142,7 +142,7 @@ public class FileUploadController {
     public List querydbname(){
         System.out.println("用户查询数据库");
         List<String> list= userMapper.getdbname();
-        System.out.println(list);
+//        System.out.println(list);
         return list;
     }
 //    查询数据库名列表

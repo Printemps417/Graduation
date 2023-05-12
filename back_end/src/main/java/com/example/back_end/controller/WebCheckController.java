@@ -222,7 +222,7 @@ public class WebCheckController {
         List<String> olddb=user.getDatabase();
         olddb.add(db);
         System.out.println(olddb);
-        user.setAction(olddb);
+        user.setDatabase(olddb);
         // 将User对象序列化为JSON字符串
         String json;
         try {
@@ -261,15 +261,15 @@ public class WebCheckController {
         int index=olddb.indexOf(db);
         System.out.println(olddb);
         if(index>=0||account=="admin"){
-            int temp= userMapper.DeleteDatabaseById(db);
             olddb.remove(index);
+            int temp= userMapper.DeleteDatabaseById(db);
 //            确保用户只能删除自身上传的数据库，管理员可以删除任何数据库
         }
         else{
             return "数据库不存在，删除失败";
         }
 //        将数据库名移出用户数据库数组
-        user.setAction(olddb);
+        user.setDatabase(olddb);
         // 将User对象序列化为JSON字符串
         String json;
         try {
