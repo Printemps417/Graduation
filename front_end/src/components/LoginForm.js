@@ -2,13 +2,21 @@ import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import { Button, Checkbox, Form, Input, notification, Space } from 'antd'
+import { setToken, getToken, removeToken } from '../tools'
 
 const LoginForm = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(false)
     const [redirect, setRedirect] = useState(false)
-
+    const token = getToken() || 'none'
+    console.log(token)
+    if (redirect || token != 'none') {
+        if (redirect == false) {
+            alert('您已登录！页面即将跳转')
+        }
+        return <Navigate to="/Data" replace={true} />
+    }
     const handleSubmit = async (e) => {
         e.preventDefault()
         // e.preventDefault()方法通常用于防止浏览器默认行为（比如提交表单或者打开链接）
@@ -20,6 +28,7 @@ const LoginForm = () => {
             console.log(data)
             if (data.password === password) {
                 // 登录成功时设置token cookie，有效期为1天
+                setToken(username)
                 setRedirect(true)
                 alert('登录成功！')
                 // 登入成功时获得通行证
@@ -34,10 +43,6 @@ const LoginForm = () => {
             setPassword('')
 
         }
-    }
-
-    if (redirect) {
-        return <Navigate to="/Data" replace={true} />
     }
 
     return (
