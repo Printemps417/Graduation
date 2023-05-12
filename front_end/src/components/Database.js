@@ -4,14 +4,16 @@ import { useContext } from 'react'
 import { DatabaseContext } from '../App'
 import { Collapse } from 'antd'
 import { useEffect, useState } from 'react'
-import { Space, Table, Tag, Button, message } from 'antd'
+import { Space, Table, Tag, Button, message, Modal } from 'antd'
 import axios from 'axios'
 import { setToken, getToken, removeToken } from '../tools'
 import { PoweroffOutlined } from '@ant-design/icons'
 import '../styles/Database.css'
 
 const { Panel } = Collapse
+const { confirm } = Modal
 const { Column, ColumnGroup } = Table
+
 const Database = () => {
     const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
     let [params] = useSearchParams()
@@ -29,7 +31,7 @@ const Database = () => {
         async function fetchData () {
             try {
                 const response = await axios.get(`http://localhost:8088/gettablename?databasename=${database}`)
-                console.log(`http://localhost:8088/gettablename?databasename=${database}`)
+                // console.log(`http://localhost:8088/gettablename?databasename=${database}`)
                 const data = response.data
                 setTablename(data.slice(0, 50))
                 console.log(tablename[0])
@@ -42,7 +44,7 @@ const Database = () => {
         }
         fetchData()
     }, [database])
-    // 依赖项为database，而不是tablename
+    // 依赖项为database，而不是tablename。database更新时抓取数据表名列表
 
     // 发送get请求，抓取数据表内容
     useEffect(() => {
@@ -69,6 +71,43 @@ const Database = () => {
     }
     // console.log(database)
     // console.log('进入database')
+    const handleDelete = (username, database, setLoading) => {
+        confirm({
+            title: '确认删除该数据库吗？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk () {
+                setLoadings((prevLoadings) => {
+                    const newLoadings = [...prevLoadings]
+                    newLoadings[1] = true
+                    return newLoadings
+                })
+                axios
+                    .delete(`http://localhost:8088/del_database?account=${username}&db=${database}`)
+                    .then(() => {
+                        message.success('数据库删除成功')
+                        setLoadings((prevLoadings) => {
+                            const newLoadings = [...prevLoadings]
+                            newLoadings[1] = false
+                            // 更改数据库列表
+                            return newLoadings
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        message.error('删除数据库失败')
+                        setLoadings((prevLoadings) => {
+                            const newLoadings = [...prevLoadings]
+                            newLoadings[1] = false
+                            return newLoadings
+                        })
+                    })
+            },
+            onCancel () {
+                console.log('Cancel')
+            },
+        })
+    }
     return (
         <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -87,34 +126,9 @@ const Database = () => {
                 <Button
                     type="primary"
                     icon={<PoweroffOutlined />}
-                    style={{ backgroundColor: "red", marginLeft: '55%' }}
+                    style={{ backgroundColor: 'red', marginLeft: '55%' }}
                     loading={loadings[1]}
-                    onClick={() => {
-                        setLoadings((prevLoadings) => {
-                            const newLoadings = [...prevLoadings]
-                            newLoadings[1] = true
-                            return newLoadings
-                        })
-                        axios.delete(`http://localhost:8088/del_database?account=${username}&db=${database}`).then((response) => {
-                            // 异步操作，可在期间进行其他操作
-                            console.log(response)
-                            message.success(`数据库删除成功`)
-                            setLoadings((prevLoadings) => {
-                                const newLoadings = [...prevLoadings]
-                                newLoadings[1] = false
-                                // 更改数据库列表
-                                return newLoadings
-                            })
-                        }).catch((error) => {
-                            console.log(error)
-                            message.error(`file input failed.`)
-                            setLoadings((prevLoadings) => {
-                                const newLoadings = [...prevLoadings]
-                                newLoadings[1] = false
-                                return newLoadings
-                            })
-                        })
-                    }}
+                    onClick={() => handleDelete(username, database, setLoadings)}
                 >
                     删除数据库
                 </Button>
