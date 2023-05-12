@@ -20,18 +20,7 @@ public interface UserMapper {
     @Select("SHOW DATABASES LIKE \"%timedata%\";")
     public List<String> getdbname();
 
-    @Insert("insert into ${dbname} values(#{id},#{name},#{url},#{alexa},#{sal},#{country})")
-    public int add(WebData web);
-//    返回值代表插入几条记录
-
-    @Update("update ${dbname} set id=#{id},name=#{name},url=#{url},alexa=#{alexa},sal=#{sal},country=#{country} where id=#{id}")
-    public int updatedata(WebData web);
-
-    @Delete("delete from  ${dbname} where id=#{id}")
-    public int deletedata(int id);
-
-    @Select("select * from ${dbname} where id=#{id}")
-    public List<WebData> findById(int id);
-//    按id查找
+    @Delete("DROP DATABASE `${dbname}`;")
+    public int DeleteDatabaseById(String dbname);
 
 }

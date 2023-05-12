@@ -1,6 +1,7 @@
 package com.example.back_end.controller;
 
 import com.example.back_end.entity.User;
+import com.example.back_end.mapper.UserMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +18,9 @@ import java.io.IOException;
 @CrossOrigin
 //精准配置跨域
 public class WebCheckController {
+    @Autowired
+    private UserMapper userMapper;
+//    给userMapper接口注入实例
     private String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\UserData";
     @ApiOperation("此接口用于查询用户信息")
     @GetMapping("/userdata")
@@ -256,7 +260,15 @@ public class WebCheckController {
         List<String> olddb=user.getDatabase();
         int index=olddb.indexOf(db);
         System.out.println(olddb);
-        olddb.remove(index);
+        if(index>=0||account=="admin"){
+            int temp= userMapper.DeleteDatabaseById(db);
+            olddb.remove(index);
+//            确保用户只能删除自身上传的数据库，管理员可以删除任何数据库
+        }
+        else{
+            return "数据库不存在，删除失败";
+        }
+//        将数据库名移出用户数据库数组
         user.setAction(olddb);
         // 将User对象序列化为JSON字符串
         String json;
@@ -274,6 +286,7 @@ public class WebCheckController {
             e.printStackTrace();
             return "删除数据库失败！";
         }
+        System.out.println("数据库"+db+"删除成功");
         return "删除数据库成功！";
     }
 }

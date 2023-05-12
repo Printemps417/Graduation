@@ -10,13 +10,14 @@ import { DatabaseContext } from '../App'
 import { InboxOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import { message, Upload, Alert, Modal, Tag } from 'antd'
+import { setToken, getToken, removeToken } from '../tools'
 
 const Adddb = () => {
     const [loadings, setLoadings] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [endproc, setEndproc] = useState("This is the terminal stdout in the back_end")
     const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
-    // console.log(useritem, setUseritem)
+
     axios.get('http://localhost:8088/getTerminal').then((response) => {
         setEndproc(response.data)
     })
@@ -47,6 +48,7 @@ const Adddb = () => {
         customRequest: (info) => {
             const formData = new FormData()
             formData.append('userFile', info.file)
+            // 将上传的info.file与userFile绑定，实现文件上传。在上传文件的情况下，formData中将包含文件数据，以及文件的文件名和MIME类型等相关信息。
 
             axios.post('http://localhost:8088/upload/**', formData, {
                 headers: {
@@ -59,10 +61,13 @@ const Adddb = () => {
                 },
             }).then((response, progressIcon) => {
                 console.log(response)
+                // 获得当前用户名
                 message.success(`${info.file.name} file uploaded successfully.`)
                 info.onSuccess(response.data, info.file) // 将状态设置为 "success"
                 setTimeout(() => {
+                    let username = getToken()
                     setDbname([...dbname, `${info.file.name.slice(0, -4)}`])
+                    axios.post(`http://localhost:8088/add_database?account=${username}&db=${info.file.name.slice(0, -4)}`)
                 }, 100)
             }).catch((error) => {
                 console.log(error)

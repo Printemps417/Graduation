@@ -112,7 +112,7 @@ public class FileUploadController {
     @Autowired
     private UserMapper userMapper;
 //    Spring功能，将实例化的对象注入userMapper
-//增删改查
+//CRUD操作
     @ApiOperation("此接口用于查询某一数据表内容")
     @GetMapping("/gettabledata")
     public List query(String databasename,String tablename){
@@ -187,13 +187,5 @@ public static String readTerminal() {
         return this.terminalout;
     }
 
-//    删除用户信息
 
-    @ApiOperation("此接口用于根据ID查询数据")
-    @GetMapping("/webdata/{id}")
-    public List findById(String dbname,int id){
-        List<WebData> list= userMapper.findById(id);
-        System.out.println(list);
-        return list;
-    }
 }
