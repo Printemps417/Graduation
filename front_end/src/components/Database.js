@@ -205,7 +205,7 @@ const Database = () => {
                             <Column title="载客状态" dataIndex="if_empty" key="if_empty"
                                 // 对是否空车进行二级渲染
                                 render={(if_empty) => {
-                                    return if_empty ? (<Tag color="green">Yes</Tag>) : (<Tag color="blue">No</Tag>)
+                                    return if_empty ? (<Tag color="blue">No</Tag>) : (<Tag color="green">Yes</Tag>)
                                 }} />
                             <Column title="车辆速度" dataIndex="speed" key="speed" />
                         </Table>

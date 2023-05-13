@@ -74,7 +74,7 @@ const AntMap = () => {
         })
         setscene(sceneInstance)
 
-        // 在 Scene 加载完成后添加控件
+        // 在 Scene 加载完成后添加控件。直接给sceneInstance添加
         sceneInstance.on("loaded", () => {
             sceneInstance.addControl(scale)
             sceneInstance.addControl(zoom)
