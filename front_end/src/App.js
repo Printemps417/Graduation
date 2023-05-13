@@ -77,6 +77,7 @@ const App = () => {
         // 根据用户不同返回不同数据库列表，管理员账号可控制查看所有数据库,普通用户调用接口不同
         const dbNames = response.data
         const icons = Array.from({ length: dbNames.length }).fill(UserOutlined)
+        // 图标长度和数据库列表长度相同
         setUseritem(icons)
         setDbname(dbNames)
       } catch (error) {

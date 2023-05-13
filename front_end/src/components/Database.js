@@ -163,7 +163,7 @@ const Database = () => {
                 <Button
                     type="primary"
                     icon={<PoweroffOutlined />}
-                    style={{ left: '40%' }}
+                    style={{ left: '75%', position: 'absolute' }}
                     loading={loadings[2]}
                     onClick={() => handleDistinct(database, setLoadings)}
                 >
@@ -173,7 +173,7 @@ const Database = () => {
                 <Button
                     type="primary"
                     icon={<PoweroffOutlined />}
-                    style={{ backgroundColor: 'red', left: '45%' }}
+                    style={{ backgroundColor: 'red', position: 'absolute', left: '85%' }}
                     loading={loadings[1]}
                     onClick={() => handleDelete(username, database, setLoadings)}
                 >
