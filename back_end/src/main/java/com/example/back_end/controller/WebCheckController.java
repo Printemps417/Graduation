@@ -220,6 +220,7 @@ public class WebCheckController {
 //        Gson gson = new Gson();
 //        String datastr = gson.toJson(datas); // jsonObject 为要转换的 JSON 对象
         List<String> olddb=user.getDatabase();
+        db=db.toLowerCase();
         olddb.add(db);
         System.out.println(olddb);
         user.setDatabase(olddb);

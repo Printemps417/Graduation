@@ -104,7 +104,7 @@ const App = () => {
                 // height: "30px"
                 backgroundColor: "deepgray"
               }}
-              defaultSelectedKeys={['2']}
+              defaultSelectedKeys={['Data']}
               items={items1}
               onClick={() => {
                 console.log()

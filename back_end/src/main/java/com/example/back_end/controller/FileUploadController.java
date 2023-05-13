@@ -63,7 +63,7 @@ public class FileUploadController {
         userFile.transferTo(file);
     }
 
-    public void inputFile(String path,String dbname) throws IOException{
+    public synchronized void inputFile(String path,String dbname) throws IOException{
         try {
             String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\Static";
 //            资源路径
@@ -137,7 +137,21 @@ public class FileUploadController {
     }
 //    查询库内表名
 
-    @ApiOperation("此接口用于查询数据库列表")
+    @ApiOperation("此接口用于给某一数据库去重")
+    @DeleteMapping("/distinctTable")
+    public String Distinct(String databasename) throws IOException{
+        this.dbname=databasename;
+//        更新查询数据库名
+        System.out.println("用户去重数据库为"+databasename);
+        List<String> list= userMapper.gettablename(databasename);
+        for(String tbname: list){
+            userMapper.DistinctByid(databasename,tbname);
+    }
+        //        System.out.println(list);
+        return "去重成功";
+    }
+
+    @ApiOperation("此接口用于查询数据库名列表")
     @GetMapping("/getdbname")
     public List querydbname(){
         System.out.println("用户查询数据库");

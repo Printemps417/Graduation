@@ -14,7 +14,7 @@ import { setToken, getToken, removeToken } from '../tools'
 
 const Adddb = () => {
     const [loadings, setLoadings] = useState([])
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [infoname, setInfoname] = useState("")
     const [endproc, setEndproc] = useState("This is the terminal stdout in the back_end")
     const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
 
@@ -47,9 +47,8 @@ const Adddb = () => {
                 message.success(`${info.file.name} file uploaded successfully.`)
                 info.onSuccess(response.data, info.file) // 将状态设置为 "success"
                 setTimeout(() => {
-                    let username = getToken()
                     setDbname([...dbname, `${info.file.name.slice(0, -4)}`])
-                    axios.post(`http://localhost:8088/add_database?account=${username}&db=${info.file.name.slice(0, -4)}`)
+                    setInfoname(info.file.name.slice(0, -4))
                 }, 100)
             }).catch((error) => {
                 console.log(error)
@@ -106,6 +105,8 @@ const Adddb = () => {
                                 newLoadings[1] = true
                                 return newLoadings
                             })
+                            axios.post(`http://localhost:8088/add_database?account=${getToken()}&db=${infoname}`)
+                            setUseritem([...useritem, UserOutlined])
                             axios.post('http://localhost:8088/input/**', {
                                 headers: {
                                     'accept': '*/*'
@@ -114,12 +115,11 @@ const Adddb = () => {
                                 // 异步操作，可在期间进行其他操作
                                 console.log(response)
                                 message.success(`file input successfully.`)
+                                // axios.post(`http://localhost:8088/add_database?account=${username}&db=${infoname}`)
+                                // 将数据库信息导入用户json列表
                                 setLoadings((prevLoadings) => {
                                     const newLoadings = [...prevLoadings]
                                     newLoadings[1] = false
-                                    setTimeout(() => {
-                                        setUseritem([...useritem, UserOutlined])
-                                    }, 100)
                                     // 更改数据库列表
                                     return newLoadings
                                 })

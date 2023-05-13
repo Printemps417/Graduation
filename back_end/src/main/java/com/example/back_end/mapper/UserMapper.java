@@ -14,7 +14,7 @@ public interface UserMapper {
     public List<WebData> getall(String dbname,String tablename);
 //    查询用户信息
 
-    @Select("SELECT table_name FROM information_schema.tables WHERE table_schema = '${dbname}';")
+    @Select("SELECT table_name FROM information_schema.tables WHERE table_schema = '${dbname}' AND table_name LIKE 'taxi10%';")
     public List<String> gettablename(String dbname);
 
     @Select("SHOW DATABASES LIKE \"%timedata%\";")
@@ -22,5 +22,16 @@ public interface UserMapper {
 
     @Delete("DROP DATABASE `${dbname}`;")
     public int DeleteDatabaseById(String dbname);
+
+    @Delete("DELETE FROM `${dbname}`.`${tablename}`\n" +
+            "WHERE `index` NOT IN (\n" +
+            "  SELECT `index`\n" +
+            "  FROM (\n" +
+            "    SELECT MAX(`index`) as `index`\n" +
+            "    FROM `${dbname}`.`${tablename}`\n" +
+            "    GROUP BY time\n" +
+            "  ) t\n" +
+            ");")
+    public int DistinctByid(String dbname,String tablename);
 
 }

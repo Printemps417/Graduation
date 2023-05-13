@@ -85,7 +85,7 @@ const Database = () => {
                 axios
                     .delete(`http://localhost:8088/del_database?account=${username}&db=${database}`)
                     .then(() => {
-                        message.success('数据库删除成功')
+                        message.success(`数据库${database}删除成功`)
                         setLoadings((prevLoadings) => {
                             const newLoadings = [...prevLoadings]
                             newLoadings[1] = false
@@ -95,10 +95,47 @@ const Database = () => {
                     })
                     .catch((error) => {
                         console.log(error)
-                        message.error('删除数据库失败')
+                        message.error(`数据库${database}删除失败`)
                         setLoadings((prevLoadings) => {
                             const newLoadings = [...prevLoadings]
                             newLoadings[1] = false
+                            return newLoadings
+                        })
+                    })
+            },
+            onCancel () {
+                console.log('Cancel')
+            },
+        })
+    }
+    const handleDistinct = (database, setLoading) => {
+        confirm({
+            title: '去重会导致重复数据丢失，确定去重？',
+            okText: '确认',
+            cancelText: '取消',
+            onOk () {
+                setLoadings((prevLoadings) => {
+                    const newLoadings = [...prevLoadings]
+                    newLoadings[2] = true
+                    return newLoadings
+                })
+                axios
+                    .delete(`http://localhost:8088/distinctTable?databasename=${database}`)
+                    .then(() => {
+                        message.success(`数据库${database}去重成功`)
+                        setLoadings((prevLoadings) => {
+                            const newLoadings = [...prevLoadings]
+                            newLoadings[2] = false
+                            // 更改数据库列表
+                            return newLoadings
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        message.error('删除数据库失败')
+                        setLoadings((prevLoadings) => {
+                            const newLoadings = [...prevLoadings]
+                            newLoadings[2] = false
                             return newLoadings
                         })
                     })
@@ -126,13 +163,24 @@ const Database = () => {
                 <Button
                     type="primary"
                     icon={<PoweroffOutlined />}
-                    style={{ backgroundColor: 'red', marginLeft: '55%' }}
+                    style={{ left: '40%' }}
+                    loading={loadings[2]}
+                    onClick={() => handleDistinct(database, setLoadings)}
+                >
+                    数据库去重
+                </Button>
+                {/* 对数据库中内容进行去重 */}
+                <Button
+                    type="primary"
+                    icon={<PoweroffOutlined />}
+                    style={{ backgroundColor: 'red', left: '45%' }}
                     loading={loadings[1]}
                     onClick={() => handleDelete(username, database, setLoadings)}
                 >
                     删除数据库
                 </Button>
                 {/* 根据用户名和数据库名删除数据库 */}
+
             </div>
             <Collapse accordion>
                 {tablename.map((name, index) => (
