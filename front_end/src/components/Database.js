@@ -185,7 +185,7 @@ const Database = () => {
             <Collapse accordion>
                 {tablename.map((name, index) => (
                     <Panel
-                        header={`车辆编号：${name}`}
+                        header={`TableName：${name}`}
                         key={index + 1}
                         onClick={() => {
                             setCurtable(name)
@@ -205,7 +205,7 @@ const Database = () => {
                             <Column title="载客状态" dataIndex="if_empty" key="if_empty"
                                 // 对是否空车进行二级渲染
                                 render={(if_empty) => {
-                                    return if_empty ? (<Tag color="blue">No</Tag>) : (<Tag color="green">Yes</Tag>)
+                                    return if_empty ? (<Tag color="green">No</Tag>) : (<Tag color="blue">Yes</Tag>)
                                 }} />
                             <Column title="车辆速度" dataIndex="speed" key="speed" />
                         </Table>

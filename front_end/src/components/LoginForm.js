@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import { Button, Checkbox, Form, Input, notification, Space, message } from 'antd'
 import { setToken, getToken, removeToken } from '../tools'
 
@@ -50,6 +51,12 @@ const LoginForm = () => {
 
         }
     }
+    const handleSignup = async (e) => {
+        e.preventDefault()
+        // e.preventDefault()方法通常用于防止浏览器默认行为（比如提交表单或者打开链接）
+        // 处理提交事件
+        return <Navigate to="/Signup" replace={true} />
+    }
 
     return (
         <>
@@ -71,11 +78,11 @@ const LoginForm = () => {
                     span: 16,
                 }}
                 style={{
-                    minWidth: 400,
                     maxWidth: 600,
+                    width: "100%",
                     // margin: '0 auto', // 水平居中
-                    marginLeft: "28%",
-                    marginTop: '40px'
+                    marginLeft: "25%",
+                    marginTop: '50px'
                 }}
                 initialValues={{
                     remember: true,
@@ -128,14 +135,16 @@ const LoginForm = () => {
                                 Log in
                             </Button>
                         </div>
-                        <div onClick={handleSubmit}>
-                            <Button type="primary" htmlType="submit"
-                                style={{
-                                    marginLeft: '20px',
-                                    marginRight: '0px'
-                                }}>
-                                Sign up
-                            </Button>
+                        <div>
+                            <Link
+                                to="/Signup">
+                                <Button type="primary" htmlType="submit"
+                                    style={{
+                                        marginLeft: '20px',
+                                        marginRight: '0px'
+                                    }}>
+                                    Sign up
+                                </Button></Link>
                         </div>
                         <Form.Item
                             name="remember"

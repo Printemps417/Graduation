@@ -110,7 +110,7 @@ public class FileUploadController {
     }
 
     //    读取控制台信息
-    @ApiOperation("此接口用于查询终端信息")
+    @ApiOperation("此接口用于实时查询终端信息")
     @GetMapping("/getTerminal")
     public String queryTerminal(){
 //        System.out.println("接收到终端查询请求");

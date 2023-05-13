@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -104,6 +105,35 @@ public class AccountInfoController {
             return "更新密码失败！";
         }
         return "更新密码成功！";
+    }
+
+    @ApiOperation("此接口用于用户注册")
+    @PostMapping("/signup_userinfo")
+    public String signup_userinfo(String account,
+                                  String password){
+        ObjectMapper mapper = new ObjectMapper();
+        String FilePath=this.StaticPath+"\\"+account+".json";
+
+        List<String> emptyList = new ArrayList<String>();
+        User user=new User(account,password,emptyList,emptyList,emptyList,emptyList);
+
+        // 将User对象序列化为JSON字符串
+        String json;
+        try {
+            json = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "用户注册失败！";
+        }
+
+        // 将JSON字符串写入新建的用户文件
+        try {
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "用户注册失败！";
+        }
+        return "用户注册成功！";
     }
 
     @ApiOperation("此接口用于添加用户信息")

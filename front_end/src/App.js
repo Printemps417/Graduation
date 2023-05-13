@@ -8,6 +8,7 @@ import Visualization from './components/Visualization'
 import React from 'react'
 import Database from './components/Database'
 import Adddb from './components/Adddb'
+import Signup from './components/Signup'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import LoginForm from './components/LoginForm'
@@ -21,19 +22,27 @@ const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data',
   index == 0 ?
     {
       key,
-      label: <img
-        src="/logo192.png"
-        style={{
-          margin: 0,
-          marginTop: "15px",
-          justifySelf: "center",
-          alignSelf: 'center',
-          marginRight: "20px",
-          marginLeft: "20px",
-          width: "20px",
-          // objectFit: "contain"
-        }}
-      />
+      label:
+        <Link
+          style={{
+            margin: 0
+          }}
+          title="返回登录界面"
+          to="/login">
+          <img
+            src="/logo192.png"
+            style={{
+              margin: 0,
+              marginTop: "15px",
+              justifySelf: "center",
+              alignSelf: 'center',
+              marginRight: "20px",
+              marginLeft: "20px",
+              width: "20px",
+              // objectFit: "contain"
+            }}
+          />
+        </Link>
     } :
     {
       key,
@@ -105,7 +114,7 @@ const App = () => {
                 // height: "30px"
                 backgroundColor: "deepgray"
               }}
-              defaultSelectedKeys={['Data']}
+              defaultSelectedKeys={['image']}
               items={items1}
               onClick={() => {
                 console.log()
@@ -116,6 +125,7 @@ const App = () => {
             {/* 一级路由组件渲染位置 */}
             <Route path="/" element={<LoginForm />}></Route>
             <Route path="/login" element={<LoginForm />}></Route>
+            <Route path="/Signup" element={<Signup />}></Route>
             <Route path="/Data" element={<Data />}>
               <Route path="/Data/" element={<Adddb />}></Route>
               <Route path="/Data/adddb" element={<Adddb />}></Route>

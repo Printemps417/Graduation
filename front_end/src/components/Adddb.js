@@ -83,7 +83,8 @@ const Adddb = () => {
                     textAlign: 'center',
                     innerWidth: '100%',
                     width: '100%',
-                    marginLeft: "30%"
+                    marginLeft: "30%",
+                    marginTop: "5%"
                 }}>
                     <Dragger {...props}>
                         <p className="ant-upload-drag-icon">

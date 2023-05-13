@@ -88,7 +88,7 @@ const Data = () => {
                 <Button
                     type="primary"
                     icon={<PoweroffOutlined />}
-                    onClick={() => { window.location.reload() }}>刷新数据库</Button>
+                    onClick={() => { window.location.reload() }}>Refresh Data</Button>
             </div>
         </Layout>
 
