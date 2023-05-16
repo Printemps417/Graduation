@@ -17,6 +17,16 @@ public class WebData {
         this.index = index;
     }
 
+    public WebData(int index, int id, String time, String lon, String lat, String if_empty, String speed) {
+        this.index = index;
+        this.id = id;
+        this.time = time;
+        this.lon = lon;
+        this.lat = lat;
+        this.if_empty = if_empty;
+        this.speed = speed;
+    }
+
     public int getId() {
         return id;
     }
