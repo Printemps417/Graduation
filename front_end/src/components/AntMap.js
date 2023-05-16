@@ -1,6 +1,6 @@
 import { Mapbox } from '@antv/l7-maps'
 import { Map } from '@antv/l7-maps'
-import { Scene, PointLayer, Zoom, Scale, MouseLocation, MapTheme } from '@antv/l7'
+import { Scene, PointLayer, Zoom, Scale, MouseLocation, MapTheme, Source, HeatmapLayer, LineLayer } from '@antv/l7'
 import '../styles/AntMap.css'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -12,31 +12,6 @@ const AntMap = () => {
     // setState会引起重新渲染，但其对应的变量在下一次渲染前才更新，期间一直保持原有值
     const [scene, setscene] = useState({})
     const [flag, setFlag] = useState(false)
-    // 组件函数只在被挂载到DOM树时执行一次，此后的更新放在useeffect
-    // async function addcon (scene) {
-    //     scene.on("loaded", () => {
-    //     const zoom = new Zoom({
-    //         zoomInTitle: "放大",
-    //         zoomOutTitle: "缩小"
-    //     })
-    //     const scale = new Scale({
-    //         zoomInTitle: "放大",
-    //         zoomOutTitle: "缩小"
-    //     })
-    //     const mapTheme = new MapTheme({})
-    //     const mouseLocation = new MouseLocation({
-    //         transform: (position) => {
-    //             return position
-    //         }
-    //     })
-    //     scene.addControl(scale)
-    //     scene.addControl(zoom)
-    //     scene.addControl(mapTheme)
-    //     scene.addControl(mouseLocation)
-    //     console.log('加载组件成功！')
-    // })
-    // }
-    // 定义组件加载函数
 
     // 刷新时重新初始化地图
     useEffect(() => {
@@ -64,7 +39,7 @@ const AntMap = () => {
             id: 'antmap',
             map: new Mapbox({
                 style: 'mapbox://styles/mapbox/streets-v12',
-                center: [104.288144, 31.239692],
+                center: [121.417463, 31.215175],
                 pitch: 0,
                 zoom: 4,
                 rotation: 0,
@@ -80,6 +55,110 @@ const AntMap = () => {
             sceneInstance.addControl(zoom)
             sceneInstance.addControl(mapTheme)
             sceneInstance.addControl(mouseLocation)
+            // fetch('http://localhost:3000/Sampledata.csv')
+            //     .then(response => response.text())
+            //     .then(data => {
+            //         // console.log('获取数据：' + data)
+            //         // 聚合点数据
+            //         const dataSource = new Source(data, {
+            //             parser: {
+            //                 type: 'csv',
+            //                 x: 'Lon',
+            //                 y: 'Lat'
+
+            //             },
+            //             cluster: true
+            //         })
+            //         const pointLayer = new PointLayer({
+            //             autoFit: true
+            //         })
+            //             .source(dataSource)
+            //             .shape('circle')
+            //             .scale('point_count', {
+            //                 type: 'quantile'
+            //             })
+            //             .size('point_count', [5, 10, 15, 20, 25])
+            //             .active(true)
+            //             .color('green')
+            //             .style({
+            //                 strokeWidth: 0,
+            //                 stroke: '#fff',
+            //                 opacity: 0.5
+            //             })
+            //         // 聚合图标注
+            //         const pointLayerText = new PointLayer({
+            //             autoFit: false
+            //         })
+            //             .source(dataSource)
+            //             .shape('point_count', 'text')
+            //             .size(15)
+            //             .active(true)
+            //             .color('#fff')
+            //             .style({
+            //                 strokeWidth: 0.5,
+            //                 stroke: '#fff'
+            //             })
+            //         // 散点图数据
+            //         const ScatterLayer = new PointLayer({})
+            //             .source(data, {
+            //                 parser: {
+            //                     type: 'csv',
+            //                     x: 'Lon',
+            //                     y: 'Lat'
+            //                 }
+            //             })
+            //             .size(0.5)
+            //             .color('#080298')
+
+            //         sceneInstance.addLayer(ScatterLayer)
+            //         sceneInstance.addLayer(pointLayer)
+            //         sceneInstance.addLayer(pointLayerText)
+            //     })
+            fetch(
+                'http://localhost:3000/HeatSample.csv'
+            )
+                .then(res => res.text())
+                .then(data => {
+                    const layer = new HeatmapLayer({})
+                        .source(data, {
+                            parser: {
+                                type: 'csv',
+                                x: 'lng',
+                                y: 'lat'
+                            },
+                            transforms: [
+                                {
+                                    type: 'grid',
+                                    size: 20000,
+                                    field: 'v',
+                                    method: 'sum'
+                                }
+                            ]
+                        })
+                        .shape('circle')
+                        .style({
+                            coverage: 0.9,
+                            angle: 0
+                        })
+                        .color(
+                            'count',
+                            [
+                                '#8C1EB2',
+                                '#8C1EB2',
+                                '#DA05AA',
+                                '#F0051A',
+                                '#FF2A3C',
+                                '#FF4818',
+                                '#FF4818',
+                                '#FF8B18',
+                                '#F77B00',
+                                '#ED9909',
+                                '#ECC357',
+                                '#EDE59C'
+                            ].reverse()
+                        )
+                    sceneInstance.addLayer(layer)
+                })
             console.log('加载组件成功！')
         })
     }, [])

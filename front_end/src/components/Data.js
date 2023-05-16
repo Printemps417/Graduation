@@ -1,4 +1,4 @@
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
+import { LaptopOutlined, NotificationOutlined, UserOutlined, RedoOutlined } from '@ant-design/icons'
 import { Breadcrumb, Layout, Menu, theme } from 'antd'
 import { Routes, Route, Link, Outlet, Navigate } from 'react-router-dom'
 import { Button, Space } from 'antd'
@@ -87,7 +87,7 @@ const Data = () => {
             <div style={{ position: 'fixed', left: '6%', bottom: '5%' }}>
                 <Button
                     type="primary"
-                    icon={<PoweroffOutlined />}
+                    icon={<RedoOutlined />}
                     onClick={() => { window.location.reload() }}>Refresh Data</Button>
             </div>
         </Layout>

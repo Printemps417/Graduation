@@ -136,7 +136,7 @@ public class AccountInfoController {
         return "用户注册成功！";
     }
 
-    @ApiOperation("此接口用于添加用户信息")
+    @ApiOperation("此接口用于更新用户信息")
     @PostMapping("/update_userdata")
     public String update_userdata(String account,
                                   String action,

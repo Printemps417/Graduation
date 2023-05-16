@@ -205,7 +205,9 @@ const Database = () => {
                     type="primary"
                     style={{ left: '57%', position: 'absolute' }}
                     icon={<DownloadOutlined />}
-                    onClick={() => window.open(downloadurl)}
+                    onClick={() => {
+                        window.open(downloadurl)
+                    }}
                 >下载数据</Button>
                 <Button
                     type="primary"
@@ -214,7 +216,7 @@ const Database = () => {
                     loading={loadings[3]}
                     onClick={() => handleExtract()}
                 >
-                    批量导出
+                    批量选择
                 </Button>
                 <Button
                     type="primary"

@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons'
+import React, { Component, useState } from 'react'
+import { CodepenOutlined, PlusOutlined, RedoOutlined } from '@ant-design/icons'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
-import { Breadcrumb, Layout, Menu, theme } from 'antd'
+import { Breadcrumb, Layout, Menu, theme, Button } from 'antd'
 import '../styles/Visualization.css'
 import { useContext } from 'react'
 import { DatabaseContext } from '../App'
@@ -12,14 +12,14 @@ const Visualization = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken()
-    const { useritem, setUseritem } = useContext(DatabaseContext)
-    const items2 = [...useritem].map((icon, index) => {
+    const [useritem, setUseritem] = useState(["Point-example"])
+    const layers = useritem.map((item, index) => {
         const key = String(index + 1)
         return {
-            key: `${key}`,
-            icon: React.createElement(icon),
+            key: `${index + 1}`,
+            icon: <CodepenOutlined />,
             label:
-                <p>图层{key}</p>,
+                <p>图层{item}</p>,
             children: new Array(4).fill(null).map((_, j) => {
                 const subKey = index * 4 + j + 1
                 return {
@@ -31,40 +31,20 @@ const Visualization = () => {
     })
     return (
         <>
-            <Layout>
-                <Content
-                    style={{
-                        margin: '0px',
-                        padding: '0 0px',
-                    }}
-                >
-                    <Layout
-                        style={{
-                            padding: '24px 0',
-                            background: colorBgContainer,
-                        }}
-                    >
-                        <Sider
-                            style={{
-                                background: colorBgContainer,
-                            }}
-                            width={200}
-                        >
-                            <Menu
-                                mode="inline"
-                                defaultSelectedKeys={['1']}
-                                defaultOpenKeys={['sub1']}
-                                style={{
-                                    height: '100%',
-                                }}
-                                items={items2}
-                            />
-                        </Sider>
-                        <AntMap></AntMap>
-                        {/* 高德地图 */}
-                    </Layout>
-                </Content>
-            </Layout>
+            <AntMap></AntMap>
+            {/* Mapbox地图 */}
+            <div style={{ position: 'fixed', left: '3%', bottom: '15%' }}>
+                <Button
+                    type="primary"
+                    icon=<PlusOutlined />
+                    onClick={() => { window.location.reload() }}>添加图层</Button>
+            </div>
+            <div style={{ position: 'fixed', left: '3%', bottom: '7%' }}>
+                <Button
+                    type="primary"
+                    icon=<RedoOutlined />
+                    onClick={() => { window.location.reload() }}>刷新地图</Button>
+            </div>
         </>
     )
 }
