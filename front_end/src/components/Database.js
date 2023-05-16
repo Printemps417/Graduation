@@ -152,6 +152,29 @@ const Database = () => {
     }
 
     const handleExtract = (tablename) => {
+        const handleOk = async () => {
+            console.log('正在提取：', tablelist)
+            const tablelistParam = tablelist.map((item) => `tablelist=${item}`).join('&')
+            const url = `http://localhost:8088/download-csv?dbname=${database}&${tablelistParam}`
+            console.log(url)
+            try {
+                const response = await axios.get(url, {
+                    headers: {
+                        accept: 'text/csv',
+                    },
+                    responseType: 'blob', // 设置响应类型为blob，以支持文件下载
+                })
+                const blob = new Blob([response.data], { type: 'text/csv' })
+                const url = window.URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.href = url
+                link.download = 'data.csv'
+                link.click()
+                window.URL.revokeObjectURL(url)
+            } catch (error) {
+                console.error('请求出错:', error)
+            }
+        }
         confirm({
             width: 800,
             height: '300px',
@@ -167,38 +190,31 @@ const Database = () => {
 
             ),
             icon: <ExclamationCircleOutlined style={{ color: 'green' }} />,
-            onOk () {
-                console.log(`http://localhost:8088/download-csv?tablelist=${tablelist}&dbname=${dbname}`)
-                axios.get(`http://localhost:8088/download-csv?tablelist=${tablelist}&dbname=${dbname}`, {
-                    headers: {
-                        'accept': 'text/csv',
-                    },
-                    responseType: 'blob' // 设置响应类型为blob，以支持文件下载
-                })
-                    .then(response => {
-                        // 创建一个blob对象
-                        const blob = new Blob([response.data], { type: 'text/csv' })
-
-                        // 创建一个下载链接
-                        const url = window.URL.createObjectURL(blob)
-
-                        // 创建一个<a>元素，并设置相关属性
-                        const link = document.createElement('a')
-                        link.href = url
-                        link.download = 'data.csv' // 设置下载文件的名称
-
-                        // 模拟点击下载链接
-                        link.click()
-
-                        // 释放下载链接的资源
-                        window.URL.revokeObjectURL(url)
+            onOk: async () => {
+                console.log('正在提取：', tablelist)
+                const tablelistParam = tablelist.map((item) => `tablelist=${item}`).join('&')
+                const url = `http://localhost:8088/download-csv?dbname=${database}&${tablelistParam}`
+                console.log(url)
+                try {
+                    const response = await axios.get(url, {
+                        headers: {
+                            'accept': 'text/csv',
+                        },
+                        responseType: 'blob' // 设置响应类型为blob，以支持文件下载
                     })
-                    .catch(error => {
-                        console.error('请求出错:', error)
-                    })
+                    const blob = new Blob([response.data], { type: 'text/csv' })
+                    const url = window.URL.createObjectURL(blob)
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.download = 'data.csv'
+                    link.click()
+                    window.URL.revokeObjectURL(url)
+                } catch (error) {
+                    console.error('请求出错:', error)
+                }
             },
-            onCancel () {
-                console.log('Cancel')
+            onCancel: () => {
+                console.log('取消')
             },
         })
     }

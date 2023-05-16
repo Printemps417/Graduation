@@ -21,12 +21,11 @@ const SelectTable = ({ tablename }) => {
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys)
         setSelectedRowKeys(newSelectedRowKeys)
-    }
-    useEffect(() => {
-        const temp = Array(selectedRowKeys.map((item) => { return tablename[item - 1] }))
+        const temp = newSelectedRowKeys.map((item) => tablename[item - 1])
         setTablelist(temp)
-        console.log('选择列表更新:' + temp)
-    }, [selectedRowKeys])
+        console.log('选择列表更新: ', temp)
+    }
+
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
