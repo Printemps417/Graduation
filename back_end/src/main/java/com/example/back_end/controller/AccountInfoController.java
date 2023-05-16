@@ -198,7 +198,7 @@ public class AccountInfoController {
             System.out.println(user);
         } catch (IOException e) {
             e.printStackTrace();
-            return "更新删除失败！";
+            return "删除失败！";
         }
 //        Gson gson = new Gson();
 //        String datastr = gson.toJson(datas); // jsonObject 为要转换的 JSON 对象

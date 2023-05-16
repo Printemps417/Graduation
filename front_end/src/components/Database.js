@@ -3,13 +3,12 @@ import { useSearchParams } from "react-router-dom"
 import { useContext, createContext } from 'react'
 import { DatabaseContext } from '../App'
 import { Collapse } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Space, Table, Tag, Button, message, Modal, Upload } from 'antd'
 import axios from 'axios'
 import { setToken, getToken, removeToken } from '../tools'
 import { PoweroffOutlined } from '@ant-design/icons'
-import { LaptopOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import Papa from 'papaparse'
+import { LaptopOutlined, ExclamationCircleOutlined, DownloadOutlined, RightOutlined, DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
 import SelectTable from "./SelectTable"
 import '../styles/Database.css'
 
@@ -28,6 +27,7 @@ const Database = () => {
     const [tabledata, setTabledata] = useState([])
     const [tablelist, setTablelist] = useState([])
     const [loadings, setLoadings] = useState([])
+    const [downloadurl, setDownloadurl] = useState("")
     const username = getToken()
 
     // 发送get请求，抓取数据表项列表
@@ -70,6 +70,14 @@ const Database = () => {
         }
         fetchtableData()
     }, [curtable, database])
+
+    // 监听tablelist变化
+    useEffect(() => {
+        console.log('选择列表更新: ', tablelist)
+        const tablelistParam = tablelist.map((item) => `tablelist=${item}`).join('&')
+        setDownloadurl(`http://localhost:8088/download-csv?dbname=${database}&${tablelistParam}`)
+        console.log(downloadurl)
+    }, [tablelist])
 
     const onChange = (key) => {
         console.log(key)
@@ -151,73 +159,33 @@ const Database = () => {
         })
     }
 
-    const handleExtract = (tablename) => {
-        const handleOk = async () => {
-            console.log('正在提取：', tablelist)
-            const tablelistParam = tablelist.map((item) => `tablelist=${item}`).join('&')
-            const url = `http://localhost:8088/download-csv?dbname=${database}&${tablelistParam}`
-            console.log(url)
-            try {
-                const response = await axios.get(url, {
-                    headers: {
-                        accept: 'text/csv',
-                    },
-                    responseType: 'blob', // 设置响应类型为blob，以支持文件下载
-                })
-                const blob = new Blob([response.data], { type: 'text/csv' })
-                const url = window.URL.createObjectURL(blob)
-                const link = document.createElement('a')
-                link.href = url
-                link.download = 'data.csv'
-                link.click()
-                window.URL.revokeObjectURL(url)
-            } catch (error) {
-                console.error('请求出错:', error)
-            }
-        }
+    const handleExtract = (downloadurl) => {
         confirm({
             width: 800,
             height: '300px',
             title: (<p>选中要提取数据的车辆编号</p>),
-            okText: '提取选中',
+            destroyOnClose: false,
+            okText: '完成选择',
             cancelText: '取消',
             content: (
-                <ExtractListContext.Provider value={{ tablelist, setTablelist }}>
-                    <div style={{ height: '400px', overflow: 'auto' }}>
-                        <SelectTable tablename={tablename} />
-                    </div>
-                </ExtractListContext.Provider>
-
+                <>
+                    <ExtractListContext.Provider value={{ tablelist, setTablelist }}>
+                        <div style={{ height: '400px', overflow: 'auto' }}>
+                            <SelectTable tablename={tablename} />
+                        </div>
+                    </ExtractListContext.Provider>
+                </>
             ),
             icon: <ExclamationCircleOutlined style={{ color: 'green' }} />,
-            onOk: async () => {
-                console.log('正在提取：', tablelist)
-                const tablelistParam = tablelist.map((item) => `tablelist=${item}`).join('&')
-                const url = `http://localhost:8088/download-csv?dbname=${database}&${tablelistParam}`
-                console.log(url)
-                try {
-                    const response = await axios.get(url, {
-                        headers: {
-                            'accept': 'text/csv',
-                        },
-                        responseType: 'blob' // 设置响应类型为blob，以支持文件下载
-                    })
-                    const blob = new Blob([response.data], { type: 'text/csv' })
-                    const url = window.URL.createObjectURL(blob)
-                    const link = document.createElement('a')
-                    link.href = url
-                    link.download = 'data.csv'
-                    link.click()
-                    window.URL.revokeObjectURL(url)
-                } catch (error) {
-                    console.error('请求出错:', error)
-                }
+            onOk: () => {
+                console.log('选择完成')
             },
             onCancel: () => {
                 console.log('取消')
             },
         })
     }
+
     return (
         <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -235,17 +203,23 @@ const Database = () => {
                     </p></Tag>
                 <Button
                     type="primary"
+                    style={{ left: '57%', position: 'absolute' }}
+                    icon={<DownloadOutlined />}
+                    onClick={() => window.open(downloadurl)}
+                >下载数据</Button>
+                <Button
+                    type="primary"
                     icon={<PoweroffOutlined />}
-                    style={{ left: '63%', position: 'absolute' }}
+                    style={{ left: '66%', position: 'absolute' }}
                     loading={loadings[3]}
-                    onClick={() => handleExtract(tablename)}
+                    onClick={() => handleExtract()}
                 >
-                    提取规格化数据
+                    批量导出
                 </Button>
                 <Button
                     type="primary"
                     icon={<PoweroffOutlined />}
-                    style={{ left: '75%', position: 'absolute' }}
+                    style={{ left: '75%', position: 'absolute', backgroundColor: "green" }}
                     loading={loadings[2]}
                     onClick={() => handleDistinct(database, setLoadings)}
                 >
@@ -262,50 +236,123 @@ const Database = () => {
                     删除数据库
                 </Button>
                 {/* 根据用户名和数据库名删除数据库 */}
-
             </div>
-            <Collapse accordion>
-                {tablename.slice(0, 100).map((name, index) => (
-                    <Panel
-                        header={`TableName：${name}`}
-                        key={index + 1}
-                        onClick={() => {
-                            setCurtable(name)
-                            // console.log(name)
-                        }}
-                        style={{
-                            // backgroundColor: '#fff', // 设置背景色为白色，这个属性会将CSS的覆盖！
-                            transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
-                        }}
-                        className="hoverable-panel" // 添加自定义 class 名称
-                    >
-                        <Table dataSource={tabledata}>
-                            <Column title="车辆编号" dataIndex="id" key="id" />
-                            <Column title="时间" dataIndex="time" key="time" />
-                            <Column title="精度" dataIndex="lon" key="lon" />
-                            <Column title="维度" dataIndex="lat" key="lat" />
-                            <Column title="载客状态" dataIndex="if_empty" key="if_empty"
-                                // 对是否空车进行二级渲染
-                                render={(if_empty) => {
-                                    return if_empty ? (<Tag color="blue">Yes</Tag>) : (<Tag color="green">No</Tag>)
-                                }} />
-                            <Column title="车辆速度" dataIndex="speed" key="speed" />
-                        </Table>
-                        {/* <p>{tabledata.map((data) => (
-                            <div key={data.index}>
-                                <span>ID: {data.id}</span>
-                                <span>Time: {data.time}</span>
-                                <span>Lon: {data.lon}</span>
-                                <span>Lat: {data.lat}</span>
-                                <span>Empty: {data.if_empty ? 'Yes' : 'No'}</span>
-                                <span>Speed: {data.speed}</span>
-                            </div>
-                        ))}</p> */}
-                        {/* 映射成span组件 */}
-                    </Panel>
-                ))}
-            </Collapse>
+
+            <div id="container" style={{ display: 'flex', flexDirection: 'row' }}>
+                <Collapse accordion style={{ flex: 1 }}>
+                    {tablename.slice(0, 200).map((name, index) => (
+                        <Panel
+                            header={`TableName：${name}`}
+                            key={index + 1}
+                            onClick={() => {
+                                setCurtable(name)
+                                // console.log(name)
+                            }}
+                            style={{
+                                // backgroundColor: '#fff', // 设置背景色为白色，这个属性会将CSS的覆盖！
+                                transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
+                            }}
+                            extra={<Button icon=<DoubleRightOutlined /> onClick={(e) => {
+                                e.stopPropagation()
+                                // 导出时不进行数据展示
+                                setTablelist([...tablelist, name])
+                            }}>导出</Button>}
+                            className="hoverable-panel" // 添加自定义 class 名称
+                        >
+                            <Table dataSource={tabledata} >
+                                <Column title="编号" dataIndex="id" key="id" />
+                                <Column title="时间" dataIndex="time" key="time" />
+                                <Column title="精度" dataIndex="lon" key="lon" />
+                                <Column title="维度" dataIndex="lat" key="lat" />
+                                <Column title="满载" dataIndex="if_empty" key="if_empty"
+                                    // 对是否空车进行二级渲染
+                                    render={(if_empty) => {
+                                        return if_empty ? (<Tag color="blue">Yes</Tag>) : (<Tag color="green">No</Tag>)
+                                    }} />
+                                <Column title="速度" dataIndex="speed" key="speed" />
+                            </Table>
+                            {/* 映射成span组件 */}
+                        </Panel>
+                    ))}
+                </Collapse>
+                {/* 可拖动的分割线 */}
+                <div
+                    style={{
+                        width: '3px',
+                        backgroundColor: 'black',
+                        alignSelf: 'stretch',
+                        cursor: 'col-resize',
+                    }}
+                ></div>
+                <Collapse accordion style={{ flex: 1 }}>
+                    {tablelist.map((name, index) => (
+                        <Panel
+                            header={`TableName：${name}`}
+                            key={index + 1}
+                            onClick={() => {
+                                setCurtable(name)
+                                // console.log(name)
+                            }}
+                            style={{
+                                // backgroundColor: '#fff', // 设置背景色为白色，这个属性会将CSS的覆盖！
+                                // width: '400px',
+                                transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
+                            }}
+                            extra={<Button icon=<DoubleLeftOutlined /> onClick={(e) => {
+                                e.stopPropagation()
+                                setTablelist(tablelist.filter((item) => item !== name))
+                            }}>取消</Button>}
+                            className="hoverable-panel" // 添加自定义 class 名称
+                        >
+                            <Table dataSource={tabledata}>
+                                <Column title="车辆编号" dataIndex="id" key="id" />
+                                <Column title="时间" dataIndex="time" key="time" />
+                                <Column title="精度" dataIndex="lon" key="lon" />
+                                <Column title="维度" dataIndex="lat" key="lat" />
+                                <Column title="载客状态" dataIndex="if_empty" key="if_empty"
+                                    // 对是否空车进行二级渲染
+                                    render={(if_empty) => {
+                                        return if_empty ? (<Tag color="blue">Yes</Tag>) : (<Tag color="green">No</Tag>)
+                                    }} />
+                                <Column title="车辆速度" dataIndex="speed" key="speed" />
+                            </Table>
+                            {/* 映射成span组件 */}
+                        </Panel>
+                    ))}
+                </Collapse>
+            </div>
         </>
     )
 }
 export default Database
+// const [dragging, setDragging] = useState(false)
+// const [width, setWidth] = useState('50%')
+// const containerRef = useRef(null)
+// useEffect(() => {
+
+
+//     document.addEventListener('mousemove', handleMouseMove)
+//     document.addEventListener('mouseup', handleMouseUp)
+
+//     return () => {
+//         document.removeEventListener('mousemove', handleMouseMove)
+//         document.removeEventListener('mouseup', handleMouseUp)
+//     }
+// }, [dragging])
+
+// const handleMouseMove = (e) => {
+//     if (!dragging || !containerRef.current) return
+//     const containerRect = containerRef.current.getBoundingClientRect()
+//     const containerWidth = containerRect.width
+//     const mouseX = e.pageX
+//     const newWidth = `${((mouseX - containerRect.left) / containerWidth) * 100}%`
+//     setWidth(newWidth)
+// }
+
+// const handleMouseUp = () => {
+//     setDragging(false)
+// }
+// const handleMouseDown = (e) => {
+//     e.preventDefault()
+//     setDragging(true)
+// }

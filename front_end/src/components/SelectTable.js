@@ -23,7 +23,6 @@ const SelectTable = ({ tablename }) => {
         setSelectedRowKeys(newSelectedRowKeys)
         const temp = newSelectedRowKeys.map((item) => tablename[item - 1])
         setTablelist(temp)
-        console.log('选择列表更新: ', temp)
     }
 
     const rowSelection = {
