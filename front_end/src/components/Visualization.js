@@ -123,9 +123,9 @@ const Visualization = () => {
                     }}
                     extra={
                         <Space>
-                            <Button onClick={() => setAddLayer(false)}>Cancel</Button>
+                            <Button onClick={() => setAddLayer(false)}>取消</Button>
                             <Button onClick={() => setAddLayer(false)} type="primary">
-                                Submit
+                                确认添加
                             </Button>
                         </Space>
                     }

@@ -13,19 +13,24 @@ public class User {
     private List<String> action;
     private List<String> datas;
     private List<String> layers;
+    private List<String> description;
+
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public User(@JsonProperty("account") String account,
                 @JsonProperty("password") String password,
                 @JsonProperty("database") List<String> database,
                 @JsonProperty("actions") List<String> action,
                 @JsonProperty("datas") List<String> datas,
-                @JsonProperty("layers") List<String> layers) {
+                @JsonProperty("layers") List<String> layers,
+                @JsonProperty("description") List<String> description) {
         this.account = account;
         this.password = password;
         this.database=database;
         this.action = action;
         this.datas = datas;
         this.layers=layers;
+        this.description=description;
     }
 //    构造函数，用做将json文件赋值给user
 
@@ -77,6 +82,14 @@ public class User {
         this.datas = datas;
     }
 
+    public void setDescription(List<String> description) {
+        this.description = description;
+    }
+
+    public List<String> getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -86,6 +99,7 @@ public class User {
                 ", action=" + action +
                 ", datas=" + datas +
                 ", layers=" + layers +
+                ", description=" + description +
                 '}';
     }
 }

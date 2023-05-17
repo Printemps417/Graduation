@@ -8,7 +8,7 @@ import { Space, Table, Tag, Button, message, Modal, Upload } from 'antd'
 import axios from 'axios'
 import { setToken, getToken, removeToken } from '../tools'
 import { PoweroffOutlined } from '@ant-design/icons'
-import { LaptopOutlined, ExclamationCircleOutlined, DownloadOutlined, RightOutlined, DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons'
+import { LaptopOutlined, ExclamationCircleOutlined, DownloadOutlined, DeleteOutlined, DoubleRightOutlined, DoubleLeftOutlined, FolderOpenOutlined } from '@ant-design/icons'
 import SelectTable from "./SelectTable"
 import '../styles/Database.css'
 
@@ -211,7 +211,7 @@ const Database = () => {
                 >下载数据</Button>
                 <Button
                     type="primary"
-                    icon={<PoweroffOutlined />}
+                    icon={<FolderOpenOutlined />}
                     style={{ left: '66%', position: 'absolute' }}
                     loading={loadings[3]}
                     onClick={() => handleExtract()}
@@ -230,7 +230,7 @@ const Database = () => {
                 {/* 对数据库中内容进行去重 */}
                 <Button
                     type="primary"
-                    icon={<PoweroffOutlined />}
+                    icon={<DeleteOutlined />}
                     style={{ backgroundColor: 'red', position: 'absolute', left: '85%' }}
                     loading={loadings[1]}
                     onClick={() => handleDelete(username, database, setLoadings)}

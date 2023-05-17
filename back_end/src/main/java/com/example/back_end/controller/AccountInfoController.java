@@ -115,7 +115,7 @@ public class AccountInfoController {
         String FilePath=this.StaticPath+"\\"+account+".json";
 
         List<String> emptyList = new ArrayList<String>();
-        User user=new User(account,password,emptyList,emptyList,emptyList,emptyList);
+        User user=new User(account,password,emptyList,emptyList,emptyList,emptyList,emptyList);
 
         // 将User对象序列化为JSON字符串
         String json;
@@ -141,7 +141,8 @@ public class AccountInfoController {
     public String update_userdata(String account,
                                   String action,
                                   String data,
-                                  String layer){
+                                  String layer,
+                                  String description){
         ObjectMapper mapper = new ObjectMapper();
         String FilePath=this.StaticPath+"\\"+account+".json";
         User user;
@@ -157,6 +158,7 @@ public class AccountInfoController {
         List<String> oldactions=user.getAction();
         List<String> olddatas=user.getDatas();
         List<String> oldlayers=user.getLayers();
+        List<String> olddescription=user.getDescription();
         if(oldlayers.contains(layer)){
             return "添加失败！该图层名已存在";
 //            必须保证图层名互异，用于管理
@@ -164,10 +166,13 @@ public class AccountInfoController {
         oldactions.add(action);
         olddatas.add(data);
         oldlayers.add(layer);
-        System.out.println(oldactions);
+        olddescription.add(description);
+
         user.setAction(oldactions);
         user.setDatas(olddatas);
         user.setLayers(oldlayers);
+        user.setDescription(olddescription);
+        System.out.println(user+"更新信息成功");
         // 将User对象序列化为JSON字符串
         String json;
         try {
@@ -205,16 +210,19 @@ public class AccountInfoController {
         List<String> oldactions=user.getAction();
         List<String> olddatas=user.getDatas();
         List<String> oldlayers=user.getLayers();
+        List<String> olddescription=user.getDescription();
 
         int index = user.getLayers().indexOf(layer);
         if(index >= 0) {
             oldactions.remove(index);
             olddatas.remove(index);
             oldlayers.remove(index);
+            olddescription.remove(index);
         }
         user.setAction(oldactions);
         user.setDatas(olddatas);
         user.setLayers(oldlayers);
+        user.setDescription(olddescription);
         // 将User对象序列化为JSON字符串
         String json;
         try {

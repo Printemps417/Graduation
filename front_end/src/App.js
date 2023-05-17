@@ -17,7 +17,7 @@ const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
 // 用于模块间传输数据
-const menu = ['image', '数据集导入与处理', 'GPS数据可视化', '平台使用文档', '样例数据下载', 'StackOverflow', 'Aboutme']
+const menu = ['image', '数据集导入与处理', 'GPS数据可视化', '平台使用文档', '样例数据下载', '讨论区', '关于作者']
 const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data', 'Disscussion', 'Aboutme'].map((key, index) => (
   index == 0 ?
     {
