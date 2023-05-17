@@ -204,6 +204,7 @@ public class AccountInfoController {
         List<String> olddatas=user.getDatas();
         List<String> oldlayers=user.getLayers();
         List<String> olddescription=user.getDescription();
+        List<Boolean> oldvisible=user.getVisible();
         if(oldlayers.contains(layer)){
             return "添加失败！该图层名已存在";
 //            必须保证图层名互异，用于管理
@@ -212,11 +213,13 @@ public class AccountInfoController {
         olddatas.add(data);
         oldlayers.add(layer);
         olddescription.add(description);
+        oldvisible.add(true);
 
         user.setAction(oldactions);
         user.setDatas(olddatas);
         user.setLayers(oldlayers);
         user.setDescription(olddescription);
+        user.setVisible(oldvisible);
         System.out.println(user+"更新信息成功");
         // 将User对象序列化为JSON字符串
         String json;

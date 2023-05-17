@@ -1,5 +1,5 @@
 import React, { Component, useState, useRef, useEffect } from 'react'
-import { CodepenOutlined, PlusOutlined, RedoOutlined, FolderOpenOutlined, UploadOutlined } from '@ant-design/icons'
+import { CodepenOutlined, PlusOutlined, RedoOutlined, FolderOpenOutlined, UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Layout, theme, Button, Drawer, Form, Col, Row, Input, DatePicker, Select, Space, Upload, message, Collapse, Alert, Radio } from 'antd'
 import '../styles/Visualization.css'
@@ -135,7 +135,14 @@ const Visualization = () => {
                 <Drawer title="Layers" width={300} closable={false} onClose={() => setShowLayer(false)} open={ShowLayer} placement='left'>
                     <Collapse>
                         {layers.map((item, index) => (
-                            <Panel header={`图层：${item}`} key={index + 1}>
+                            <Panel header={`图层：${item}`} key={index + 1}
+                                style={{
+                                    // backgroundColor: '#fff', // 设置背景色为白色，这个属性会将CSS的覆盖！
+                                    transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
+                                }}
+                                className="hoverable-panel" // 添加自定义 class 名称
+
+                            >
                                 <Radio.Group defaultValue={visible[index] ? "visible" : "unvisible"} buttonStyle="solid">
                                     <Radio.Button value="visible"
                                         onClick={() => {

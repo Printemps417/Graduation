@@ -55,7 +55,7 @@ const AntMap = () => {
                 style: 'mapbox://styles/mapbox/streets-v12',
                 center: [121.417463, 31.215175],
                 pitch: 0,
-                zoom: 4,
+                zoom: 11,
                 rotation: 0,
                 token: 'pk.eyJ1IjoicHJpbnRlbXBzIiwiYSI6ImNsaGhwejU0cTAwY28zam8xbWludXo4bngifQ.LmDqGBLS65qC4bGVPmGgdA',
             }),

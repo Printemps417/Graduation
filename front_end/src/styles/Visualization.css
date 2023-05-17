@@ -13,3 +13,6 @@ body,
   margin: 0px;
   /* text-align: center; */
 }
+.hoverable-panel:hover {
+  background-color: #f0f8ff; /* 浅蓝色 */
+}
