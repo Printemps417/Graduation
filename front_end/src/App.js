@@ -103,47 +103,45 @@ const App = () => {
   return (
     <DatabaseContext.Provider value={{ useritem, setUseritem, dbname, setDbname }}>
       {/* Provider要包裹上层组件 */}
-      <Layout>
-        <BrowserRouter>
-          <Header className="header">
-            <div className="logo" />
-            <Menu theme="dark"
-              mode="horizontal"
-              style={{
-                margin: 0,
-                // height: "30px"
-                backgroundColor: "deepgray"
-              }}
-              defaultSelectedKeys={['image']}
-              items={items1}
-              onClick={() => {
-                console.log()
-              }}
-            />
-          </Header>
-          <Routes>
-            {/* 一级路由组件渲染位置 */}
-            <Route path="/" element={<LoginForm />}></Route>
-            <Route path="/login" element={<LoginForm />}></Route>
-            <Route path="/Signup" element={<Signup />}></Route>
-            <Route path="/Data" element={<Data />}>
-              <Route path="/Data/" element={<Adddb />}></Route>
-              <Route path="/Data/adddb" element={<Adddb />}></Route>
-              <Route path="/Data/database" element={<Database />}></Route>
-            </Route>
-            <Route path="/Introduction" element={<Introduction />}></Route>
-            <Route path="/Visualization" element={<Visualization />}></Route>
-            <Route path="/Sample data" element={<Sample />}></Route>
-          </Routes>
-        </BrowserRouter>
-        <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Graduation Design ©2023 Created by Lee
-        </Footer>
-      </Layout>
+      <BrowserRouter>
+        <Header className="header">
+          <div className="logo" />
+          <Menu theme="dark"
+            mode="horizontal"
+            style={{
+              margin: 0,
+              // height: "30px"
+              backgroundColor: "deepgray"
+            }}
+            defaultSelectedKeys={['Data']}
+            items={items1}
+            onClick={() => {
+              console.log()
+            }}
+          />
+        </Header>
+        <Routes>
+          {/* 一级路由组件渲染位置 */}
+          <Route path="/" element={<LoginForm />}></Route>
+          <Route path="/login" element={<LoginForm />}></Route>
+          <Route path="/Signup" element={<Signup />}></Route>
+          <Route path="/Data" element={<Data />}>
+            <Route path="/Data/" element={<Adddb />}></Route>
+            <Route path="/Data/adddb" element={<Adddb />}></Route>
+            <Route path="/Data/database" element={<Database />}></Route>
+          </Route>
+          <Route path="/Introduction" element={<Introduction />}></Route>
+          <Route path="/Visualization" element={<Visualization />}></Route>
+          <Route path="/Sample data" element={<Sample />}></Route>
+        </Routes>
+      </BrowserRouter>
+      <Footer
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        Graduation Design ©2023 Created by Lee
+      </Footer>
     </DatabaseContext.Provider>
   )
 }

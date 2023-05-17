@@ -1,7 +1,7 @@
-import React, { Component, useState, useRef } from 'react'
+import React, { Component, useState, useRef, useEffect } from 'react'
 import { CodepenOutlined, PlusOutlined, RedoOutlined, FolderOpenOutlined, UploadOutlined } from '@ant-design/icons'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
-import { Breadcrumb, Layout, Menu, theme, Button, Drawer, Form, Col, Row, Input, DatePicker, Select, Space, Upload, message } from 'antd'
+import { Layout, theme, Button, Drawer, Form, Col, Row, Input, DatePicker, Select, Space, Upload, message, Collapse, Alert, Radio } from 'antd'
 import '../styles/Visualization.css'
 import { useContext } from 'react'
 import { DatabaseContext } from '../App'
@@ -11,6 +11,7 @@ import { getToken } from '../tools'
 
 const { Header, Content, Footer, Sider } = Layout
 const { Option } = Select
+const { Panel } = Collapse
 const Visualization = () => {
     const {
         token: { colorBgContainer },
@@ -21,6 +22,10 @@ const Visualization = () => {
     const [layername, setLayername] = useState("")
     const [layerType, setLayerType] = useState("")
     const [layerDescribe, setLayerDescribe] = useState("")
+    const [visible, setVisible] = useState([])
+    const [actions, setActions] = useState([])
+    const [describe, setDescribe] = useState([])
+    const [layers, setLayers] = useState([])
 
     const colorOptions = [
         { color: '红', code: '#FF0000' },
@@ -94,6 +99,24 @@ const Visualization = () => {
         },
     }
 
+    useEffect(() => {
+        // 读取用户操作信息
+        axios.get(`http://localhost:8088/userdata?username=${getToken()}`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        }).then((response) => response.data)
+            .then((data) => {
+                console.log(data)
+                setActions(data.action)
+                setVisible(data.visible)
+                setDescribe(data.description)
+                setLayers(data.layers)
+            }).catch((error) => {
+                console.log(error)
+            })
+    }, [])
+
 
     return (
         <>
@@ -105,11 +128,50 @@ const Visualization = () => {
                 <Button
                     type="primary"
                     icon={<CodepenOutlined />}
-                    onClick={() => setShowLayer(true)}>管理图层</Button>
+                    onClick={() => {
+                        setShowLayer(true)
+                        console.log(layers)
+                    }}>管理图层</Button>
                 <Drawer title="Layers" width={300} closable={false} onClose={() => setShowLayer(false)} open={ShowLayer} placement='left'>
-                    <h1>图层管理界面</h1>
+                    <Collapse>
+                        {layers.map((item, index) => (
+                            <Panel header={`图层：${item}`} key={index + 1}>
+                                <Radio.Group defaultValue={visible[index] ? "visible" : "unvisible"} buttonStyle="solid">
+                                    <Radio.Button value="visible"
+                                        onClick={() => {
+                                            axios.post(`http://localhost:8088/toggle_visible?account=Lee&layer=${layers[index]}`)
+                                                .then((response) => {
+                                                    message.success(response.data)
+                                                }).catch((error) => {
+                                                    console.log(error)
+                                                })
+                                        }}>可见</Radio.Button>
+                                    <Radio.Button value="unvisible"
+                                        onClick={() => {
+                                            axios.post(`http://localhost:8088/toggle_visible?account=Lee&layer=${layers[index]}`)
+                                                .then((response) => {
+                                                    message.success(response.data)
+                                                }).catch((error) => {
+                                                    console.log(error)
+                                                })
+                                        }}>隐藏</Radio.Button>
+                                </Radio.Group>
+                                <Alert
+                                    style={{ marginTop: '10px' }}
+                                    message={`图层类型：${actions[index]}`}
+                                    type="info" />
+                                <Alert
+                                    style={{ marginTop: '10px' }}
+                                    message={`图层描述：${describe[index]}`}
+                                    type="info" />
+                            </Panel>
+                        )
+                        )}
+                    </Collapse>
                 </Drawer>
             </div >
+
+            {/* 图层添加组件 */}
             <div style={{ position: 'fixed', left: '3%', bottom: '16%' }}>
                 <Button
                     type="primary"

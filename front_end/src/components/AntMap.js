@@ -26,9 +26,6 @@ const AntMap = () => {
     // useState定义的变量的改变会引起重新渲染，使用useEffect可以监听变量改变从而做出行为
     // setState会引起重新渲染，但其对应的变量在下一次渲染前才更新，期间一直保持原有值
     const [scene, setscene] = useState({})
-    const [visible, setVisible] = useState(false)
-    const [action, setAction] = useState([])
-    const [dataurl, setDataurl] = useState([])
 
     // 刷新时重新初始化地图
     useEffect(() => {
@@ -73,11 +70,8 @@ const AntMap = () => {
             }
         }).then((response) => response.data)
             .then((data) => {
-                console.log(data)
-                setAction(data.action)
-                setDataurl(data.datas)
-                setVisible(data.visible)
-                console.log(data.action)
+                // console.log(data)
+                // console.log(data.action)
                 var i = 0
                 for (i = 0; i < data.action.length; i++) {
                     switch (data.action[i]) {
@@ -116,16 +110,16 @@ const AntMap = () => {
                             console.log('添加栅格热力图')
                             break
                         }
-                        // case 'Strip': {
-                        //     addTripLayer(data.datas[i], sceneInstance, data.visible[i])
-                        //     console.log('添加静态轨迹图')
-                        //     break
-                        // }
-                        // case 'Dtrip': {
-                        //     addDynaTripLayer(data.datas[i], sceneInstance, data.visible[i])
-                        //     console.log('添加动态轨迹图')
-                        //     break
-                        // }
+                        case 'Strip': {
+                            addTripLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加静态轨迹图')
+                            break
+                        }
+                        case 'Dtrip': {
+                            addDynaTripLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加动态轨迹图')
+                            break
+                        }
                         default: console.log('null')
                     }
                 }
@@ -160,14 +154,6 @@ const AntMap = () => {
                     position: "relative"
                 }}
                 id="antmap" />
-            <div style={{ position: 'fixed', left: '20%', bottom: '9%' }}>
-                <Button
-                    type="primary"
-                    icon={<RedoOutlined />}
-                    onClick={() => {
-                        message.success('正在导入图层……')
-                    }}>test</Button>
-            </div>
         </>
     )
 }
