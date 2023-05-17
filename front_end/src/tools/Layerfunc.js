@@ -1,6 +1,6 @@
 import { PointLayer, Source, HeatmapLayer, LineLayer } from '@antv/l7'
 
-const addClusterLayer = (url, sceneInstance) => {
+const addClusterLayer = (url, sceneInstance, ifvisible) => {
     fetch(url)
         .then(response => response.text())
         .then(data => {
@@ -31,6 +31,7 @@ const addClusterLayer = (url, sceneInstance) => {
                     stroke: '#fff',
                     opacity: 0.5
                 })
+
             // 聚合图标注
             const pointLayerText = new PointLayer({
                 autoFit: false
@@ -44,12 +45,21 @@ const addClusterLayer = (url, sceneInstance) => {
                     strokeWidth: 0.5,
                     stroke: '#fff'
                 })
+
+            if (ifvisible) {
+                pointLayer.show()
+                pointLayerText.show()
+            }
+            else {
+                pointLayer.hide()
+                pointLayerText.hide()
+            }
             sceneInstance.addLayer(pointLayer)
             sceneInstance.addLayer(pointLayerText)
         })
 }
 
-const addScatterLayer = (url, sceneInstance) => {
+const addScatterLayer = (url, sceneInstance, ifvisible) => {
     fetch('http://localhost:3000/SampleData/ScatterSample.csv')
         .then(response => response.text())
         .then(data => {
@@ -64,11 +74,16 @@ const addScatterLayer = (url, sceneInstance) => {
                 })
                 .size(0.5)
                 .color('#080298')
-
+            if (ifvisible) {
+                ScatterLayer.show()
+            }
+            else {
+                ScatterLayer.hide()
+            }
             sceneInstance.addLayer(ScatterLayer)
         })
 }
-const addHeatmapLayer = (url, sceneInstance) => {
+const addHeatmapLayer = (url, sceneInstance, ifvisible) => {
     fetch(
         'http://localhost:3000/SampleData/HeatSample.csv'
     )
@@ -112,11 +127,17 @@ const addHeatmapLayer = (url, sceneInstance) => {
                         '#EDE59C'
                     ].reverse()
                 )
+            if (ifvisible) {
+                layer.show()
+            }
+            else {
+                layer.hide()
+            }
             sceneInstance.addLayer(layer)
         })
     console.log('加载组件成功！')
 }
-const addHeatmapLayer2 = (url, scene) => {
+const addHeatmapLayer2 = (url, scene, ifvisible) => {
     fetch(
         'http://localhost:3000/SampleData/HeatmapSample2.json'
     )
@@ -141,10 +162,16 @@ const addHeatmapLayer2 = (url, scene) => {
                         positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
                     }
                 })
+            if (ifvisible) {
+                layer.show()
+            }
+            else {
+                layer.hide()
+            }
             scene.addLayer(layer)
         })
 }
-const addTextLayer = (url, sceneInstance) => {
+const addTextLayer = (url, sceneInstance, ifvisible) => {
     fetch('http://localhost:3000/SampleData/TextSample.json')
         .then(res => res.json())
         .then(data => {
@@ -168,11 +195,17 @@ const addTextLayer = (url, sceneInstance) => {
                     strokeWidth: 0.3, // 描边宽度
                     strokeOpacity: 1.0
                 })
+            if (ifvisible) {
+                TextLayer.show()
+            }
+            else {
+                TextLayer.hide()
+            }
 
             sceneInstance.addLayer(TextLayer)
         })
 }
-const addBubbleLayer = (url, scene) => {
+const addBubbleLayer = (url, scene, ifvisible) => {
     fetch(
         'http://localhost:3000/SampleData/BubbleSample.json'
     )
@@ -198,11 +231,17 @@ const addBubbleLayer = (url, scene) => {
                     opacity: 0.5,
                     strokeWidth: 0
                 })
+            if (ifvisible) {
+                pointLayer.show()
+            }
+            else {
+                pointLayer.hide()
+            }
 
             scene.addLayer(pointLayer)
         })
 }
-const addTripLayer = (url, scene) => {
+const addTripLayer = (url, scene, ifvisible) => {
     fetch(
         'http://localhost:3000/SampleData/TripDataSample.json'
     )
@@ -230,10 +269,16 @@ const addTripLayer = (url, scene) => {
                     '#B8EFE2',
                     '#D7F9F0'
                 ])
+            if (ifvisible) {
+                layer.show()
+            }
+            else {
+                layer.hide()
+            }
             scene.addLayer(layer)
         })
 }
-const addDynaTripLayer = (url, scene) => {
+const addDynaTripLayer = (url, scene, ifvisible) => {
     fetch(
         'http://localhost:3000/SampleData/DynamicTripSample.json'
     )
@@ -256,10 +301,16 @@ const addDynaTripLayer = (url, scene) => {
                     trailLength: 1.5,
                     duration: 6
                 })
+            if (ifvisible) {
+                lineLayer.show()
+            }
+            else {
+                lineLayer.hide()
+            }
             scene.addLayer(lineLayer)
         })
 }
-const addEqualLineLayer = (url, scene) => {
+const addEqualLineLayer = (url, scene, ifvisible) => {
     fetch(
         'http://localhost:3000/SampleData/EqualLineSample.json'
     )
@@ -287,6 +338,12 @@ const addEqualLineLayer = (url, scene) => {
                         '#D7F9F0'
                     ].reverse()
                 )
+            if (ifvisible) {
+                layer.show()
+            }
+            else {
+                layer.hide()
+            }
             scene.addLayer(layer)
         })
 }

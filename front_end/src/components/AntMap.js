@@ -4,7 +4,7 @@ import { Scene, PointLayer, Zoom, Scale, MouseLocation, MapTheme, Source, Heatma
 import '../styles/AntMap.css'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import { PlusOutlined, RedoOutlined } from '@ant-design/icons'
 import {
     getToken,
@@ -18,6 +18,7 @@ import {
     addEqualLineLayer,
     addTripLayer,
 } from '../tools'
+import axios from 'axios'
 
 const AntMap = () => {
     // render内定义的变量生命周期为当前渲染周期，重新渲染时会重新初始化
@@ -25,7 +26,9 @@ const AntMap = () => {
     // useState定义的变量的改变会引起重新渲染，使用useEffect可以监听变量改变从而做出行为
     // setState会引起重新渲染，但其对应的变量在下一次渲染前才更新，期间一直保持原有值
     const [scene, setscene] = useState({})
-    const [flag, setFlag] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [action, setAction] = useState([])
+    const [dataurl, setDataurl] = useState([])
 
     // 刷新时重新初始化地图
     useEffect(() => {
@@ -64,8 +67,74 @@ const AntMap = () => {
         setscene(sceneInstance)
 
         // 在 Scene 加载完成后添加控件。直接给sceneInstance添加
-        // addHeatmapLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
-        addClusterLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
+        axios.get(`http://localhost:8088/userdata?username=${getToken()}`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        }).then((response) => response.data)
+            .then((data) => {
+                console.log(data)
+                setAction(data.action)
+                setDataurl(data.datas)
+                setVisible(data.visible)
+                console.log(data.action)
+                var i = 0
+                for (i = 0; i < data.action.length; i++) {
+                    switch (data.action[i]) {
+                        case 'Scatter': {
+                            addScatterLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加散点图')
+                            break
+                        }
+                        case 'Cluster': {
+                            addClusterLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加聚合点图')
+                            break
+                        }
+                        case 'Equal': {
+                            addEqualLineLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加等值线图')
+                            break
+                        }
+                        case 'Bubble': {
+                            addBubbleLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加气泡点图')
+                            break
+                        }
+                        case 'Text': {
+                            addTextLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加文本标记')
+                            break
+                        }
+                        case 'Heat': {
+                            addHeatmapLayer2(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加热力图')
+                            break
+                        }
+                        case 'HeatGrid': {
+                            addHeatmapLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加栅格热力图')
+                            break
+                        }
+                        // case 'Strip': {
+                        //     addTripLayer(data.datas[i], sceneInstance, data.visible[i])
+                        //     console.log('添加静态轨迹图')
+                        //     break
+                        // }
+                        // case 'Dtrip': {
+                        //     addDynaTripLayer(data.datas[i], sceneInstance, data.visible[i])
+                        //     console.log('添加动态轨迹图')
+                        //     break
+                        // }
+                        default: console.log('null')
+                    }
+                }
+            }
+            )
+            .catch((error) => {
+                console.log(error)
+            })
+
         // 执行热力图添加函数
         sceneInstance.on("loaded", () => {
             sceneInstance.addControl(scale)
@@ -76,6 +145,9 @@ const AntMap = () => {
     }, [])
     // []:只在初始渲染时执行一次
 
+    const addLayers = (action) => {
+
+    }
     return (
         <>
             {/* <Helmet>
@@ -88,6 +160,14 @@ const AntMap = () => {
                     position: "relative"
                 }}
                 id="antmap" />
+            <div style={{ position: 'fixed', left: '20%', bottom: '9%' }}>
+                <Button
+                    type="primary"
+                    icon={<RedoOutlined />}
+                    onClick={() => {
+                        message.success('正在导入图层……')
+                    }}>test</Button>
+            </div>
         </>
     )
 }
