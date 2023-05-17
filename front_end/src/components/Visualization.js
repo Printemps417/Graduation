@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import { DatabaseContext } from '../App'
 import AntMap from './AntMap'
 import axios from 'axios'
+import { getToken } from '../tools'
 
 const { Header, Content, Footer, Sider } = Layout
 const { Option } = Select
@@ -17,6 +18,9 @@ const Visualization = () => {
 
     const [AddLayer, setAddLayer] = useState(false)
     const [ShowLayer, setShowLayer] = useState(false)
+    const [layername, setLayername] = useState("")
+    const [layerType, setLayerType] = useState("")
+    const [layerDescribe, setLayerDescribe] = useState("")
 
     const colorOptions = [
         { color: '红', code: '#FF0000' },
@@ -124,7 +128,21 @@ const Visualization = () => {
                     extra={
                         <Space>
                             <Button onClick={() => setAddLayer(false)}>取消</Button>
-                            <Button onClick={() => setAddLayer(false)} type="primary">
+                            <Button onClick={() => {
+                                console.log('图层名' + layername)
+                                console.log('图层类型' + layerType)
+                                console.log('图层位置' + FileUrl)
+                                console.log('图层描述' + layerDescribe)
+                                // 向数据库中更新用户的图层信息
+                                axios.post(`http://localhost:8088/update_userdata?account=${getToken()}&action=${layerType}&data=${FileUrl}&description=${layerDescribe}&layer=${layername}`, {
+                                    headers: {
+                                        accept: '*/*'
+                                    }
+                                }).then((response) => {
+                                    message.success(`${response.data}`)
+                                })
+                                // setAddLayer(false)
+                            }} type="primary">
                                 确认添加
                             </Button>
                         </Space>
@@ -143,7 +161,8 @@ const Visualization = () => {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="输入图层名称" />
+                                    <Input placeholder="输入图层名称"
+                                        onChange={(event) => setLayername(event.target.value)} />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -157,10 +176,17 @@ const Visualization = () => {
                                         },
                                     ]}
                                 >
-                                    <Select placeholder="选择待添加图层类型">
-                                        <Option value="private">聚合点图</Option>
-                                        <Option value="public">散点图</Option>
-                                        <Option value="public">热力图</Option>
+                                    <Select placeholder="选择待添加图层类型"
+                                        onChange={(value) => setLayerType(value)}>
+                                        <Option value="Scatter">散点图层</Option>
+                                        <Option value="Cluster">聚合点图层</Option>
+                                        <Option value="Bubble">气泡点图层</Option>
+                                        <Option value="Text">文本图层</Option>
+                                        <Option value="Heat">热力图层</Option>
+                                        <Option value="HeatGrid">网格热力图层</Option>
+                                        <Option value="Strip">静态轨迹图层</Option>
+                                        <Option value="Dtrip">动态轨迹图层</Option>
+                                        <Option value="Equal">等高线图层</Option>
                                     </Select>
                                 </Form.Item>
                             </Col>
@@ -197,10 +223,10 @@ const Visualization = () => {
                                     ]}
                                 >
                                     <Select placeholder="格式">
-                                        <Option value="private">.csv</Option>
-                                        <Option value="public">.txt</Option>
-                                        <Option value="public">.json</Option>
-                                        <Option value="public">.geojson</Option>
+                                        <Option value="csv">.csv</Option>
+                                        <Option value="txt">.txt</Option>
+                                        <Option value="json">.json</Option>
+                                        <Option value="geojson">.geojson</Option>
                                     </Select>
                                 </Form.Item>
                             </Col>
@@ -270,7 +296,8 @@ const Visualization = () => {
                                         },
                                     ]}
                                 >
-                                    <Input.TextArea rows={4} placeholder="描述你的图层信息" />
+                                    <Input.TextArea rows={4} placeholder="描述你的图层信息"
+                                        onChange={(event) => setLayerDescribe(event.target.value)} />
                                 </Form.Item>
                             </Col>
                         </Row>

@@ -189,7 +189,7 @@ public class AccountInfoController {
             e.printStackTrace();
             return "更新数据失败！";
         }
-        return "更新数据成功！";
+        return "添加图层"+layer+"成功！";
     }
     @ApiOperation("此接口用于根据图层名删除数据")
     @DeleteMapping("/delete_userdata")
