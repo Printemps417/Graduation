@@ -5,22 +5,23 @@ import com.example.back_end.mapper.UserMapper;
 import io.swagger.annotations.ApiOperation;
 import org.python.antlr.ast.Str;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
-import java.io.Console;
 
 @RestController
 @CrossOrigin
 public class FileUploadController {
 //    @PostMapping("/upload")
     public String file_path=null;
+    public String data_path=null;
     public String dbname=null;
     public String terminalout="后端Terminal信息： \n  ……";
     @ApiOperation("此接口用于上传用户文件")
@@ -47,6 +48,30 @@ public class FileUploadController {
         return "INPUT SUCCESSFULLY!";
     }
 
+    @ApiOperation("此接口用于下载数据文件")
+    @GetMapping(value = "/DownloadData")
+    public ResponseEntity<byte[]> download(String FileName) throws IOException {
+        String FilePath=this.data_path+FileName;
+        File file = new File(FilePath);
+        // 检查文件是否存在
+        if (!file.exists()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // 设置响应头
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", FileName);
+
+        // 读取文件内容
+        InputStream inputStream = new FileInputStream(file);
+        byte[] contents = new byte[(int) file.length()];
+        inputStream.read(contents);
+        inputStream.close();
+
+        return new ResponseEntity<>(contents, headers, HttpStatus.OK);
+    }
+
     public void saveFile(MultipartFile userFile, String path) throws IOException{
         File dir = new File(path);//查看文件夹是否存在
         if(!dir.exists()){
@@ -55,6 +80,7 @@ public class FileUploadController {
         }
         File file=new File(path+userFile.getOriginalFilename());
         this.file_path=path+userFile.getOriginalFilename();
+        this.data_path=path;
         System.out.println(this.file_path);
         this.dbname=userFile.getOriginalFilename();
         this.dbname=this.dbname.substring(0,this.dbname.indexOf('.'));

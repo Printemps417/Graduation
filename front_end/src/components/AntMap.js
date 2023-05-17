@@ -75,20 +75,18 @@ const AntMap = () => {
                     position: "relative"
                 }}
                 id="antmap" />
-            <div style={{ position: 'fixed', left: '3%', bottom: '15%' }}>
+            {/* <div style={{ position: 'fixed', left: '3%', bottom: '15%' }}>
                 <Button
                     type="primary"
-                    icon=<PlusOutlined />
+                    icon={<PlusOutlined />}
                     onClick={() => { window.location.reload() }}>添加图层</Button>
             </div>
             <div style={{ position: 'fixed', left: '3%', bottom: '9%' }}>
                 <Button
                     type="primary"
-                    icon=<RedoOutlined
-                    />
-                    style={{ zIndex: 9999 }}
+                    icon={<RedoOutlined />}
                     onClick={() => { window.location.reload() }}>刷新地图</Button>
-            </div>
+            </div> */}
         </>
     )
 }
