@@ -65,7 +65,7 @@ const AntMap = () => {
 
         // 在 Scene 加载完成后添加控件。直接给sceneInstance添加
         // addHeatmapLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
-        addEqualLineLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
+        addClusterLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
         // 执行热力图添加函数
         sceneInstance.on("loaded", () => {
             sceneInstance.addControl(scale)

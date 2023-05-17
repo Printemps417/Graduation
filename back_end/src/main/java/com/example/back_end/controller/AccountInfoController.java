@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -114,8 +115,14 @@ public class AccountInfoController {
         ObjectMapper mapper = new ObjectMapper();
         String FilePath=this.StaticPath+"\\"+account+".json";
 
-        List<String> emptyList = new ArrayList<String>();
-        User user=new User(account,password,emptyList,emptyList,emptyList,emptyList,emptyList);
+//        给每个新注册的用户初始化示例图层
+        List<String> db =  Arrays.asList(new String[]{});
+        List<String> actions =  Arrays.asList(new String[]{"Scatter", "Cluster", "Bubble", "Text", "Heat", "Strip", "Equal", "Dtrip", "HeatGrid"});
+        List<String> datas =  Arrays.asList(new String[]{"http://localhost:8088/DownloadData?FileName=ScatterSample.csv","http://localhost:8088/DownloadData?FileName=ScatterSample.csv","http://localhost:8088/DownloadData?FileName=BubbleSample.json","http://localhost:8088/DownloadData?FileName=TextSample.json","http://localhost:8088/DownloadData?FileName=HeatmapSample2.json","http://localhost:8088/DownloadData?FileName=TripDataSample.json","http://localhost:8088/DownloadData?FileName=EqualLineSample.json","http://localhost:8088/DownloadData?FileName=DynamicTripSample.json","http://localhost:8088/DownloadData?FileName=HeatSample.csv"});
+        List<String> layers =  Arrays.asList(new String[]{"示例-散点图","示例-聚合点图","示例-气泡点图","示例-文本标注","示例-热力图","示例-静态轨迹","示例-等高线","示例-动态轨迹","示例-网格热力图"});
+        List<String> description =  Arrays.asList(new String[]{"测试","测试","测试","测试","测试","测试","测试","测试","测试"});
+        List<Boolean> visible =  Arrays.asList(new Boolean[]{false,false,false,false,false,false,false,false,false});
+        User user=new User(account,password,db,actions,datas,layers,description,visible);
 
         // 将User对象序列化为JSON字符串
         String json;
@@ -136,7 +143,45 @@ public class AccountInfoController {
         return "用户注册成功！";
     }
 
-    @ApiOperation("此接口用于更新用户信息")
+    @ApiOperation("此接口用于更该图层可见度")
+    @PostMapping("/toggle_visible")
+    public String toggle_visible(String account,String layer){
+        ObjectMapper mapper = new ObjectMapper();
+        String FilePath=this.StaticPath+"\\"+account+".json";
+        User user;
+        try {
+            user = mapper.readValue(new File(FilePath), User.class);
+            System.out.println(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "更改可见度失败！";
+        }
+
+        List<Boolean> oldvisible=user.getVisible();
+        int index = user.getLayers().indexOf(layer);
+        if(index >= 0) {
+            oldvisible.set(index, !oldvisible.get(index));
+//            将对应位置的可见度取反
+        }
+
+        String json;
+        try {
+            json = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "更改可见度失败！";
+        }
+
+        // 将JSON字符串写回文件
+        try {
+            FileUtils.writeStringToFile(new File(FilePath), json, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "更改可见度失败！";
+        }
+        return "更改可见度成功";
+    }
+    @ApiOperation("此接口用于添加图层信息")
     @PostMapping("/update_userdata")
     public String update_userdata(String account,
                                   String action,

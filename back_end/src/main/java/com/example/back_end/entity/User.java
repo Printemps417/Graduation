@@ -14,6 +14,7 @@ public class User {
     private List<String> datas;
     private List<String> layers;
     private List<String> description;
+    private List<Boolean> visible;
 
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
@@ -23,7 +24,8 @@ public class User {
                 @JsonProperty("actions") List<String> action,
                 @JsonProperty("datas") List<String> datas,
                 @JsonProperty("layers") List<String> layers,
-                @JsonProperty("description") List<String> description) {
+                @JsonProperty("description") List<String> description,
+                @JsonProperty("visible") List<Boolean> visible) {
         this.account = account;
         this.password = password;
         this.database=database;
@@ -31,6 +33,7 @@ public class User {
         this.datas = datas;
         this.layers=layers;
         this.description=description;
+        this.visible=visible;
     }
 //    构造函数，用做将json文件赋值给user
 
@@ -90,6 +93,14 @@ public class User {
         return description;
     }
 
+    public List<Boolean> getVisible() {
+        return visible;
+    }
+
+    public void setVisible(List<Boolean> visible) {
+        this.visible = visible;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -100,6 +111,7 @@ public class User {
                 ", datas=" + datas +
                 ", layers=" + layers +
                 ", description=" + description +
+                ", visible=" + visible +
                 '}';
     }
 }

@@ -1,7 +1,7 @@
 import { PointLayer, Source, HeatmapLayer, LineLayer } from '@antv/l7'
 
 const addClusterLayer = (url, sceneInstance) => {
-    fetch('http://localhost:3000/SampleData/ScatterSample.csv')
+    fetch(url)
         .then(response => response.text())
         .then(data => {
             // console.log('获取数据：' + data)
