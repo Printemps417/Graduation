@@ -8,8 +8,14 @@ import {
 
 import {
     addClusterLayer,
+    addHeatmapLayer,
+    addHeatmapLayer2,
     addScatterLayer,
-    addHeatmapLayer
+    addTextLayer,
+    addBubbleLayer,
+    addDynaTripLayer,
+    addEqualLineLayer,
+    addTripLayer,
 } from './Layerfunc'
 
 export {
@@ -17,6 +23,12 @@ export {
     getToken,
     removeToken,
     addClusterLayer,
+    addHeatmapLayer,
+    addHeatmapLayer2,
     addScatterLayer,
-    addHeatmapLayer
+    addTextLayer,
+    addBubbleLayer,
+    addDynaTripLayer,
+    addEqualLineLayer,
+    addTripLayer,
 }

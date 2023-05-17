@@ -6,7 +6,18 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Button } from 'antd'
 import { PlusOutlined, RedoOutlined } from '@ant-design/icons'
-import { getToken, addClusterLayer, addHeatmapLayer, addScatterLayer } from '../tools'
+import {
+    getToken,
+    addClusterLayer,
+    addHeatmapLayer,
+    addHeatmapLayer2,
+    addScatterLayer,
+    addTextLayer,
+    addBubbleLayer,
+    addDynaTripLayer,
+    addEqualLineLayer,
+    addTripLayer,
+} from '../tools'
 
 const AntMap = () => {
     // render内定义的变量生命周期为当前渲染周期，重新渲染时会重新初始化
@@ -53,7 +64,9 @@ const AntMap = () => {
         setscene(sceneInstance)
 
         // 在 Scene 加载完成后添加控件。直接给sceneInstance添加
-        addHeatmapLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
+        // addHeatmapLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
+        addEqualLineLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
+        // 执行热力图添加函数
         sceneInstance.on("loaded", () => {
             sceneInstance.addControl(scale)
             sceneInstance.addControl(zoom)
@@ -75,18 +88,6 @@ const AntMap = () => {
                     position: "relative"
                 }}
                 id="antmap" />
-            {/* <div style={{ position: 'fixed', left: '3%', bottom: '15%' }}>
-                <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={() => { window.location.reload() }}>添加图层</Button>
-            </div>
-            <div style={{ position: 'fixed', left: '3%', bottom: '9%' }}>
-                <Button
-                    type="primary"
-                    icon={<RedoOutlined />}
-                    onClick={() => { window.location.reload() }}>刷新地图</Button>
-            </div> */}
         </>
     )
 }

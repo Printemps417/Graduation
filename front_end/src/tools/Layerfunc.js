@@ -1,7 +1,7 @@
 import { PointLayer, Source, HeatmapLayer, LineLayer } from '@antv/l7'
 
 const addClusterLayer = (url, sceneInstance) => {
-    fetch('http://localhost:3000/ScatterSample.csv')
+    fetch('http://localhost:3000/SampleData/ScatterSample.csv')
         .then(response => response.text())
         .then(data => {
             // console.log('获取数据：' + data)
@@ -50,7 +50,7 @@ const addClusterLayer = (url, sceneInstance) => {
 }
 
 const addScatterLayer = (url, sceneInstance) => {
-    fetch('http://localhost:3000/ScatterSample.csv')
+    fetch('http://localhost:3000/SampleData/ScatterSample.csv')
         .then(response => response.text())
         .then(data => {
             // 散点图数据
@@ -70,7 +70,7 @@ const addScatterLayer = (url, sceneInstance) => {
 }
 const addHeatmapLayer = (url, sceneInstance) => {
     fetch(
-        'http://localhost:3000/HeatSample.csv'
+        'http://localhost:3000/SampleData/HeatSample.csv'
     )
         .then(res => res.text())
         .then(data => {
@@ -116,9 +116,188 @@ const addHeatmapLayer = (url, sceneInstance) => {
         })
     console.log('加载组件成功！')
 }
+const addHeatmapLayer2 = (url, scene) => {
+    fetch(
+        'http://localhost:3000/SampleData/HeatmapSample2.json'
+    )
+        .then(res => res.json())
+        .then(data => {
+            const layer = new HeatmapLayer({})
+                .source(data)
+                .shape('heatmap')
+                .size('mag', [0, 1.0]) // weight映射通道
+                .style({
+                    intensity: 2,
+                    radius: 20,
+                    rampColors: {
+                        colors: [
+                            '#FF4818',
+                            '#F7B74A',
+                            '#FFF598',
+                            '#91EABC',
+                            '#2EA9A1',
+                            '#206C7C'
+                        ].reverse(),
+                        positions: [0, 0.2, 0.4, 0.6, 0.8, 1.0]
+                    }
+                })
+            scene.addLayer(layer)
+        })
+}
+const addTextLayer = (url, sceneInstance) => {
+    fetch('http://localhost:3000/SampleData/TextSample.json')
+        .then(res => res.json())
+        .then(data => {
+            const TextLayer = new PointLayer({})
+                .source(data.list, {
+                    parser: {
+                        type: 'json',
+                        x: 'j',
+                        y: 'w'
+                    }
+                })
+                .shape('m', 'text')
+                .size(12)
+                .color('w', ['#0e0030', '#0e0030', '#0e0030'])
+                .style({
+                    textAnchor: 'center', // 文本相对锚点的位置 center|left|right|top|bottom|top-left
+                    textOffset: [0, 0], // 文本相对锚点的偏移量 [水平, 垂直]
+                    spacing: 2, // 字符间距
+                    padding: [1, 1], // 文本包围盒 padding [水平，垂直]，影响碰撞检测结果，避免相邻文本靠的太近
+                    stroke: '#ffffff', // 描边颜色
+                    strokeWidth: 0.3, // 描边宽度
+                    strokeOpacity: 1.0
+                })
 
+            sceneInstance.addLayer(TextLayer)
+        })
+}
+const addBubbleLayer = (url, scene) => {
+    fetch(
+        'http://localhost:3000/SampleData/BubbleSample.json'
+    )
+        .then(res => res.json())
+        .then(data => {
+            data.features = data.features.filter(item => {
+                return item.properties.capacity > 800
+            })
+            const pointLayer = new PointLayer({})
+                .source(data)
+                .shape('circle')
+                .size('capacity', [0, 16])
+                .color('capacity', [
+                    '#34B6B7',
+                    '#4AC5AF',
+                    '#5FD3A6',
+                    '#7BE39E',
+                    '#A1EDB8',
+                    '#CEF8D6'
+                ])
+                .active(true)
+                .style({
+                    opacity: 0.5,
+                    strokeWidth: 0
+                })
+
+            scene.addLayer(pointLayer)
+        })
+}
+const addTripLayer = (url, scene) => {
+    fetch(
+        'http://localhost:3000/SampleData/TripDataSample.json'
+    )
+        .then(res => res.json())
+        .then(data => {
+            const layer = new LineLayer({})
+                .source(data, {
+                    parser: {
+                        type: 'json',
+                        coordinates: 'coordinates'
+                    }
+                })
+                .size(0.5)
+                .shape('line')
+                .active(true)
+                .color('length', [
+                    '#0A3663',
+                    '#1558AC',
+                    '#3771D9',
+                    '#4D89E5',
+                    '#64A5D3',
+                    '#72BED6',
+                    '#83CED6',
+                    '#A6E1E0',
+                    '#B8EFE2',
+                    '#D7F9F0'
+                ])
+            scene.addLayer(layer)
+        })
+}
+const addDynaTripLayer = (url, scene) => {
+    fetch(
+        'http://localhost:3000/SampleData/DynamicTripSample.json'
+    )
+        .then(res => res.json())
+        .then(data => {
+            const lineLayer = new LineLayer()
+                .source(data, {
+                    parser: {
+                        type: 'json',
+                        coordinates: 'path'
+                    }
+                })
+                .size(1.5)
+                .shape('line')
+                .color('color', v => {
+                    return `rgb(${v})`
+                })
+                .animate({
+                    interval: 0.6,
+                    trailLength: 1.5,
+                    duration: 6
+                })
+            scene.addLayer(lineLayer)
+        })
+}
+const addEqualLineLayer = (url, scene) => {
+    fetch(
+        'http://localhost:3000/SampleData/EqualLineSample.json'
+    )
+        .then(res => res.json())
+        .then(data => {
+            const layer = new LineLayer({})
+                .source(data)
+                .scale('value', {
+                    type: 'quantile'
+                })
+                .size('value', [0.5, 1, 1.5, 2])
+                .shape('line')
+                .color(
+                    'value',
+                    [
+                        '#0A3663',
+                        '#1558AC',
+                        '#3771D9',
+                        '#4D89E5',
+                        '#64A5D3',
+                        '#72BED6',
+                        '#83CED6',
+                        '#A6E1E0',
+                        '#B8EFE2',
+                        '#D7F9F0'
+                    ].reverse()
+                )
+            scene.addLayer(layer)
+        })
+}
 export {
     addClusterLayer,
     addHeatmapLayer,
-    addScatterLayer
+    addHeatmapLayer2,
+    addScatterLayer,
+    addTextLayer,
+    addBubbleLayer,
+    addDynaTripLayer,
+    addEqualLineLayer,
+    addTripLayer,
 }

@@ -48,7 +48,7 @@ public class FileUploadController {
         return "INPUT SUCCESSFULLY!";
     }
 
-    @ApiOperation("此接口用于下载数据文件")
+    @ApiOperation("此接口用于从后端下载数据文件")
     @GetMapping(value = "/DownloadData")
     public ResponseEntity<byte[]> download(String FileName) throws IOException {
         String FilePath=this.data_path+FileName;

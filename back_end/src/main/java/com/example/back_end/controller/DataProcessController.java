@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.opencsv.CSVWriter;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import java.util.List;
 public class DataProcessController {
     @Autowired
     private UserMapper userMapper;
+    @ApiOperation("此接口用于从数据库导出数据")
     @GetMapping(value = "/download-csv")
     public ResponseEntity<byte[]> downloadCsv(@RequestParam List<String> tablelist, String dbname) throws IOException {
         List<WebData> res = new ArrayList<>();

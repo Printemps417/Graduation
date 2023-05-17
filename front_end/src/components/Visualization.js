@@ -177,11 +177,11 @@ const Visualization = () => {
                                         },
                                     ]}
                                 >
-                                    <Input placeholder="选择文件路径" value={FileUrl} />
+                                    <Input placeholder="选择文件" value={FileUrl} />
                                     <Upload {...props}>
                                         <Button
                                             style={{ marginTop: '15px' }}
-                                            icon={<UploadOutlined />}>浏览</Button>
+                                            icon={<UploadOutlined />}>上传规格化数据</Button>
                                     </Upload>
                                 </Form.Item>
                             </Col>
