@@ -6,8 +6,17 @@ import {
     removeToken
 } from './token'
 
+import {
+    addClusterLayer,
+    addScatterLayer,
+    addHeatmapLayer
+} from './Layerfunc'
+
 export {
     setToken,
     getToken,
-    removeToken
+    removeToken,
+    addClusterLayer,
+    addScatterLayer,
+    addHeatmapLayer
 }

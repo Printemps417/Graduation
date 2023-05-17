@@ -42,7 +42,8 @@ const Visualization = () => {
             <div style={{ position: 'fixed', left: '3%', bottom: '7%' }}>
                 <Button
                     type="primary"
-                    icon=<RedoOutlined />
+                    icon=<RedoOutlined
+                        style={{ zIndex: 9999 }} />
                     onClick={() => { window.location.reload() }}>刷新地图</Button>
             </div>
         </>

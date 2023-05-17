@@ -4,6 +4,9 @@ import { Scene, PointLayer, Zoom, Scale, MouseLocation, MapTheme, Source, Heatma
 import '../styles/AntMap.css'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { Button } from 'antd'
+import { PlusOutlined, RedoOutlined } from '@ant-design/icons'
+import { getToken, addClusterLayer, addHeatmapLayer, addScatterLayer } from '../tools'
 
 const AntMap = () => {
     // render内定义的变量生命周期为当前渲染周期，重新渲染时会重新初始化
@@ -50,116 +53,12 @@ const AntMap = () => {
         setscene(sceneInstance)
 
         // 在 Scene 加载完成后添加控件。直接给sceneInstance添加
+        addHeatmapLayer('http://localhost:3000/ScatterSample.csv', sceneInstance)
         sceneInstance.on("loaded", () => {
             sceneInstance.addControl(scale)
             sceneInstance.addControl(zoom)
             sceneInstance.addControl(mapTheme)
             sceneInstance.addControl(mouseLocation)
-            // fetch('http://localhost:3000/Sampledata.csv')
-            //     .then(response => response.text())
-            //     .then(data => {
-            //         // console.log('获取数据：' + data)
-            //         // 聚合点数据
-            //         const dataSource = new Source(data, {
-            //             parser: {
-            //                 type: 'csv',
-            //                 x: 'Lon',
-            //                 y: 'Lat'
-
-            //             },
-            //             cluster: true
-            //         })
-            //         const pointLayer = new PointLayer({
-            //             autoFit: true
-            //         })
-            //             .source(dataSource)
-            //             .shape('circle')
-            //             .scale('point_count', {
-            //                 type: 'quantile'
-            //             })
-            //             .size('point_count', [5, 10, 15, 20, 25])
-            //             .active(true)
-            //             .color('green')
-            //             .style({
-            //                 strokeWidth: 0,
-            //                 stroke: '#fff',
-            //                 opacity: 0.5
-            //             })
-            //         // 聚合图标注
-            //         const pointLayerText = new PointLayer({
-            //             autoFit: false
-            //         })
-            //             .source(dataSource)
-            //             .shape('point_count', 'text')
-            //             .size(15)
-            //             .active(true)
-            //             .color('#fff')
-            //             .style({
-            //                 strokeWidth: 0.5,
-            //                 stroke: '#fff'
-            //             })
-            //         // 散点图数据
-            //         const ScatterLayer = new PointLayer({})
-            //             .source(data, {
-            //                 parser: {
-            //                     type: 'csv',
-            //                     x: 'Lon',
-            //                     y: 'Lat'
-            //                 }
-            //             })
-            //             .size(0.5)
-            //             .color('#080298')
-
-            //         sceneInstance.addLayer(ScatterLayer)
-            //         sceneInstance.addLayer(pointLayer)
-            //         sceneInstance.addLayer(pointLayerText)
-            //     })
-            fetch(
-                'http://localhost:3000/HeatSample.csv'
-            )
-                .then(res => res.text())
-                .then(data => {
-                    const layer = new HeatmapLayer({})
-                        .source(data, {
-                            parser: {
-                                type: 'csv',
-                                x: 'lng',
-                                y: 'lat'
-                            },
-                            transforms: [
-                                {
-                                    type: 'grid',
-                                    size: 20000,
-                                    field: 'v',
-                                    method: 'sum'
-                                }
-                            ]
-                        })
-                        .shape('circle')
-                        .style({
-                            coverage: 0.9,
-                            angle: 0
-                        })
-                        .color(
-                            'count',
-                            [
-                                '#8C1EB2',
-                                '#8C1EB2',
-                                '#DA05AA',
-                                '#F0051A',
-                                '#FF2A3C',
-                                '#FF4818',
-                                '#FF4818',
-                                '#FF8B18',
-                                '#F77B00',
-                                '#ED9909',
-                                '#ECC357',
-                                '#EDE59C'
-                            ].reverse()
-                        )
-                    sceneInstance.addLayer(layer)
-                })
-            console.log('加载组件成功！')
         })
     }, [])
     // []:只在初始渲染时执行一次
@@ -176,6 +75,20 @@ const AntMap = () => {
                     position: "relative"
                 }}
                 id="antmap" />
+            <div style={{ position: 'fixed', left: '3%', bottom: '15%' }}>
+                <Button
+                    type="primary"
+                    icon=<PlusOutlined />
+                    onClick={() => { window.location.reload() }}>添加图层</Button>
+            </div>
+            <div style={{ position: 'fixed', left: '3%', bottom: '9%' }}>
+                <Button
+                    type="primary"
+                    icon=<RedoOutlined
+                    />
+                    style={{ zIndex: 9999 }}
+                    onClick={() => { window.location.reload() }}>刷新地图</Button>
+            </div>
         </>
     )
 }
