@@ -32,7 +32,6 @@ const addClusterLayer = (url, sceneInstance, ifvisible) => {
                     opacity: 0.5
                 })
 
-
             // 聚合图标注
             const pointLayerText = new PointLayer({
                 autoFit: false
