@@ -63,6 +63,7 @@ const items1 = array.map((key, index) => (
             marginRight: "20px",
             marginLeft: "20px",
             color: "ffe",
+            fontSize: '18px'
             // width: "100px",
             // fontWeight: "bold"
           }}>

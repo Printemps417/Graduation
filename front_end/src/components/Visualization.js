@@ -140,10 +140,18 @@ const Visualization = () => {
             {/* Mapbox地图 */}
 
             {/* 按钮组件 */}
-            <div style={{ position: 'fixed', left: '3%', bottom: '23%' }}>
+            <div style={{ position: 'fixed', left: '3%', bottom: '12%', display: 'flex', flexDirection: 'column' }}>
                 <Button
                     type="primary"
                     icon={<CodepenOutlined />}
+                    style={{
+                        margin: '10px',
+                        width: '150px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                    }}
                     onClick={() => {
                         setShowLayer(true)
                         console.log(layers)
@@ -172,7 +180,6 @@ const Visualization = () => {
                                                 console.log(error)
                                             })
                                     }}
-                                    backgroundColor='blue'
                                     title='下移图层'
                                     style={{}}
                                 ></Button>}
@@ -226,15 +233,22 @@ const Visualization = () => {
                         )
                         )}
                     </Collapse>
+                    <p style={{ marginTop: '50px', color: 'gray' }}>注：位置靠下的图层渲染优先级更高</p>
                 </Drawer>
-            </div >
-
-            {/* 图层添加组件 */}
-            <div style={{ position: 'fixed', left: '3%', bottom: '16%' }}>
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
-                    onClick={() => setAddLayer(true)}>添加图层</Button>
+                    onClick={() => setAddLayer(true)}
+                    style={{
+                        margin: '10px',
+                        width: '150px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                    }}>
+                    添加图层
+                </Button>
                 <Drawer
                     title="待添加图层信息"
                     width={420}
@@ -423,13 +437,21 @@ const Visualization = () => {
                         </Row>
                     </Form>
                 </Drawer>
-            </div >
-            <div style={{ position: 'fixed', left: '3%', bottom: '9%' }}>
                 <Button
                     type="primary"
                     icon={<RedoOutlined />}
-                    onClick={() => { window.location.reload() }}>刷新地图</Button>
-            </div>
+                    onClick={() => { window.location.reload() }}
+                    style={{
+                        margin: '10px',
+                        width: '150px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px'
+                    }}>
+                    刷新地图
+                </Button>
+            </div >
         </>
     )
 }
