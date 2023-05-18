@@ -41,7 +41,13 @@ const items1 = array.map((key, index) => (
               width: "20px",
               // objectFit: "contain"
             }}
-            onClick={() => setTab(array[index])}
+            onClick={() => {
+              if (getToken() != 'none') {
+                setToken('none')
+                // 已登录的用户再次点击会注销
+              }
+              setTab(array[index])
+            }}
           />
         </Link>
     } :

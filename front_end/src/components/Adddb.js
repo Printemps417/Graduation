@@ -83,14 +83,14 @@ const Adddb = () => {
                     textAlign: 'center',
                     innerWidth: '100%',
                     width: '100%',
-                    marginLeft: "30%",
-                    marginTop: "5%"
+                    marginLeft: "50%",
+                    marginTop: "10%"
                 }}>
                     <Dragger {...props}>
                         <p className="ant-upload-drag-icon">
                             <InboxOutlined />
                         </p>
-                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                        <p className="ant-upload-text">点击或拖拽本地文件上传（.csv .json .txt）</p>
                         <p className="ant-upload-hint">
                             Support for a single or bulk upload. Strictly prohibited from uploading company data or other
                             banned files.
@@ -136,7 +136,14 @@ const Adddb = () => {
                             })
                         }}
                         style={{
-                            marginTop: '50px'
+                            margin: '10px',
+                            marginTop: '50px',
+                            marginLeft: '38%',
+                            width: '150px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '18px'
                         }}
                     >
                         提交数据
