@@ -1,5 +1,5 @@
 import React, { Component, useState, useRef, useEffect } from 'react'
-import { CodepenOutlined, PlusOutlined, RedoOutlined, FolderOpenOutlined, UploadOutlined, DeleteOutlined } from '@ant-design/icons'
+import { CodepenOutlined, PlusOutlined, RedoOutlined, FolderOpenOutlined, UploadOutlined, DeleteOutlined, ArrowDownOutlined } from '@ant-design/icons'
 import { Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Layout, theme, Button, Drawer, Form, Col, Row, Input, DatePicker, Select, Space, Upload, message, Collapse, Alert, Radio } from 'antd'
 import '../styles/Visualization.css'
@@ -117,6 +117,22 @@ const Visualization = () => {
             })
     }, [])
 
+    const updateLayerinfo = () => {
+        axios.get(`http://localhost:8088/userdata?username=${getToken()}`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        }).then((response) => response.data)
+            .then((data) => {
+                console.log(data)
+                setActions(data.action)
+                setVisible(data.visible)
+                setDescribe(data.description)
+                setLayers(data.layers)
+            }).catch((error) => {
+                console.log(error)
+            })
+    }
 
     return (
         <>
@@ -133,7 +149,7 @@ const Visualization = () => {
                         console.log(layers)
                     }}>管理图层</Button>
                 <Drawer title="Layers" width={300} closable={false} onClose={() => setShowLayer(false)} open={ShowLayer} placement='left'>
-                    <Collapse>
+                    <Collapse defaultActiveKey={[1]}>
                         {layers.map((item, index) => (
                             <Panel header={`图层：${item}`} key={index + 1}
                                 style={{
@@ -141,12 +157,31 @@ const Visualization = () => {
                                     transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
                                 }}
                                 className="hoverable-panel" // 添加自定义 class 名称
+                                extra={<Button
+                                    type="primary"
+                                    icon=<ArrowDownOutlined />
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        // 导出时不进行数据展示
+                                        axios.post(`http://localhost:8088/downLayer?account=${getToken()}&layer=${layers[index]}`)
+                                            .then((response) => {
+                                                message.success(response.data)
+                                                updateLayerinfo()
+                                                // 下移后更改列表信息
+                                            }).catch((error) => {
+                                                console.log(error)
+                                            })
+                                    }}
+                                    backgroundColor='blue'
+                                    title='下移图层'
+                                    style={{}}
+                                ></Button>}
 
                             >
                                 <Radio.Group defaultValue={visible[index] ? "visible" : "unvisible"} buttonStyle="solid">
                                     <Radio.Button value="visible"
                                         onClick={() => {
-                                            axios.post(`http://localhost:8088/toggle_visible?account=Lee&layer=${layers[index]}`)
+                                            axios.post(`http://localhost:8088/toggle_visible?account=${getToken()}&layer=${layers[index]}`)
                                                 .then((response) => {
                                                     message.success(response.data)
                                                 }).catch((error) => {
@@ -155,7 +190,7 @@ const Visualization = () => {
                                         }}>可见</Radio.Button>
                                     <Radio.Button value="unvisible"
                                         onClick={() => {
-                                            axios.post(`http://localhost:8088/toggle_visible?account=Lee&layer=${layers[index]}`)
+                                            axios.post(`http://localhost:8088/toggle_visible?account=${getToken()}&layer=${layers[index]}`)
                                                 .then((response) => {
                                                     message.success(response.data)
                                                 }).catch((error) => {
@@ -171,6 +206,22 @@ const Visualization = () => {
                                     style={{ marginTop: '10px' }}
                                     message={`图层描述：${describe[index]}`}
                                     type="info" />
+                                <Button
+                                    type="primary"
+                                    icon={<DeleteOutlined />}
+                                    style={{ backgroundColor: 'red', marginTop: "10px" }}
+                                    onClick={() => {
+                                        axios.delete(`http://localhost:8088/delete_userdata?account=${getToken()}&layer=${layers[index]}`)
+                                            .then((response) => {
+                                                updateLayerinfo()
+                                                // 更新图层列表数据
+                                                message.success('删除成功')
+                                            })
+                                        // 根据图层名删除图层
+                                    }}
+                                >
+                                    删除图层
+                                </Button>
                             </Panel>
                         )
                         )}

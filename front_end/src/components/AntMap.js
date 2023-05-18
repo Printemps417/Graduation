@@ -53,9 +53,9 @@ const AntMap = () => {
             id: 'antmap',
             map: new Mapbox({
                 style: 'mapbox://styles/mapbox/streets-v12',
-                center: [121.417463, 31.215175],
+                center: [110.417463, 33.215175],
                 pitch: 0,
-                zoom: 11,
+                zoom: 4,
                 rotation: 0,
                 token: 'pk.eyJ1IjoicHJpbnRlbXBzIiwiYSI6ImNsaGhwejU0cTAwY28zam8xbWludXo4bngifQ.LmDqGBLS65qC4bGVPmGgdA',
             }),
@@ -76,47 +76,47 @@ const AntMap = () => {
                 for (i = 0; i < data.action.length; i++) {
                     switch (data.action[i]) {
                         case 'Scatter': {
-                            addScatterLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addScatterLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加散点图')
                             break
                         }
                         case 'Cluster': {
-                            addClusterLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addClusterLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加聚合点图')
                             break
                         }
                         case 'Equal': {
-                            addEqualLineLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addEqualLineLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加等值线图')
                             break
                         }
                         case 'Bubble': {
-                            addBubbleLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addBubbleLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加气泡点图')
                             break
                         }
                         case 'Text': {
-                            addTextLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addTextLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加文本标记')
                             break
                         }
                         case 'Heat': {
-                            addHeatmapLayer2(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addHeatmapLayer2(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加热力图')
                             break
                         }
                         case 'HeatGrid': {
-                            addHeatmapLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addHeatmapLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加栅格热力图')
                             break
                         }
                         case 'Strip': {
-                            addTripLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addTripLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加静态轨迹图')
                             break
                         }
                         case 'Dtrip': {
-                            addDynaTripLayer(data.datas[i], sceneInstance, data.visible[i])
+                            if (data.visible[i]) addDynaTripLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加动态轨迹图')
                             break
                         }

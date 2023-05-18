@@ -65,6 +65,7 @@ const LoginForm = () => {
                 style={{
                     margin: '0 auto', // 水平居中
                     marginTop: "50px",
+                    marginLeft: "43%",
                     width: "200px",
                     // objectFit: "contain"
                 }}
