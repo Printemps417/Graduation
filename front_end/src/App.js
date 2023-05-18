@@ -12,13 +12,13 @@ import Signup from './components/Signup'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import LoginForm from './components/LoginForm'
-import { setToken, getToken, removeToken } from './tools'
+import { setToken, getToken, removeToken, setTab, getTab, removeTab } from './tools'
 const { Header, Content, Footer, Sider } = Layout
 
 export const DatabaseContext = React.createContext()
-// 用于模块间传输数据
 const menu = ['image', '数据集导入与处理', 'GPS数据可视化', '平台使用文档', '样例数据下载', '讨论区', '关于作者']
-const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data', 'Disscussion', 'Aboutme'].map((key, index) => (
+let array = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data', 'Disscussion', 'Aboutme']
+const items1 = array.map((key, index) => (
   index == 0 ?
     {
       key,
@@ -41,6 +41,7 @@ const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data',
               width: "20px",
               // objectFit: "contain"
             }}
+            onClick={() => setTab(array[index])}
           />
         </Link>
     } :
@@ -53,6 +54,7 @@ const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data',
           }}
           onClick={() => {
             console.log(`${key}被点击了`)
+            setTab(array[index])
           }}
           to={`/${key}`}
         >
@@ -68,6 +70,7 @@ const items1 = ['image', 'Data', 'Visualization', 'Introduction', 'Sample Data',
           </p>
         </Link>
     }))
+// 用于模块间传输数据
 
 const App = () => {
   const {
@@ -113,7 +116,7 @@ const App = () => {
               // height: "30px"
               backgroundColor: "deepgray"
             }}
-            defaultSelectedKeys={['Data']}
+            defaultSelectedKeys={[getTab()]}
             items={items1}
             onClick={() => {
               console.log()

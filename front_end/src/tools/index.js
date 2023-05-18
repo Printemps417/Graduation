@@ -3,8 +3,14 @@
 import {
     setToken,
     getToken,
-    removeToken
+    removeToken,
 } from './token'
+
+import {
+    setTab,
+    getTab,
+    removeTab
+} from './curTab'
 
 import {
     addClusterLayer,
@@ -22,6 +28,9 @@ export {
     setToken,
     getToken,
     removeToken,
+    setTab,
+    getTab,
+    removeTab,
     addClusterLayer,
     addHeatmapLayer,
     addHeatmapLayer2,
