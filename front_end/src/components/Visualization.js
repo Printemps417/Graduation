@@ -156,7 +156,7 @@ const Visualization = () => {
                         setShowLayer(true)
                         console.log(layers)
                     }}>管理图层</Button>
-                <Drawer title="Layers" width={300} closable={false} onClose={() => setShowLayer(false)} open={ShowLayer} placement='left'>
+                <Drawer title="Layers" width={400} closable={false} onClose={() => setShowLayer(false)} open={ShowLayer} placement='left'>
                     <Collapse defaultActiveKey={[1]}>
                         {layers.map((item, index) => (
                             <Panel header={`图层：${item}`} key={index + 1}
