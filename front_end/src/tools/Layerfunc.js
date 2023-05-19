@@ -60,7 +60,7 @@ const addClusterLayer = (url, sceneInstance, ifvisible) => {
 }
 
 const addScatterLayer = (url, sceneInstance, ifvisible) => {
-    fetch('http://localhost:3000/SampleData/ScatterSample.csv')
+    fetch(url)
         .then(response => response.text())
         .then(data => {
             // 散点图数据
@@ -85,7 +85,7 @@ const addScatterLayer = (url, sceneInstance, ifvisible) => {
 }
 const addHeatmapLayer = (url, sceneInstance, ifvisible) => {
     fetch(
-        'http://localhost:3000/SampleData/HeatSample.csv'
+        url
     )
         .then(res => res.text())
         .then(data => {
@@ -139,7 +139,7 @@ const addHeatmapLayer = (url, sceneInstance, ifvisible) => {
 }
 const addHeatmapLayer2 = (url, scene, ifvisible) => {
     fetch(
-        'http://localhost:3000/SampleData/HeatmapSample2.json'
+        url
     )
         .then(res => res.json())
         .then(data => {
@@ -172,7 +172,7 @@ const addHeatmapLayer2 = (url, scene, ifvisible) => {
         })
 }
 const addTextLayer = (url, sceneInstance, ifvisible) => {
-    fetch('http://localhost:3000/SampleData/TextSample.json')
+    fetch(url)
         .then(res => res.json())
         .then(data => {
             const TextLayer = new PointLayer({})
@@ -207,7 +207,7 @@ const addTextLayer = (url, sceneInstance, ifvisible) => {
 }
 const addBubbleLayer = (url, scene, ifvisible) => {
     fetch(
-        'http://localhost:3000/SampleData/BubbleSample.json'
+        url
     )
         .then(res => res.json())
         .then(data => {
@@ -243,7 +243,7 @@ const addBubbleLayer = (url, scene, ifvisible) => {
 }
 const addTripLayer = (url, scene, ifvisible) => {
     fetch(
-        'http://localhost:3000/SampleData/TripDataSample.json'
+        url
     )
         .then(res => res.json())
         .then(data => {
@@ -280,7 +280,7 @@ const addTripLayer = (url, scene, ifvisible) => {
 }
 const addDynaTripLayer = (url, scene, ifvisible) => {
     fetch(
-        'http://localhost:3000/SampleData/DynamicTripSample.json'
+        url
     )
         .then(res => res.json())
         .then(data => {
@@ -312,7 +312,7 @@ const addDynaTripLayer = (url, scene, ifvisible) => {
 }
 const addEqualLineLayer = (url, scene, ifvisible) => {
     fetch(
-        'http://localhost:3000/SampleData/EqualLineSample.json'
+        url
     )
         .then(res => res.json())
         .then(data => {
