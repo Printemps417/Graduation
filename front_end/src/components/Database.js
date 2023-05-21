@@ -71,7 +71,7 @@ const Database = () => {
         fetchtableData()
     }, [curtable, database])
 
-    // 监听tablelist变化
+    // 监听tablelist变化并改变下载地址
     useEffect(() => {
         console.log('选择列表更新: ', tablelist)
         const tablelistParam = tablelist.map((item) => `tablelist=${item}`).join('&')
