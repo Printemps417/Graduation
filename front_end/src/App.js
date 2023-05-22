@@ -110,22 +110,23 @@ const App = () => {
     <DatabaseContext.Provider value={{ useritem, setUseritem, dbname, setDbname }}>
       {/* Provider要包裹上层组件 */}
       <BrowserRouter>
-        <Header className="header">
-          <div className="logo" />
-          <Menu theme="dark"
-            mode="horizontal"
-            style={{
-              margin: 0,
-              // height: "30px"
-              backgroundColor: "deepgray"
-            }}
-            defaultSelectedKeys={[getTab()]}
-            items={items1}
-            onClick={() => {
-              console.log()
-            }}
-          />
-        </Header>
+        <div style={{ position: 'fixed', top: 0, width: '100%', zIndex: 999 }}>
+          <Header className="header">
+            <Menu theme="dark"
+              mode="horizontal"
+              style={{
+                margin: 0,
+                // height: "30px"
+                backgroundColor: "deepgray"
+              }}
+              defaultSelectedKeys={[getTab()]}
+              items={items1}
+              onClick={() => {
+                console.log()
+              }}
+            />
+          </Header>
+        </div>
         <Routes>
           {/* 一级路由组件渲染位置 */}
           <Route path="/" element={<LoginForm />}></Route>

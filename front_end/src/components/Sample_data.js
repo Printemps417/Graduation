@@ -4,7 +4,8 @@ const columns = [
         title: '图层名称',
         dataIndex: 'name',
         key: 'name',
-        width: '150px'
+        width: '150px',
+        align: 'center'
     },
     {
         title: '示例图片',
@@ -48,7 +49,7 @@ const data = name.map((item, index) => {
         key: index + 1,
         name: (<a
             href={url[index]}
-            style={{ fontSize: '16px', fontWeight: 'bold' }}>{item}</a>),
+            style={{ fontSize: '16px', fontWeight: 'bold', margin: '0px auto' }}>{item}</a>),
         img: (<img src={`\\Samplepic\\${index + 1}.jpg`}
             style={{ width: "400px" }} />),
         description: description[index],
