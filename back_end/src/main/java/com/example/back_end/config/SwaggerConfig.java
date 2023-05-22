@@ -25,9 +25,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("演示项目API")
-                .description("演示项目")
-                .version("1.0")
+                .title("基于WebGIS的道路交通GPS数据分析平台设计与实现")
+                .description("接口调试页面")
+                .version("1.2")
                 .build();
     }
 }
