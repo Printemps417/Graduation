@@ -113,8 +113,9 @@ const Introduction = () => {
             <h1>3 GPS数据可视化</h1>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <IImage index={count++} height={500}></IImage>
-                <p>底图加载默认情况</p>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <p>图示：底图加载默认情况</p></div>
 
             <h3>3.1 地图底层功能展示</h3>
             <p>在用户首次进入“GPS数据可视化”界面时，地图初始化中心点为[110.417463, 33.215175]，缩放等级4。用户可以通过拖拽、鼠标滚轮等方式改变视图，也可以通过地图侧边提供的控件修改地图。除了比例尺、中心位置外，平台还支持通过右上角的“Theme”组件修改地图主题，以满足用户多样化需求。</p>
