@@ -37,7 +37,8 @@ const Introduction = () => {
 
                 在未登录状态下，用户可以访问的界面只有平台使用文档。
             </p>
-            <IImage index={count++}></IImage><IImage index={count++}></IImage><IImage index={count++} style={{ height: '100px' }}></IImage>
+            <IImage index={count++}></IImage><IImage index={count++}></IImage>
+            <div><IImage index={count++} height={100} style={{ height: '100px' }}></IImage></div>
             <h1>2.1 用户数据库导入、展示、去重与删除</h1>
             {count++}
             <p>在初始状态下，用户数据库内没有可操作项，用户需要点击右侧区域或拖拽文件的方式，将存有GPS数据csv文件上传至服务器，并点击“提交数据”将数据保存至数据库。</p>
@@ -52,7 +53,8 @@ const Introduction = () => {
             <h1>2.2 用户数据规格化、批量选择与导出</h1>
             <p>在执行完上述的数据处理后，用户可根据编号选择导出的数据。用户点击编号列表右侧的按钮，可实现待导出区与数据库区的切换，其中右侧为待导出数据区。</p>
             <p>平台也支持用户批量选择待导出数据，可通过点击上方的“批量选择”按钮实现。</p>
-            <IImage index={count++}></IImage>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <IImage index={count++}></IImage></div>
             <p>在点击后，页面将弹出批量选择框，用户在框内可进行选择全部数据、奇数行数据、偶数行数据等操作。如图所示，用户选择了当前页全部数据。</p>
             <p>在选择数据完成后，点击右上角的“下载数据”按钮，即可按顺序下载当前选中的所有数据。下载的数据按照车辆编号选择顺序排列，内部数据均为处理后的规范化数据。</p>
             <h3>导出数据一览：</h3>
@@ -109,7 +111,11 @@ const Introduction = () => {
             </table>
             {count++}
             <h1>3 GPS数据可视化</h1>
-            <IImage index={count++}></IImage>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <IImage index={count++} height={500}></IImage>
+                <p>底图加载默认情况</p>
+            </div>
+
             <h3>3.1 地图底层功能展示</h3>
             <p>在用户首次进入“GPS数据可视化”界面时，地图初始化中心点为[110.417463, 33.215175]，缩放等级4。用户可以通过拖拽、鼠标滚轮等方式改变视图，也可以通过地图侧边提供的控件修改地图。除了比例尺、中心位置外，平台还支持通过右上角的“Theme”组件修改地图主题，以满足用户多样化需求。</p>
             <IImage index={count++}></IImage><IImage index={count++}></IImage>
