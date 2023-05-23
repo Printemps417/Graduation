@@ -8,14 +8,16 @@ import { Space, Table, Tag, Button, message, Modal, Upload } from 'antd'
 import axios from 'axios'
 import { setToken, getToken, removeToken } from '../tools'
 import { PoweroffOutlined } from '@ant-design/icons'
-import { LaptopOutlined, ExclamationCircleOutlined, DownloadOutlined, DeleteOutlined, DoubleRightOutlined, DoubleLeftOutlined, FolderOpenOutlined } from '@ant-design/icons'
+import { LaptopOutlined, ExclamationCircleOutlined, DownloadOutlined, DeleteOutlined, DoubleRightOutlined, DoubleLeftOutlined, FolderOpenOutlined, AreaChartOutlined } from '@ant-design/icons'
 import SelectTable from "./SelectTable"
+import TripReport from "./TripReport"
 import '../styles/Database.css'
 
 const { Panel } = Collapse
 const { confirm } = Modal
 const { Column, ColumnGroup } = Table
 export const ExtractListContext = createContext()
+export const ReportContext = createContext()
 const Database = () => {
     const { useritem, setUseritem, dbname, setDbname } = useContext(DatabaseContext)
     let [params] = useSearchParams()
@@ -27,7 +29,9 @@ const Database = () => {
     const [tabledata, setTabledata] = useState([])
     const [tablelist, setTablelist] = useState([])
     const [loadings, setLoadings] = useState([])
+    // const [AMap, setAMap] = useState([])
     const [downloadurl, setDownloadurl] = useState("")
+    const [address, setAddress] = useState('')
     const username = getToken()
 
     // 发送get请求，抓取数据表项列表
@@ -185,7 +189,30 @@ const Database = () => {
             },
         })
     }
-
+    const handleReport = () => {
+        confirm({
+            width: 800,
+            height: '300px',
+            title: (<p>{curtable}出行报告</p>),
+            destroyOnClose: false,
+            okText: '完成选择',
+            cancelText: '取消',
+            icon: <AreaChartOutlined />,
+            content: (
+                <>
+                    <div style={{ height: '400px', overflow: 'auto' }}>
+                        <TripReport tabledata={tabledata} />
+                    </div>
+                </>
+            ),
+            onOk: () => {
+                console.log('选择完成')
+            },
+            onCancel: () => {
+                console.log('取消')
+            },
+        })
+    }
     return (
         <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -254,11 +281,28 @@ const Database = () => {
                                 // backgroundColor: '#fff', // 设置背景色为白色，这个属性会将CSS的覆盖！
                                 transition: 'background-color 0.3s ease-in-out', // 添加过渡效果
                             }}
-                            extra={<Button icon=<DoubleRightOutlined /> onClick={(e) => {
-                                e.stopPropagation()
-                                // 导出时不进行数据展示
-                                setTablelist([...tablelist, name])
-                            }}>导出</Button>}
+                            extra={
+                                <>
+                                    <Button
+                                        type="primary"
+                                        icon=<AreaChartOutlined />
+                                        style={{ marginRight: "30px" }}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            // 查看报告时不进行数据展示
+                                            console.log(address)
+                                            setCurtable(name)
+                                            handleReport()
+
+                                        }
+                                        }
+                                        disabled={curtable == name ? false : true}
+                                    >生成出行报告</Button>
+                                    <Button icon=<DoubleRightOutlined /> onClick={(e) => {
+                                        e.stopPropagation()
+                                        // 导出时不进行数据展示
+                                        setTablelist([...tablelist, name])
+                                    }}>导出</Button></>}
                             className="hoverable-panel" // 添加自定义 class 名称
                         >
                             <Table dataSource={tabledata} >

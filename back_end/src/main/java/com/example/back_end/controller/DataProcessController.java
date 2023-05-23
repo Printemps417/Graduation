@@ -9,6 +9,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.opencsv.CSVWriter;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,14 +22,71 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.Map;
 @RestController
 @CrossOrigin
 public class DataProcessController {
+    public static String URL = "https://api.map.baidu.com/reverse_geocoding/v3?";
+
+    public static String AK = "pTneL1a5t4cYdySW1HQ0k7W20QsjIBDr";
 
     private String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\UserData";
     @Autowired
     private UserMapper userMapper;
+    @ApiOperation("此接口用于从数据库导出选中数据")
+    @GetMapping(value = "/location")
+    public String location(String loca) throws Exception {
+
+//        SearchHttpAK snCal = new SearchHttpAK();
+
+        Map params = new LinkedHashMap<String, String>();
+        params.put("ak", AK);
+        params.put("output", "json");
+        params.put("coordtype", "wgs84ll");
+        params.put("location", loca);
+
+        return requestGetAK(URL, params); // 假设 requestGetAK 方法返回响应数据字符串
+    }
+    public static String requestGetAK(String strUrl, Map<String, String> param) throws Exception {
+        if (strUrl == null || strUrl.length() <= 0 || param == null || param.size() <= 0) {
+            return "error";
+        }
+
+        StringBuffer queryString = new StringBuffer();
+        queryString.append(strUrl);
+        for (Map.Entry<?, ?> pair : param.entrySet()) {
+            queryString.append(pair.getKey() + "=");
+            queryString.append(URLEncoder.encode((String) pair.getValue(),
+                    "UTF-8") + "&");
+        }
+
+        if (queryString.length() > 0) {
+            queryString.deleteCharAt(queryString.length() - 1);
+        }
+
+        java.net.URL url = new URL(queryString.toString());
+        System.out.println(queryString.toString());
+        URLConnection httpConnection = (HttpURLConnection) url.openConnection();
+        httpConnection.connect();
+
+        InputStreamReader isr = new InputStreamReader(httpConnection.getInputStream());
+        BufferedReader reader = new BufferedReader(isr);
+        StringBuffer buffer = new StringBuffer();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        reader.close();
+        isr.close();
+        return buffer.toString();
+    }
     @ApiOperation("此接口用于从数据库导出选中数据")
     @GetMapping(value = "/download-csv")
     public ResponseEntity<byte[]> downloadCsv(@RequestParam List<String> tablelist, String dbname) throws IOException {
