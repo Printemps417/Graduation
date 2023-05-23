@@ -192,21 +192,21 @@ const Database = () => {
     const handleReport = () => {
         confirm({
             width: 800,
-            height: '300px',
+            height: 700,
             title: (<p>{curtable}出行报告</p>),
             destroyOnClose: false,
-            okText: '完成选择',
+            okText: '完成',
             cancelText: '取消',
             icon: <AreaChartOutlined />,
             content: (
                 <>
-                    <div style={{ height: '400px', overflow: 'auto' }}>
+                    <div style={{ height: '600px', overflow: 'auto' }}>
                         <TripReport tabledata={tabledata} />
                     </div>
                 </>
             ),
             onOk: () => {
-                console.log('选择完成')
+                console.log('完成')
             },
             onCancel: () => {
                 console.log('取消')
@@ -293,7 +293,6 @@ const Database = () => {
                                             console.log(address)
                                             setCurtable(name)
                                             handleReport()
-
                                         }
                                         }
                                         disabled={curtable == name ? false : true}

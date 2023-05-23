@@ -117,11 +117,10 @@ const Introduction = () => {
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <p>图示：底图加载默认情况</p></div>
 
-            <h3>3.1 地图底层功能展示</h3>
-            <p>在用户首次进入“GPS数据可视化”界面时，地图初始化中心点为[110.417463, 33.215175]，缩放等级4。用户可以通过拖拽、鼠标滚轮等方式改变视图，也可以通过地图侧边提供的控件修改地图。除了比例尺、中心位置外，平台还支持通过右上角的“Theme”组件修改地图主题，以满足用户多样化需求。</p>
-            <IImage index={count++}></IImage><IImage index={count++}></IImage>
-            <h3>3.2 图层类型展示</h3>
-            <p>新建用户账号内有八种示例图层，以便用户了解平台可视化功能与对应规范数据格式。</p>
+            <h3>3.1 地图底层功能</h3>
+            <p>可以通过拖拽、鼠标滚轮等方式改变视图，也可以通过地图侧边提供的控件修改地图。除了比例尺、中心位置外，平台还支持通过右上角的“Theme”组件修改地图主题</p>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><IImage index={count++}></IImage><IImage index={count++}></IImage></div>
+            <h3>3.2 图层类型</h3>
             <Sample_data />
             <h3>3.3 添加、删除图层功能演示</h3>
             <p>以中下载的规格化数据为例，演示添加与删除图层的操作。</p>
