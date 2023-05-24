@@ -1,8 +1,11 @@
-import { Table, Tag } from 'antd'
+import { Table, Tag, Card } from 'antd'
 import { useState, useContext, useEffect } from 'react'
 import { ExtractListContext } from './Database'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import axios from 'axios'
+import { Line } from '@antv/g2plot'
+import Plot from './Plot'
+
 const TripReport = ({ tabledata }) => {
     const columns = [
         {
@@ -21,19 +24,13 @@ const TripReport = ({ tabledata }) => {
             key: 'speed',
         },
     ]
+
     const Amap = AMapLoader.load({
         key: '2109b1cf6320763f85398e3a305f34c1', // 申请好的Web端开发者Key，首次调用 load 时必填
         securityJsCode: '6253b21ba2418ff654d06778cc04ab38',
         version: '2.0', // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
         plugins: ['AMap.Geocoder'], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
     })
-    // let totaltime = 0
-    // let runtime = 0
-    // let totaltrip = 0
-
-    // let timearray = []
-    // let speedarray = []
-    // let triparray = []
 
     const [timearray, setTimeArray] = useState([])
     const [speedarray, setSpeedArray] = useState([])
@@ -70,7 +67,7 @@ const TripReport = ({ tabledata }) => {
     useEffect(() => {
         console.log(tabledata)
         async function processdata () {
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 300; i++) {
                 let dis = calculateManhattanDistance(
                     tabledata[i].lat,
                     tabledata[i].lon,
@@ -78,7 +75,7 @@ const TripReport = ({ tabledata }) => {
                     tabledata[i + 1].lon
                 )
                 let distime = calculateTimeDifferenceInSeconds(tabledata[i].time, tabledata[i + 1].time)
-                if (dis > 10) {
+                if (dis > 20) {
                     setRuntime(prevRuntime => prevRuntime + distime)
                 }
                 setTotalTime(prevTotalTime => prevTotalTime + distime)
@@ -91,39 +88,77 @@ const TripReport = ({ tabledata }) => {
                 setTripArray(prevTripArray => [...prevTripArray, formattedAddress])
             }
         }
-
         processdata()
+
     }, []) // Empty dependency array to ensure the effect runs only once
 
 
-    // 
-    // const processdata = async () => {
-    //     for (let i = 0; i < 200; i++) {
-    //         let dis = calculateManhattanDistance(tabledata[i].lat, tabledata[i].lon, tabledata[i + 1].lat, tabledata[i + 1].lon)
-    //         let distime = calculateTimeDifferenceInSeconds(tabledata[i].time, tabledata[i + 1].time)
-    //         if (dis > 10) {
-    //             runtime += distime
-    //         }
-    //         totaltime += distime
-    //         totaltrip += dis
-    //         timearray.push(tabledata[i].time)
-    //         speedarray.push((dis / distime).toFixed(2))
-
-    //         const response = await axios.get(`http://localhost:8088/location?loca=${tabledata[i].lat}%2C${tabledata[i].lon}`)
-    //         const formattedAddress = response.data.result.formatted_address
-    //         triparray.push(formattedAddress)
-    //     }
-    // }
-    // processdata()
-
     return (
         <>
-            <h1>轨迹1：</h1>
-            <p>总路程：{(totaltrip).toFixed(2)}米</p>
-            <p>总行程时间：{totaltime}秒</p>
-            <p>非停靠时间: {runtime}</p>
-            <p>平均速度：{(3.6 * totaltrip / totaltime).toFixed(2)}km/h</p>
-            <Table dataSource={timearray.map((item, index) => (
+            <Card title={`轨迹1： 从 ${triparray[0]} 至 ${triparray[triparray.length - 1]}`} bordered={false} style={{ width: "100%" }}>
+                <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px' }}>
+                    <div style={{ marginRight: '50px' }}>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹总路程：{(totaltrip).toFixed(2)}米</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>全程平均速度：{(3.6 * totaltrip / totaltime).toFixed(2)}km/h</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>最高瞬时速度：{Math.max(...speedarray)}</p>
+                    </div>
+                    <div>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹开始时间：{timearray[0]}</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹结束时间：{timearray[99] ? timearray[99] : timearray[-1]}</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>非停靠时间: {runtime}秒</p>
+                    </div>
+                </div>
+            </Card>
+            {/* <Plot></Plot> */}
+            <Table dataSource={timearray.slice(0, 100).map((item, index) => (
+                {
+                    key: index,
+                    name: triparray[index],
+                    time: timearray[index],
+                    speed: speedarray[index]
+                }
+            ))} columns={columns}></Table>
+
+            <Card title={`轨迹2： 从 ${triparray[100]} 至 ${triparray[199] ? triparray[199] : triparray[-1]}`} bordered={false} style={{ width: "100%" }}>
+                <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px' }}>
+                    <div style={{ marginRight: '50px' }}>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹总路程：{(totaltrip).toFixed(2)}米</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>全程平均速度：{(3.6 * totaltrip / totaltime).toFixed(2)}km/h</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>最高瞬时速度：{Math.max(...speedarray)}</p>
+                    </div>
+                    <div>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹开始时间：{timearray[100]}</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹结束时间：{timearray[199] ? timearray[199] : timearray[-1]}</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>非停靠时间: {runtime}秒</p>
+                    </div>
+                </div>
+            </Card>
+            {/* <Plot></Plot> */}
+            <Table dataSource={timearray.slice(100, 200).map((item, index) => (
+                {
+                    key: index,
+                    name: triparray[index],
+                    time: timearray[index],
+                    speed: speedarray[index]
+                }
+            ))} columns={columns}></Table>
+
+            <Card title={`轨迹3： 从 ${triparray[200]} 至 ${triparray[299] ? triparray[299] : triparray[-1]}`} bordered={false} style={{ width: "100%" }}>
+                <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#f5f5f5', padding: '20px', borderRadius: '8px' }}>
+                    <div style={{ marginRight: '50px' }}>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹总路程：{(totaltrip).toFixed(2)}米</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>全程平均速度：{(3.6 * totaltrip / totaltime).toFixed(2)}km/h</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>最高瞬时速度：{Math.max(...speedarray)}</p>
+                    </div>
+                    <div>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹开始时间：{timearray[200]}</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹结束时间：{timearray[299] ? timearray[299] : timearray[-1]}</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>非停靠时间: {runtime}秒</p>
+                    </div>
+                </div>
+            </Card>
+            {/* <Plot></Plot> */}
+            <Table dataSource={timearray.slice(200, 300).map((item, index) => (
                 {
                     key: index,
                     name: triparray[index],
