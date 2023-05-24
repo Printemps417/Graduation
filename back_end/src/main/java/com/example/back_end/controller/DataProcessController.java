@@ -40,7 +40,7 @@ public class DataProcessController {
     private String StaticPath="E:\\local_repository\\Graduation\\back_end\\src\\main\\resources\\UserData";
     @Autowired
     private UserMapper userMapper;
-    @ApiOperation("此接口用于从数据库导出选中数据")
+    @ApiOperation("此接口用于逆地理编码")
     @GetMapping(value = "/location")
     public String location(String loca) throws Exception {
 
