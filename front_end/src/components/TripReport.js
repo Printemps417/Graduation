@@ -40,7 +40,7 @@ const TripReport = ({ tabledata }) => {
     const [totaltrip, setTotalTrip] = useState(0)
 
     function calculateManhattanDistance (lat1, lon1, lat2, lon2) {
-        const earthRadius = 6371 // 地球半径（单位：千米）
+        const earthRadius = 6371.39 // 地球半径（单位：千米）
         // 将经纬度转换为弧度
         const toRadians = (degrees) => { return degrees * (Math.PI / 180) }
         const deltaLat = toRadians(lat2 - lat1)
@@ -67,7 +67,7 @@ const TripReport = ({ tabledata }) => {
     useEffect(() => {
         console.log(tabledata)
         async function processdata () {
-            for (let i = 0; i < 300; i++) {
+            for (let i = 0; i < 100; i++) {
                 let dis = calculateManhattanDistance(
                     tabledata[i].lat,
                     tabledata[i].lon,
@@ -81,7 +81,7 @@ const TripReport = ({ tabledata }) => {
                 setTotalTime(prevTotalTime => prevTotalTime + distime)
                 setTotalTrip(prevTotalTrip => prevTotalTrip + dis)
                 setTimeArray(prevTimeArray => [...prevTimeArray, tabledata[i].time])
-                setSpeedArray(prevSpeedArray => [...prevSpeedArray, (dis / distime).toFixed(2)])
+                setSpeedArray(prevSpeedArray => [...prevSpeedArray, dis / distime])
 
                 const response = await axios.get(`http://localhost:8088/location?loca=${tabledata[i].lat}%2C${tabledata[i].lon}`)
                 const formattedAddress = response.data.result.formatted_address
@@ -100,11 +100,11 @@ const TripReport = ({ tabledata }) => {
                     <div style={{ marginRight: '50px' }}>
                         <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹总路程：{(totaltrip).toFixed(2)}米</p>
                         <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>全程平均速度：{(3.6 * totaltrip / totaltime).toFixed(2)}km/h</p>
-                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>最高瞬时速度：{Math.max(...speedarray)}</p>
+                        <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>最高瞬时速度：{(Math.max(...speedarray)).toFixed(2)}km/h</p>
                     </div>
                     <div>
                         <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹开始时间：{timearray[0]}</p>
-                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹结束时间：{timearray[99] ? timearray[99] : timearray[-1]}</p>
+                        <p style={{ marginBottom: '10px', fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>轨迹结束时间：{timearray[timearray.length - 1]}</p>
                         <p style={{ fontFamily: 'Arial', fontSize: '16px', color: '#666' }}>非停靠时间: {runtime}秒</p>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ const TripReport = ({ tabledata }) => {
                     key: index,
                     name: triparray[index],
                     time: timearray[index],
-                    speed: speedarray[index]
+                    speed: (speedarray[index] * 3.6).toFixed(2)
                 }
             ))} columns={columns}></Table>
 
