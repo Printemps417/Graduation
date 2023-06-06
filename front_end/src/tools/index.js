@@ -22,6 +22,7 @@ import {
     addDynaTripLayer,
     addEqualLineLayer,
     addTripLayer,
+    add3DLineLayer
 } from './Layerfunc'
 
 export {
@@ -40,4 +41,5 @@ export {
     addDynaTripLayer,
     addEqualLineLayer,
     addTripLayer,
+    add3DLineLayer
 }

@@ -3,9 +3,6 @@ import { Map } from '@antv/l7-maps'
 import { Scene, PointLayer, Zoom, Scale, MouseLocation, MapTheme, Source, HeatmapLayer, LineLayer } from '@antv/l7'
 import '../styles/AntMap.css'
 import { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
-import { Button, message } from 'antd'
-import { PlusOutlined, RedoOutlined } from '@ant-design/icons'
 import {
     getToken,
     addClusterLayer,
@@ -17,6 +14,7 @@ import {
     addDynaTripLayer,
     addEqualLineLayer,
     addTripLayer,
+    add3DLineLayer
 } from '../tools'
 import axios from 'axios'
 
@@ -118,6 +116,11 @@ const AntMap = () => {
                         case 'Dtrip': {
                             if (data.visible[i]) addDynaTripLayer(data.datas[i], sceneInstance, data.visible[i])
                             console.log('添加动态轨迹图')
+                            break
+                        }
+                        case '3DLine': {
+                            if (data.visible[i]) add3DLineLayer(data.datas[i], sceneInstance, data.visible[i])
+                            console.log('添加3D弧线图')
                             break
                         }
                         default: console.log('null')

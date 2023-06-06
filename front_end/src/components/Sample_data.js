@@ -23,7 +23,7 @@ const columns = [
         key: 'action',
         width: '200px'
     },]
-const name = ["散点图", "聚合点图", "气泡点图", "文本标注", "热力图", "网格热力图", "静态轨迹", "动态轨迹", "等高线"]
+const name = ["散点图", "聚合点图", "气泡点图", "文本标注", "热力图", "网格热力图", "静态轨迹", "动态轨迹", "等高线", "3D弧线图"]
 const description = [
     "根据Lon、Lat字段确定散点绘制位置，多个图形叠加会有高亮效果",
     "根据k-means算法，将每个数据都划分到临近中心点中，并在聚合点中心标记被划入数据的数量。当地图缩放时，聚合点也会汇聚或扩散",
@@ -33,7 +33,8 @@ const description = [
     "先将地图区域进行基于geoHash的栅格化，再统计每一个栅格中的数据点数量，根据栅格内数据数量渲染栅格不同颜色",
     "由固定格式的json文件绘制，第一个字段包含车辆的id，第二个字段为时间序列上有序的经纬度对数组。可由规范化数据处理而来",
     "根据时间序列有序的经纬度对渲染车辆的动态轨迹，可根据不同车辆ID渲染不同颜色。对前端渲染压力较大",
-    "根据数据value绘制等值线，需要数据以经纬度对的形式存储于json文件中"]
+    "根据数据value绘制等值线，需要数据以经纬度对的形式存储于json文件中",
+    "根据数据OD点的经纬度绘制弧线"]
 const url = [
     "/SampleData/ScatterSample.csv",
     "/SampleData/ScatterSample.csv",
@@ -43,7 +44,8 @@ const url = [
     "/SampleData/HeatSample.csv",
     "/SampleData/TripDataSample.json",
     "/SampleData/DynamicTripSample.json",
-    "/SampleData/EqualLineSample.json"]
+    "/SampleData/EqualLineSample.json",
+    "/SampleData/3DLineSample.txt"]
 const data = name.map((item, index) => {
     return ({
         key: index + 1,

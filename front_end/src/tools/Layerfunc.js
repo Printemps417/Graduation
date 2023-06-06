@@ -99,7 +99,7 @@ const addHeatmapLayer = (url, sceneInstance, ifvisible) => {
                     transforms: [
                         {
                             type: 'grid',
-                            size: 20000,
+                            size: 8000,
                             field: 'v',
                             method: 'sum'
                         }
@@ -347,6 +347,31 @@ const addEqualLineLayer = (url, scene, ifvisible) => {
             scene.addLayer(layer)
         })
 }
+const add3DLineLayer = (url, scene, ifvisible) => {
+    fetch(url)
+        .then(res => res.text())
+        .then(data => {
+            const layer = new LineLayer({})
+                .source(data, {
+                    parser: {
+                        type: 'csv',
+                        x: 'lng1',
+                        y: 'lat1',
+                        x1: 'lng2',
+                        y1: 'lat2'
+                    }
+                })
+                .size(1)
+                .shape('arc3d')
+                .color('#FF7C6A')
+                .style({
+                    opacity: 0.7,
+                    sourceColor: 'blue',
+                    targetColor: 'green'
+                })
+            scene.addLayer(layer)
+        })
+}
 export {
     addClusterLayer,
     addHeatmapLayer,
@@ -357,4 +382,5 @@ export {
     addDynaTripLayer,
     addEqualLineLayer,
     addTripLayer,
+    add3DLineLayer
 }

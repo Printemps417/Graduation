@@ -255,6 +255,7 @@ public class DataProcessController {
         List<String> oldactions=user.getAction();
         List<String> olddatas=user.getDatas();
         List<String> oldlayers=user.getLayers();
+        List<Boolean> oldvisible=user.getVisible();
         List<String> olddescription=user.getDescription();
 
         int index = user.getLayers().indexOf(layer);
@@ -262,11 +263,13 @@ public class DataProcessController {
             oldactions.remove(index);
             olddatas.remove(index);
             oldlayers.remove(index);
+            oldvisible.remove(index);
             olddescription.remove(index);
         }
         user.setAction(oldactions);
         user.setDatas(olddatas);
         user.setLayers(oldlayers);
+        user.setVisible(oldvisible);
         user.setDescription(olddescription);
         // 将User对象序列化为JSON字符串
         String json;

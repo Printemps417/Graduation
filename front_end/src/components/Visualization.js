@@ -321,6 +321,7 @@ const Visualization = () => {
                                         <Option value="Strip">静态轨迹图层</Option>
                                         <Option value="Dtrip">动态轨迹图层</Option>
                                         <Option value="Equal">等高线图层</Option>
+                                        <Option value="3DLine">3D弧线图层</Option>
                                     </Select>
                                 </Form.Item>
                             </Col>
