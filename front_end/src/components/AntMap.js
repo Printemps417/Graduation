@@ -33,7 +33,7 @@ const AntMap = () => {
             zoomOutTitle: "缩小",
         })
         const scale = new Scale({
-            style: "background-color: transparent;",
+            style: "background-color: black;",
             // zoomInTitle: "放大",
             // zoomOutTitle: "缩小",
         })

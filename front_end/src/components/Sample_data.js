@@ -45,7 +45,7 @@ const url = [
     "/SampleData/TripDataSample.json",
     "/SampleData/DynamicTripSample.json",
     "/SampleData/EqualLineSample.json",
-    "/SampleData/3DLineSample.txt"]
+    "/SampleData/3DLineSample.csv"]
 const data = name.map((item, index) => {
     return ({
         key: index + 1,
