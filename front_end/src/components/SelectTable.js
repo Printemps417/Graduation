@@ -2,6 +2,7 @@ import { Table } from 'antd'
 import { useState, useContext, useEffect } from 'react'
 import { ExtractListContext } from './Database'
 const SelectTable = ({ tablename }) => {
+    
     // console.log(tablename)
     const { tablelist, setTablelist } = useContext(ExtractListContext)
     const [selectedRowKeys, setSelectedRowKeys] = useState([])

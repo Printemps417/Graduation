@@ -62,8 +62,6 @@ const Database = () => {
                 console.log(`http://localhost:8088/gettabledata?databasename=${database}&tablename=${curtable}`)
                 const data = response.data
                 setTabledata([])
-                // 重置防乱码
-                // setTabledata(data.slice(0, 500))
                 setTabledata(data)
                 curtable = data[0]
                 // 为了页面响应速度，只展示前500项内容

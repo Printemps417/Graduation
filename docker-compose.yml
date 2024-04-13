@@ -1,0 +1,82 @@
+version: '3.4'
+
+services:
+  mysql:
+    container_name: rabc-mysql
+    image: mysql:8
+    restart: unless-stopped
+    tty: true
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-root}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-123456}
+    volumes:
+      - mysql:/var/lib/mysql/
+      - ./sql/rabc_init.sql:/docker-entrypoint-initdb.d/rabc_init.sql:ro
+
+  redis:
+    container_name: rabc-redis
+    image: redis:6-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis:/data
+
+  server:
+    container_name: rabc_backend
+    build:
+      context: ./rabc_backend
+      # 构建镜像的上下文路径，表示 Docker 将在 ./rabc_backend 目录中查找 Dockerfile 文件，并在这个目录中构建镜像。
+    image: rabc_backend
+    restart: unless-stopped
+    ports:
+      - '8088:8088'
+    environment:
+      #     environment：
+      # 用于设置容器运行时的环境变量。
+      # 通常用于配置应用程序的运行时环境，例如设置数据库连接字符串、API密钥等。
+      # 这些环境变量对应于应用程序在运行时所使用的配置参数。
+      SPRING_PROFILES_ACTIVE: local
+      JAVA_OPTS: ${JAVA_OPTS:-
+        -Xms512m
+        -Xmx512m
+        -Djava.security.egd=file:/dev/./urandom
+        }
+      ARGS:
+        --spring.datasource.url=${DATASOURCE_URL:-jdbc:mysql://rabc-mysql:3306/rabc?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true}
+        --spring.datasource.username=${DATASOURCE_USERNAME:-root}
+        --spring.datasource.password=${DATASOURCE_PASSWORD:-123456}
+        --spring.redis.host=${REDIS_HOST:-rabc-redis}
+        # 指定redis地址的host
+    depends_on:
+      - mysql
+      - redis
+
+  web:
+    container_name: rabc_web
+    build:
+      context: ./rabc_web
+      args:
+        #       args：
+        # 用于设置构建时的参数，即在构建Docker镜像的过程中使用的参数。
+        # 通常用于在构建时传递一些动态的值给 Dockerfile 中的指令。
+        # 这些参数通常影响镜像的构建过程，而不是容器运行时的配置。
+        NODE_ENV:
+          ENV=${NODE_ENV:-production}
+          VUE_APP_TITLE=${VUE_APP_TITLE:-rabc管理系统}
+          # 如果NODE_ENV环境变量已经设置了，则使用已设置的值，否则使用默认值production。
+    image: rabc_web
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    depends_on:
+      - server
+
+volumes:
+  mysql:
+    driver: local
+  redis:
+    driver: local
+
