@@ -27,4 +27,13 @@
   ![alt text](image-4.png)
 - #### 重启脚本 restart.sh
 - 更新项目并提交至远程仓库后，执行重启脚本克自动关停当前运行中的 container，根据更新后的代码重新生成镜像并启动新容器
+
   ![alt text](image-5.png)
+
+## 基于 PyQt 的简易版
+
+可以通过运行 pyqt 中的 python 文件，使用基于 pyqt 的简易 GUI 进行 GPS 数据处理。效果如下图所示
+
+![alt text](image-6.png)
+
+![alt text](image-8.png)
